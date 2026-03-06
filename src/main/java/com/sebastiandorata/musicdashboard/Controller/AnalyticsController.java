@@ -1,4 +1,4 @@
 package com.sebastiandorata.musicdashboard.Controller;
 
-public class DashboardHandler {
+public class AnalyticsController {
 }

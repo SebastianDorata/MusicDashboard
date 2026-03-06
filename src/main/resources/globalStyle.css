@@ -1,0 +1,21 @@
+.header{
+    -fx-text-fill: green;
+    -fx-font-size: 96px;
+    -fx-font-weight: 300;
+}
+
+.cursor{
+    -fx-cursor:hand;
+}
+
+.cursor: hover{
+    -fx-text-fill: #4265c7;
+}
+
+.btn-blue{
+      -fx-text-fill: White;
+      -fx-font-size: 15px;
+      -fx-border-radius: 10px;
+      -fx-background-color: blue;
+      -fx-border-color: #383838;
+}

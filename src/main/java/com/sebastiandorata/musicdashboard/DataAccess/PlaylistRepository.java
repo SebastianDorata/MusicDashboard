@@ -1,4 +1,4 @@
 package com.sebastiandorata.musicdashboard.DataAccess;
 
-public class GenreDA {
+public class PlaylistRepository {
 }

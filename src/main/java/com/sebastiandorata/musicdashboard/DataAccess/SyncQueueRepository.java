@@ -1,4 +1,4 @@
 package com.sebastiandorata.musicdashboard.DataAccess;
 
-public class AlbumDA {
+public class SyncQueueRepository {
 }

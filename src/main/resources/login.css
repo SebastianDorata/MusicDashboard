@@ -1,0 +1,19 @@
+.main-background{
+    -fx-background-color: black;
+}
+
+.username-Field{
+    -fx-text-fill: Red;
+    -fx-font-size: 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #383838;
+    -fx-max-Width: 473px;
+
+
+}
+
+.password-Field{
+
+    -fx-max-Width: 473px;
+}
