@@ -5,9 +5,19 @@ import com.sebastiandorata.musicdashboard.Controller.AuthenticationController;
 import com.sebastiandorata.musicdashboard.Controller.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 public class JavaFxApplication extends Application {
 
+    private ConfigurableApplicationContext applicationContext;
+
+    @Override
+    public void init() {
+        // Start Spring Boot context
+        applicationContext = new SpringApplicationBuilder(MusicDashboardApplication.class)
+                .run();
+    }
 
 
     @Override
@@ -15,6 +25,7 @@ public class JavaFxApplication extends Application {
         stage.setTitle("Music Dashboard");
         MainController.setMainStage(stage);
 
-        new AuthenticationController().show();
+        AuthenticationController authController = applicationContext.getBean(AuthenticationController.class);
+        authController.show();
     }
 }

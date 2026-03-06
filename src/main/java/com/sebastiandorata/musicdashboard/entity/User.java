@@ -5,38 +5,41 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(name="name")//Create column
-    private String name;
-
-
-    @Column(name="email")
+    @Column(name = "email", nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(name="password")
-    private String password;
+    @Column(name = "password_hash", nullable = false, length = 255)
+    private String passwordHash;
 
-    @Column(name="created_at")
+    @Column(name = "username", nullable = false, unique = true, length = 100)
+    private String username;
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin;
 
-    public Integer getId() {
-        return id;
+    // Constructor
+    public User() {
+        this.createdAt = LocalDateTime.now();
     }
 
-
-    public String getName() {
-        return name;
+    // Getters and Setters
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -47,12 +50,20 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -61,5 +72,22 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 }
