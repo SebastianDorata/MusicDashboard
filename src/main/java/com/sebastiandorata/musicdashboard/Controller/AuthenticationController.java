@@ -1,60 +1,143 @@
 package com.sebastiandorata.musicdashboard.Controller;
 
-import com.sebastiandorata.musicdashboard.util.Utils;
+import com.sebastiandorata.musicdashboard.Service.AuthenticationService;
+import com.sebastiandorata.musicdashboard.Utils.Utils;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AuthenticationController {
-    private Label welcomeLable = new Label("Welcome to your Music Dashboard");
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    private Label welcomeLabel = new Label("Welcome to your Music Dashboard");
     private TextField usernameField = new TextField();
+    private TextField emailField = new TextField();
     private PasswordField passwordField = new PasswordField();
-    private  Button loginButton = new Button("Login");
-    private Label signupLable = new Label("Don't have an accont? Click here");
+    private Button loginButton = new Button("Login");
+    private Label signupLabel = new Label("Don't have an account? Click here");
 
-
-    public void show(){// this method will be called every time we want to switch views
+    public void show() {
         Scene scene = createScene();
-        scene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
-        scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
+
+
+        try {
+            scene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
+        } catch (Exception e) {
+            System.out.println("CSS not found, using default styles");
+        }
+
         MainController.switchViews(scene);
     }
 
-    private Scene createScene(){
-        VBox mainContainerBox = new VBox();//main div
-        mainContainerBox.getStyleClass().addAll("main-background");// To style the 'div' in the css page
+    private Scene createScene() {
+        VBox mainContainerBox = new VBox();
+        mainContainerBox.getStyleClass().addAll("main-background");
         mainContainerBox.setAlignment(Pos.TOP_CENTER);
 
-        welcomeLable.getStyleClass().addAll("header");
+        welcomeLabel.getStyleClass().addAll("header");
         VBox loginFormBox = createLoginFormBox();
 
-        mainContainerBox.getChildren().addAll(welcomeLable,loginFormBox);// When the page runs, these two objects will be displayed
-        return new Scene(mainContainerBox, Utils.APP_Width, Utils.APP_Height);
+        mainContainerBox.getChildren().addAll(welcomeLabel, loginFormBox);
+        return new Scene(mainContainerBox, Utils.APP_WIDTH, Utils.APP_HEIGHT);
     }
 
-    private VBox createLoginFormBox(){
-        VBox loginFormVBox = new VBox(74);// Creating login VBox obj of subtype VBox. Each node in the VBox will a spacing of 74px
-        // Style each node in the VBox login page
+    private VBox createLoginFormBox() {
+        VBox loginFormVBox = new VBox(20);
         loginFormVBox.setAlignment(Pos.CENTER);
 
         usernameField.getStyleClass().addAll("username-Field");
-            usernameField.setPromptText("Enter Username:");
+        usernameField.setPromptText("Enter Username:");
+
         passwordField.getStyleClass().addAll("password-Field");
-            passwordField.setPromptText("Enter Password:");
+        passwordField.setPromptText("Enter Password:");
+
         loginButton.getStyleClass().addAll("btn-blue", "cursor");
-        signupLable.getStyleClass().addAll("btn-blue", "cursor");
 
+        signupLabel.getStyleClass().addAll("btn-blue", "cursor");
 
+       //ADD EVENT HANDLERS
+        loginButton.setOnAction(event -> handleLogin());
+        signupLabel.setOnMouseClicked(event -> handleSignup());
 
-
-
-
-        loginFormVBox.getChildren().addAll(usernameField,passwordField,loginButton,signupLable);// nested div
+        loginFormVBox.getChildren().addAll(usernameField, emailField, passwordField, loginButton, signupLabel);
         return loginFormVBox;
     }
 
+
+    private void handleLogin() {
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            showError("Please enter both username and password");
+            return;
+        }
+
+        try {
+
+            var userOptional = authenticationService.login(username, password);
+
+            if (userOptional.isPresent()) {
+                showSuccess("Welcome back, " + userOptional.get().getUsername() + "!");
+                // TODO: Navigate to dashboard
+            } else {
+                showError("Invalid username or password");
+            }
+        } catch (Exception e) {
+            showError("Login failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void handleSignup() {
+        String username = usernameField.getText().trim();
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            showError("Please enter both username and password");
+            return;
+        }
+
+        if (password.length() < 6) {
+            showError("Password must be at least 6 characters");
+            return;
+        }
+
+        try {
+            authenticationService.register(email, password, username);
+
+            showSuccess("Registration successful! You can now login.");
+            passwordField.clear();
+
+        } catch (IllegalArgumentException e) {
+            showError(e.getMessage());
+        } catch (Exception e) {
+            showError("Registration failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showSuccess(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
