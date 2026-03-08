@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.DataAccess;
+package com.sebastiandorata.musicdashboard.repository;
 
 import com.sebastiandorata.musicdashboard.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
