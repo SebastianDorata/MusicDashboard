@@ -1,6 +1,6 @@
-package com.sebastiandorata.musicdashboard.Service;
+package com.sebastiandorata.musicdashboard.service;
 
-import com.sebastiandorata.musicdashboard.DataAccess.UserRepository;
+import com.sebastiandorata.musicdashboard.repository.UserRepository;
 import com.sebastiandorata.musicdashboard.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
