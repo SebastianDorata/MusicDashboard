@@ -1,11 +1,12 @@
 package com.sebastiandorata.musicdashboard.controller;
-
 import com.sebastiandorata.musicdashboard.service.AuthenticationService;
 import com.sebastiandorata.musicdashboard.Utils.Utils;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,8 +15,13 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationService authenticationService;
+
+
+    @Getter
+    @Setter
     @Autowired
-    private ImportController importController;
+    private DashboardController dashboardController;
+
 
     private Label welcomeLabel = new Label("Welcome to your Music Dashboard");
     private TextField usernameField = new TextField();
@@ -89,8 +95,8 @@ public class AuthenticationController {
             if (userOptional.isPresent()) {
                 showSuccess("Welcome back, " + userOptional.get().getUsername() + "!");
 
-
-                navigateToImportPage();
+                //Move to Dashboard page
+                navigateToDashboardPage();
 
 
             } else {
@@ -131,8 +137,9 @@ public class AuthenticationController {
         }
     }
 
-    private void navigateToImportPage() {
-        importController.show();
+
+    private void navigateToDashboardPage() {
+        dashboardController.show();
     }
 
     private void showError(String message) {
@@ -150,4 +157,11 @@ public class AuthenticationController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }
+
+
+
+
+
+

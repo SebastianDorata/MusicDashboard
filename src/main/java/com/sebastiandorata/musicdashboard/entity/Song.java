@@ -78,5 +78,19 @@ public class Song {
     )
     private List<Genre> genres;
 
+
+    public String getFilePath() {
+        return filePath;
+    }
+    @Override
+    public String toString() {
+        String artistName = "Unknown Artist";
+        if (artists != null && !artists.isEmpty()) {
+            artistName = artists.get(0).getName();
+        }
+
+        return title + " - " + artistName;
+    }
+
 }
 
