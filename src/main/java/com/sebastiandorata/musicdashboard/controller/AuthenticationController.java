@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.Controller;
+package com.sebastiandorata.musicdashboard.controller;
 
 import com.sebastiandorata.musicdashboard.service.AuthenticationService;
 import com.sebastiandorata.musicdashboard.Utils.Utils;
