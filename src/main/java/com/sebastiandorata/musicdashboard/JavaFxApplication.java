@@ -1,8 +1,8 @@
 package com.sebastiandorata.musicdashboard;
 
 
-import com.sebastiandorata.musicdashboard.Controller.AuthenticationController;
-import com.sebastiandorata.musicdashboard.Controller.MainController;
+import com.sebastiandorata.musicdashboard.controller.AuthenticationController;
+import com.sebastiandorata.musicdashboard.controller.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
