@@ -79,9 +79,6 @@ public class Song {
     private List<Genre> genres;
 
 
-    public String getFilePath() {
-        return filePath;
-    }
     @Override
     public String toString() {
         String artistName = "Unknown Artist";
@@ -91,6 +88,5 @@ public class Song {
 
         return title + " - " + artistName;
     }
-
 }
 

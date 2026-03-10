@@ -2,6 +2,7 @@ package com.sebastiandorata.musicdashboard;
 
 
 import com.sebastiandorata.musicdashboard.controller.AuthenticationController;
+import com.sebastiandorata.musicdashboard.controller.DashboardController;
 import com.sebastiandorata.musicdashboard.controller.MainController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -25,6 +26,8 @@ public class JavaFxApplication extends Application {
         stage.setTitle("Music Dashboard");
         MainController.setMainStage(stage);
 
+        //DashboardController dashboardController = applicationContext.getBean(DashboardController.class);
+        //dashboardController.show();
         AuthenticationController authController = applicationContext.getBean(AuthenticationController.class);
         authController.show();
     }
