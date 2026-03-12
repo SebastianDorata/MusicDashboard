@@ -12,14 +12,18 @@ import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.images.Artwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SongService {
@@ -61,7 +65,7 @@ public class SongService {
         // Audio technical details
         song.setBitRate((int) audioFile.getAudioHeader().getBitRateAsNumber());
         song.setSampleRate((int) audioFile.getAudioHeader().getSampleRateAsNumber());
-        song.setChannels(Integer.parseInt(audioFile.getAudioHeader().getChannels()));
+        song.setChannels(parseChannels(audioFile.getAudioHeader().getChannels()));
         song.setCodec(audioFile.getAudioHeader().getEncodingType());
 
         // Track number
@@ -90,11 +94,16 @@ public class SongService {
                     return albumRepository.save(newAlbum);
                 });
         song.setAlbum(album);
+            String artPath = extractAndSaveAlbumArt(audioFile, file.getAbsolutePath());
+            if (artPath != null && album.getAlbumArtPath() == null) {
+                album.setAlbumArtPath(artPath);
+                albumRepository.save(album);  // update album with art path
+        }
 
         // Process Artists
         String artistName = getTagValue(tag, FieldKey.ARTIST, "Unknown Artist");
         List<Artist> artists = new ArrayList<>();
-        // Fixed: changed regex from ",|;|&" to "[,;&]"
+
         for (String name : artistName.split("[,;&]")) {
             String trimmedName = name.trim(); // Fixed: use new variable
             Artist artist = artistRepository.findByName(trimmedName)
@@ -110,7 +119,7 @@ public class SongService {
         // Process Genres
         String genreName = getTagValue(tag, FieldKey.GENRE, "Unknown");
         List<Genre> genres = new ArrayList<>();
-        // Fixed: changed regex from ",|;" to "[,;]"
+
         for (String name : genreName.split("[,;]")) {
             String trimmedName = name.trim(); // Fixed: use new variable
             Genre genre = genreRepository.findByName(trimmedName)
@@ -129,6 +138,52 @@ public class SongService {
 
         return savedSong;
     }
+    private String extractAndSaveAlbumArt(AudioFile audioFile, String songFilePath) {
+        try {
+            Tag tag = audioFile.getTag();
+            if (tag == null) return null;
+
+            Artwork artwork = tag.getFirstArtwork();
+            if (artwork == null) return null;
+
+            byte[] imageData = artwork.getBinaryData();
+            if (imageData == null || imageData.length == 0) return null;
+
+            // Always name it cover.jpg in the album's folder & one file per album,
+            String folder  = new File(songFilePath).getParent();
+            String artPath = folder + File.separator + "cover.jpg";
+
+            // Only write to disk if the file doesn't already exist and avoids redundant writes when importing multiple songs from the same album
+            File artFile = new File(artPath);
+                if (!artFile.exists()) {
+                    Files.write(Paths.get(artPath), imageData);
+                    System.out.println("Album art saved: " + artPath);
+                }
+
+            return artPath;
+
+        } catch (Exception e) {
+            System.out.println("Could not extract album art: " + e.getMessage());
+            return null;
+        }
+    }
+    private int parseChannels(String channelStr) {
+        if (channelStr == null) return 2; // default to stereo
+        try {
+            return Integer.parseInt(channelStr.trim());
+        } catch (NumberFormatException ignored) {}
+
+        // Handle descriptive strings
+        return switch (channelStr.trim().toLowerCase()) {
+            case "mono"-> 1;
+            case "stereo", "joint stereo", "dual channel", "joint_stereo"-> 2;
+            case "5.1", "surround"-> 6;
+            default -> {
+                System.out.println("Unknown channel format: '" + channelStr + "', defaulting to 2");
+                yield 2;
+            }
+        };
+    }
 
     private String getTagValue(Tag tag, FieldKey key, String defaultValue) {
         try {
@@ -145,7 +200,7 @@ public class SongService {
         return lastDot > 0 ? name.substring(lastDot + 1).toUpperCase() : "UNKNOWN";
     }
 
-    // These methods are for future use
+
     public List<Song> getAllSongs() {
         return songRepository.findAll();
     }

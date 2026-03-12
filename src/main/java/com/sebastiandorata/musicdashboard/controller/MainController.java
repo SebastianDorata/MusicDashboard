@@ -10,6 +10,37 @@ public class MainController {
     @Getter
     private static Stage mainStage;
 
+    private static AnalyticsController analyticsController;
+    private static AuthenticationController authenticationController;
+    private static DashboardController dashboardController;
+    private static ImportController importController;
+    private static MyLibraryController myLibraryController;
+    private static PlaylistController playlistController;
+
+    public static void registerAuth(AuthenticationController controller) {
+        authenticationController = controller;
+    }
+    public static void registerDashboard(DashboardController controller) {
+        dashboardController = controller;
+    }
+    public static void registerImport(ImportController controller) {
+        importController = controller;
+    }
+    public static void registerLibrary(MyLibraryController controller) {
+        myLibraryController = controller;
+    }
+
+    public static void navigateTo(String view) {
+        switch (view) {
+            case "dashboard"  -> dashboardController.show();
+            case "library"    -> myLibraryController.show();
+            case "auth"       -> authenticationController.show();
+            case "import"    -> importController.show();
+            default           -> System.err.println("Unknown view: " + view);
+        }
+    }
+
+
     public static void switchViews(Scene scene) {
         mainStage.setScene(scene);
         mainStage.show();

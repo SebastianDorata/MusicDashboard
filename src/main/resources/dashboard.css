@@ -1,0 +1,131 @@
+
+.now-playing-info {
+    -fx-background-color: rgba(255, 255, 255, 0.025);
+    -fx-background-radius: 0 20 20 0;
+    -fx-alignment: top-left;
+    -fx-padding: 22 28 18 24;
+}
+
+/* Artist name */
+.now-playing-artist {
+    -fx-text-fill: #7eb8f7;
+    -fx-font-size: 13px;
+}
+
+.now-playing-slider {
+    -fx-max-width: Infinity;
+}
+
+/* Time labels */
+.now-playing-time {
+    -fx-text-fill: rgba(255, 255, 255, 0.45);
+    -fx-font-size: 11px;
+}
+
+/* Progress slider track */
+.now-playing-slider .track {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+    -fx-background-radius: 4;
+    -fx-pref-height: 4;
+}
+
+/* Filled portion of slider track */
+.now-playing-slider .track:filled {
+    -fx-background-color: linear-gradient(to right, #4facfe, #00f2fe);
+    -fx-background-radius: 4;
+}
+
+/* Thumb dot */
+.now-playing-slider .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 6;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+    -fx-effect: dropshadow(gaussian, rgba(79, 172, 254, 0.8), 8, 0.3, 0, 0);
+}
+
+.now-playing-slider .thumb:hover {
+    -fx-background-color: #4facfe;
+    -fx-pref-width: 14;
+    -fx-pref-height: 14;
+}
+
+.now-playing-bar {
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 20, 18;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 20, 0.2, 0, 0);
+    -fx-padding: 0;
+    -fx-pref-width: 50%;
+    -fx-pref-height: 225px;
+}
+
+/* Playing state — brighter glow */
+.now-playing-bar.is-playing {
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.75), 32, 0.35, 0, 0);
+    -fx-border-color: rgb(76, 175, 80);
+}
+
+/* Album art square — flush left, full height */
+.now-playing-art {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 12, 0, 2, 0);
+    -fx-background-radius: 20 0 0 20;
+}
+
+/* Placeholder tile when no album art exists */
+.now-playing-art-placeholder {
+    -fx-background-color: linear-gradient(to bottom right, #1a2a4a, #0d1f3c);
+    -fx-background-radius: 20 0 0 20;
+}
+
+/* Time row container */
+.time-row {
+    -fx-padding: 4 0 0 0;
+    -fx-spacing: 0;
+}
+
+
+.play-history-row {
+    -fx-alignment: center-left;
+    -fx-padding: 6 8 6 8;
+    -fx-spacing: 10;
+}
+
+.play-history-song {
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+    -fx-max-width: Infinity;
+    -fx-text-overrun: ellipsis;
+}
+
+.play-history-time {
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+    /*-fx-min-width: use-pref-size;*/
+}
+
+.recently-played-title {
+    -fx-padding: 0 0 10 0;
+}
+
+
+
+.stat-card-sm {
+    -fx-background-color: #0d2342;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 4);
+    -fx-pref-width: 180;
+    -fx-pref-height: 120;
+}
+
+.stat-card-sm:hover {
+    -fx-background-color: #132f5e;
+    -fx-effect: dropshadow(gaussian, rgba(79, 172, 254, 0.3), 15, 0, 0, 6);
+}
+
+

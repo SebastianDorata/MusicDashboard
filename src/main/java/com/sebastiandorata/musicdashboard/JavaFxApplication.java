@@ -26,8 +26,7 @@ public class JavaFxApplication extends Application {
         stage.setTitle("Music Dashboard");
         MainController.setMainStage(stage);
 
-        //DashboardController dashboardController = applicationContext.getBean(DashboardController.class);
-        //dashboardController.show();
+
         AuthenticationController authController = applicationContext.getBean(AuthenticationController.class);
         authController.show();
     }

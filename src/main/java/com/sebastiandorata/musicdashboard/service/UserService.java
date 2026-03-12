@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 public class UserService {
     private static final Logger logger = Logger.getLogger(UserService.class.getName());
 
-    @Autowired //Use a copy of the class so I don't have to create it myslef
+    @Autowired //Use a copy of the class so I don't have to create it myself.
     private UserRepository userRepository;
 
-    public Optional<User> getUserByID(int userID){
+    public Optional<User> getUserByID(Long userID){
         logger.info("Getting the user by id: "+ userID);
         return userRepository.findById(userID);
     }

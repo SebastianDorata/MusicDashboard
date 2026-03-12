@@ -3,6 +3,54 @@
     -fx-font-size: 96px;
     -fx-font-weight: 300;
 }
+.txt-white{
+    -fx-text-fill: white;
+}
+.txt-white-lg{
+    -fx-text-fill: white;
+    -fx-font-size: 48px;
+}
+.wt-smmd-bld{
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.txt-white-md-bld{
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.txt-white-md{
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+}
+.txt-white-sm-bld{
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.txt-white-sm{
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+
+.txt-black-sm{
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+}
+.txt-grey-sm{
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 11px;
+}
+.txt-grey-sm-bld{
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.txt-grey-md{
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 13px;
+}
 
 .cursor{
     -fx-cursor:hand;
@@ -12,51 +60,49 @@
     -fx-text-fill: #4265c7;
 }
 
-.btn-blue{
-      -fx-text-fill: White;
-      -fx-font-size: 15px;
-      -fx-border-radius: 10px;
-      -fx-background-color: blue;
-      -fx-border-color: #383838;
+
+.empty-msg{
+    -fx-max-width: Infinity;
+    -fx-text-overrun: ellipsis;
+
 }
 
-.Left-Btn{
-    -fx-background-color: transparent;
-    -fx-text-fill: black;
-    -fx-alignment: center-left;
-    -fx-pref-width: 200;
-    -fx-pref-height: 40;
-    -fx-padding: 0 0 0 15;
-    -fx-font-size: 14px;
+.cntr-spc-sm{
+    -fx-alignment: center;
+    -fx-spacing: 12;
 }
-
-.Left-Btn:hover{
-    -fx-background-color: #3c3c3c;
+.wh-grn-style{
     -fx-text-fill: white;
-    -fx-background-radius: 8;
+   -fx-font-size: 60px;
+   -fx-font-weight: bold;
+   -fx-background-color: #4CAF50;
+   -fx-min-width: 130;
+   -fx-min-height: 130;
+   -fx-alignment: center;
+   -fx-background-radius: 65;
 }
 
 .green-background{
     -fx-background-color: #4CAF50;
-    -fx-background-radius:20;
+    -fx-background-radius:15;
+    -fx-padding:20;
 }
-.dashboard-card{
-    -fx-background-color: #0d2342;
-    -fx-background-radius: 15;
-    -fx-border-radius: 15;
-    -fx-padding: 15;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10,0,0,4);
+.dk-blue-background{
+    -fx-background-color:#0d2342;
+    -fx-background-radius:15;
+    -fx-padding:20;
+}
+.trans-background{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
 
+.main-bkColour{
+    -fx-background-color: #1e1e1e;
 }
-.dashboard-card:hover{
-    -fx-background-color: #132f5e;
-}
+
 .root{
     -fx-background-color: linear-gradient(to bottom right, #1e1e1e, #2a2a2a);
-}
-.now-playing-bar{
-    -fx-background-radius: 20;
-    -fx-background-color:linear-gradient(to right, #4facfe, #00f2fe);
 }
 .sidebar-panel{
     -fx-background-color: #0d2342;
@@ -74,60 +120,37 @@
     -fx-background-radius: 20;
     -fx-pref-height: 20;
 }
-.section-title{
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
-.stat-number{
-    -fx-text-fill: white;
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-}
+
+
 .artist-row{
     -fx-padding: 6 0 6 0;
     -fx-border-color: rgba(255,255,255,0.1);
     -fx-border-width: 0 0 1 0;
 }
 
-.now-playing-bar{
-    -fx-background-radius: 12;
-    -fx-background-color: black;
-}
 
-.now-playing-overlay{
-    -fx-background-color: rgba(0,0,0,0.45);
-    -fx-background-radius: 12;
-}
-
-.now-playing-title{
-    -fx-text-fill: white;
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-}
-
-.slider .track {
-    -fx-background-color: rgba(255,255,255,0.3);
-    -fx-background-radius: 10;
-}
-
-.slider .thumb {
-    -fx-background-color: white;
-    -fx-background-radius: 10;
-}
-
-.player-controls{
-    -fx-background-color: #1e1e1e;
-    -fx-background-radius: 12;
-
-}
 .graph-style{
     -fx-background-color:#4CAF50;
     -fx-padding:20;
     -fx-background-radius:20;
 }
-.recently-played{
-    -fx-background-color:#0d2342;
-    -fx-background-radius:20;
-    -fx-padding:20;
+
+.scroll-pane{
+    -fx-background: #121212;
+    -fx-background-color: #121212;
+}
+
+.dropZone{
+    fx-border-color: #4CAF50;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-background-color: #1e1e1e;
+    -fx-background-radius: 15;
+}
+.dropZone: hover{
+    -fx-border-color: #1DB954;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-background-color: #1a2e1a;
+    -fx-background-radius: 15;
 }

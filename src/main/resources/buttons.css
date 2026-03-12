@@ -1,0 +1,118 @@
+/* ═══════════════════════════════════════════════════════════
+   Buttons for the music player
+═══════════════════════════════════════════════════════════ */
+
+.player-btn-primary { /* Play/Pause — filled green */
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-text-fill: rgb(76, 175, 80);
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-min-width: 44;
+    -fx-min-height: 44;
+    -fx-max-width: 44;
+    -fx-max-height: 44;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 10, 0.2, 0, 2);
+}
+.player-btn-primary:hover {
+    -fx-background-color: rgb(76, 175, 80);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.7), 16, 0.3, 0, 3);
+}
+
+/********************************************************************/
+
+.player-btn-secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-text-fill: rgb(76, 175, 80);
+    -fx-font-size: 16px;
+    -fx-border-width: 2;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+.player-btn-secondary:hover {
+    -fx-background-color: rgb(76, 175, 80);
+    -fx-text-fill: white;
+}
+
+/********************************************************************/
+
+.player-btn { /* Prev / Next — ghost style */
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-text-fill: rgb(76, 175, 80);
+    -fx-font-size: 16px;
+    -fx-background-radius: 50;
+    -fx-min-width: 38;
+    -fx-min-height: 38;
+    -fx-max-width: 38;
+    -fx-max-height: 38;
+    -fx-border-radius: 50;
+    -fx-border-width: 2;
+}
+.player-btn:hover {
+    -fx-background-color: rgb(76, 175, 80);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.5), 10, 0, 0, 0);
+}
+
+.player-btn-primary .image-view {
+    -fx-effect: dropshadow(gaussian, rgba(10, 22, 40, 0.3), 2, 0, 0, 1);
+}
+.player-btn .image-view { /* Makes icons white if they're black */
+    -fx-blend-mode: screen;
+}
+/* ═══════════════════════════════════════════════════════════
+   General Buttons
+   ═══════════════════════════════════════════════════════════ */
+.tab-BtnA{
+    -fx-background-color: #1DB954;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+}
+.tab-BtnB{
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+}
+.btn-blue{
+      -fx-text-fill: White;
+      -fx-font-size: 15px;
+      -fx-border-radius: 10px;
+      -fx-background-color: blue;
+      -fx-border-color: #383838;
+}
+
+.Left-Btn{
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-alignment: center-left;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-padding: 0 0 0 15;
+    -fx-font-size: 14px;
+}
+
+.Left-Btn:hover{
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+.btn-enter{
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+.btn-exit{
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}

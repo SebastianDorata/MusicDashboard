@@ -1,6 +1,8 @@
 package com.sebastiandorata.musicdashboard.controller;
+import com.sebastiandorata.musicdashboard.entity.User;
 import com.sebastiandorata.musicdashboard.service.AuthenticationService;
 import com.sebastiandorata.musicdashboard.Utils.Utils;
+import com.sebastiandorata.musicdashboard.service.UserSessionService;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,17 +10,21 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationController {
 
+    @Lazy
     @Autowired
     private AuthenticationService authenticationService;
-
+    @Autowired
+    private UserSessionService sessionService;
 
     @Getter
     @Setter
+    @Lazy
     @Autowired
     private DashboardController dashboardController;
 
@@ -70,7 +76,7 @@ public class AuthenticationController {
 
         signupLabel.getStyleClass().addAll("btn-blue", "cursor");
 
-       //ADD EVENT HANDLERS
+
         loginButton.setOnAction(event -> handleLogin());
         signupLabel.setOnMouseClicked(event -> handleSignup());
 
@@ -93,10 +99,13 @@ public class AuthenticationController {
             var userOptional = authenticationService.login(username, password);
 
             if (userOptional.isPresent()) {
+                //Get the User object
+                User user = userOptional.get();
                 showSuccess("Welcome back, " + userOptional.get().getUsername() + "!");
 
+                sessionService.setCurrentUser(user);
                 //Move to Dashboard page
-                navigateToDashboardPage();
+                navigateToDashboardPage(user);
 
 
             } else {
@@ -138,7 +147,7 @@ public class AuthenticationController {
     }
 
 
-    private void navigateToDashboardPage() {
+    private void navigateToDashboardPage(User user) {
         dashboardController.show();
     }
 
