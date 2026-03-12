@@ -56,21 +56,24 @@ public class Song {
     @Column(name = "track_number")
     private Integer trackNum;
 
+
+
+
     @ManyToOne
     @JoinColumn(name = "album_id")
     private Album album;
 
 
-
-    @ManyToMany
+    //https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api
+    @ManyToMany(fetch = FetchType.EAGER)// to resolve the error of 'org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role"
     @JoinTable(
             name = "song_artists",
             joinColumns = @JoinColumn(name = "song_id"),
             inverseJoinColumns = @JoinColumn(name = "artist_id")
             )
-    private List<Artist> artists;
+    private List<Artist> artists; //Every artist is fetched from the database at the time the song is fetched.
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_genres",
             joinColumns = @JoinColumn(name = "song_id"),

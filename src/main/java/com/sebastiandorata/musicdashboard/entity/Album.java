@@ -27,10 +27,10 @@ public class Album {
     @Column(name = "album_art_path", length = 500)
     private String albumArtPath;
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
     private List<Song> songs;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "album_artists",
             joinColumns = @JoinColumn(name = "album_id"),

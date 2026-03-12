@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "favourites")  // ← Changed to Canadian spelling
+@Table(name = "favourites")
 public class Favourite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "favourite_id")  // ← Changed to Canadian spelling
+    @Column(name = "favourite_id")
     private Long favouriteId;
 
     @ManyToOne
@@ -25,7 +25,7 @@ public class Favourite {
     @JoinColumn(name = "song_id", nullable = false)
     private Song song;
 
-    @Column(name = "favourited_at", nullable = false)  // ← Changed to Canadian spelling
+    @Column(name = "favourited_at", nullable = false)
     private LocalDateTime favouritedAt;
 
     public Favourite() {

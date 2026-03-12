@@ -2,6 +2,8 @@ package com.sebastiandorata.musicdashboard.service;
 
 import com.sebastiandorata.musicdashboard.repository.UserRepository;
 import com.sebastiandorata.musicdashboard.entity.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ import java.util.Optional;
 @Service
 public class AuthenticationService {
 
+    @Setter
+    @Getter
     @Autowired
     private UserRepository userRepository;
 
