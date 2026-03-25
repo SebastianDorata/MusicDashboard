@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "sync_queue")
-public class SyncQueue {
+public class SyncQueueEntry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class SyncQueue {
     @Column(name = "synced_at")
     private LocalDateTime syncedAt;
 
-    public SyncQueue() {
+    public SyncQueueEntry() {
         this.createdAt = LocalDateTime.now();
     }
 

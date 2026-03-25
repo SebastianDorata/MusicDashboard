@@ -101,6 +101,12 @@
     -fx-background-color: #1e1e1e;
 }
 
+/* Dark (#121212) page background — replaces setStyle calls in
+   AnalyticsController, MyLibraryController, and PlaylistController */
+.dark-page-bg {
+    -fx-background-color: #121212;
+}
+
 .root{
     -fx-background-color: linear-gradient(to bottom right, #1e1e1e, #2a2a2a);
 }
@@ -122,17 +128,24 @@
 }
 
 
-.artist-row{
-    -fx-padding: 6 0 6 0;
-    -fx-border-color: rgba(255,255,255,0.1);
+/* ── TOP ARTISTS ROW ── */
+/* Single definition — removed the earlier duplicate that used 6px padding
+   and rgba(255,255,255,0.1) border. This version is the canonical one. */
+.artist-row {
+    -fx-padding: 8 0;
+    -fx-border-color: rgba(255,255,255,0.05);
     -fx-border-width: 0 0 1 0;
 }
 
+.artist-name {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+}
 
-.graph-style{
-    -fx-background-color:#4CAF50;
-    -fx-padding:20;
-    -fx-background-radius:20;
+.artist-time {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 13px;
+    -fx-min-width: 70;
 }
 
 .scroll-pane{
@@ -153,4 +166,10 @@
     -fx-border-radius: 15;
     -fx-background-color: #1a2e1a;
     -fx-background-radius: 15;
+}
+
+.graph-style{
+    -fx-background-color:#4CAF50;
+    -fx-padding:20;
+    -fx-background-radius:20;
 }

@@ -1,176 +1,205 @@
 package com.sebastiandorata.musicdashboard.controller;
+
 import com.sebastiandorata.musicdashboard.entity.User;
 import com.sebastiandorata.musicdashboard.service.AuthenticationService;
-import com.sebastiandorata.musicdashboard.Utils.Utils;
 import com.sebastiandorata.musicdashboard.service.UserSessionService;
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
+import jakarta.annotation.PostConstruct;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+
 @Component
 public class AuthenticationController {
 
-    @Lazy
-    @Autowired
-    private AuthenticationService authenticationService;
-    @Autowired
-    private UserSessionService sessionService;
-
-    @Getter
-    @Setter
-    @Lazy
-    @Autowired
-    private DashboardController dashboardController;
+    @Lazy  @Autowired private AuthenticationService authenticationService;
+    @Autowired         private UserSessionService    sessionService;
+    @Getter @Setter
+    @Lazy  @Autowired private DashboardController   dashboardController;
 
 
-    private Label welcomeLabel = new Label("Welcome to your Music Dashboard");
-    private TextField usernameField = new TextField();
-    private TextField emailField = new TextField();
-    private PasswordField passwordField = new PasswordField();
-    private Button loginButton = new Button("Login");
-    private Label signupLabel = new Label("Don't have an account? Click here");
+    private final TextField       usernameField  = new TextField();
+    private final TextField       emailField     = new TextField();
+    private final PasswordField   passwordField  = new PasswordField();
+    private final Label           feedbackLabel  = new Label();
+
+    @PostConstruct
+    public void register() {
+        MainController.registerAuth(this);
+    }
 
     public void show() {
         Scene scene = createScene();
-
-
         try {
             scene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
         } catch (Exception e) {
             System.out.println("CSS not found, using default styles");
         }
-
         MainController.switchViews(scene);
     }
 
     private Scene createScene() {
-        VBox mainContainerBox = new VBox();
-        mainContainerBox.getStyleClass().addAll("main-background");
-        mainContainerBox.setAlignment(Pos.TOP_CENTER);
+        VBox page = new VBox();
+        page.getStyleClass().add("main-background");
+        page.setAlignment(Pos.TOP_CENTER);
 
-        welcomeLabel.getStyleClass().addAll("header");
-        VBox loginFormBox = createLoginFormBox();
+        Label appTitle = new Label("Music Dashboard");
+        appTitle.getStyleClass().add("header");
 
-        mainContainerBox.getChildren().addAll(welcomeLabel, loginFormBox);
-        return new Scene(mainContainerBox, Utils.APP_WIDTH, Utils.APP_HEIGHT);
+        Label subtitle = new Label("Your personal listening stats & library");
+        subtitle.getStyleClass().add("login-subtitle");
+
+        VBox card = buildCard();
+
+        page.getChildren().addAll(appTitle, subtitle, card);
+        return new Scene(page, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
-    private VBox createLoginFormBox() {
-        VBox loginFormVBox = new VBox(20);
-        loginFormVBox.setAlignment(Pos.CENTER);
+    private VBox buildCard() {
+        VBox card = new VBox(12);
+            card.getStyleClass().add("login-card");
+            card.setAlignment(Pos.TOP_LEFT);
 
-        usernameField.getStyleClass().addAll("username-Field");
-        usernameField.setPromptText("Enter Username:");
-
-        passwordField.getStyleClass().addAll("password-Field");
-        passwordField.setPromptText("Enter Password:");
-
-        loginButton.getStyleClass().addAll("btn-blue", "cursor");
-
-        signupLabel.getStyleClass().addAll("btn-blue", "cursor");
+            Label cardTitle = new Label("Sign in");
+                cardTitle.getStyleClass().add("login-card-title");
 
 
-        loginButton.setOnAction(event -> handleLogin());
-        signupLabel.setOnMouseClicked(event -> handleSignup());
+            usernameField.setPromptText("Username");
+            usernameField.getStyleClass().add("username-Field");
 
-        loginFormVBox.getChildren().addAll(usernameField, emailField, passwordField, loginButton, signupLabel);
-        return loginFormVBox;
+            emailField.setPromptText("Email (sign up only)");
+            emailField.getStyleClass().add("email-Field");
+
+            passwordField.setPromptText("Password");
+            passwordField.getStyleClass().add("password-Field");
+
+
+            passwordField.setOnAction(e -> handleLogin());
+            usernameField.setOnAction(e -> handleLogin());
+
+
+            feedbackLabel.setWrapText(true);
+            feedbackLabel.setVisible(false);
+            feedbackLabel.setManaged(false);
+
+
+        Button loginBtn = new Button("Sign in");
+            loginBtn.getStyleClass().add("login-btn-primary");
+            loginBtn.setMaxWidth(Double.MAX_VALUE);
+            loginBtn.setOnAction(e -> handleLogin());
+
+        HBox divider = buildDivider();
+
+        Button signupBtn = new Button("Create account");
+            signupBtn.getStyleClass().add("login-btn-secondary");
+            signupBtn.setMaxWidth(Double.MAX_VALUE);
+            signupBtn.setOnAction(e -> handleSignup());
+
+        card.getChildren().addAll(
+                cardTitle,
+                fieldGroup("Username", usernameField),
+                fieldGroup("Email", emailField),
+                fieldGroup("Password", passwordField),
+                feedbackLabel,
+                loginBtn,
+                divider,
+                signupBtn
+        );
+        return card;
     }
 
+
+    private VBox fieldGroup(String labelText, Control field) {
+        Label lbl = new Label(labelText);
+        lbl.getStyleClass().add("login-field-label");
+        VBox group = new VBox(4, lbl, field);
+        return group;
+    }
+
+
+    private HBox buildDivider() {
+        Region lineLeft  = new Region();
+        Region lineRight = new Region();
+        lineLeft.getStyleClass().add("login-divider-line");
+        lineRight.getStyleClass().add("login-divider-line");
+        HBox.setHgrow(lineLeft,  Priority.ALWAYS);
+        HBox.setHgrow(lineRight, Priority.ALWAYS);
+        lineLeft.setMaxWidth(Double.MAX_VALUE);
+        lineRight.setMaxWidth(Double.MAX_VALUE);
+
+        Label or = new Label("or");
+        or.getStyleClass().add("login-divider-label");
+
+        HBox row = new HBox();
+        row.setAlignment(Pos.CENTER);
+        row.getChildren().addAll(lineLeft, or, lineRight);
+        return row;
+    }
 
     private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showError("Please enter both username and password");
+            showFeedback("Please enter both username and password.", false);
             return;
         }
 
         try {
-
             var userOptional = authenticationService.login(username, password);
-
             if (userOptional.isPresent()) {
-                //Get the User object
                 User user = userOptional.get();
-                showSuccess("Welcome back, " + userOptional.get().getUsername() + "!");
-
+                showFeedback("Welcome back, " + user.getUsername() + "!", true);
                 sessionService.setCurrentUser(user);
-                //Move to Dashboard page
-                navigateToDashboardPage(user);
-
-
+                dashboardController.show();
             } else {
-                showError("Invalid username or password");
+                showFeedback("Incorrect username or password.", false);
             }
         } catch (Exception e) {
-            showError("Login failed: " + e.getMessage());
-            e.printStackTrace();
+            showFeedback("Login failed: " + e.getMessage(), false);
         }
     }
 
     private void handleSignup() {
         String username = usernameField.getText().trim();
-        String email = emailField.getText();
+        String email    = emailField.getText().trim();
         String password = passwordField.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            showError("Please enter both username and password");
+            showFeedback("Please enter a username and password.", false);
             return;
         }
-
         if (password.length() < 6) {
-            showError("Password must be at least 6 characters");
+            showFeedback("Password must be at least 6 characters.", false);
             return;
         }
 
         try {
             authenticationService.register(email, password, username);
-
-            showSuccess("Registration successful! You can now login.");
+            showFeedback("Account created! You can now sign in.", true);
             passwordField.clear();
-
         } catch (IllegalArgumentException e) {
-            showError(e.getMessage());
+            showFeedback(e.getMessage(), false);
         } catch (Exception e) {
-            showError("Registration failed: " + e.getMessage());
-            e.printStackTrace();
+            showFeedback("Registration failed: " + e.getMessage(), false);
         }
     }
 
 
-    private void navigateToDashboardPage(User user) {
-        dashboardController.show();
-    }
 
-    private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    private void showFeedback(String message, boolean success) {
+        feedbackLabel.setText(message);
+        feedbackLabel.getStyleClass().setAll(success ? "login-success-label" : "login-error-label");
+        feedbackLabel.setVisible(true);
+        feedbackLabel.setManaged(true);
     }
-
-    private void showSuccess(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
 }
-
-
-
-
-
 

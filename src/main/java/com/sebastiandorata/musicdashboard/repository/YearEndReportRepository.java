@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface YearEndReportsRepository extends JpaRepository<YearEndReport, Long> {
+public interface YearEndReportRepository extends JpaRepository<YearEndReport, Long> {
 
     Optional<YearEndReport> findByUserIdAndYear(Long userId, Integer year);
 

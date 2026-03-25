@@ -23,7 +23,7 @@ public class Favourite {
 
     @ManyToOne
     @JoinColumn(name = "song_id", nullable = false)
-    private Song song;
+    private Song songId;
 
     @Column(name = "favourited_at", nullable = false)
     private LocalDateTime favouritedAt;

@@ -40,6 +40,22 @@ public class SongService {
     @Autowired
     private GenreRepository genreRepository;
 
+    private String stripFileExtension(String filename) {
+        if (filename == null || filename.isBlank()) {
+            return filename;
+        }
+
+        String[] commonAudioExtensions = {".mp3", ".m4a", ".wav", ".flac", ".ogg", ".aac", ".wma"};
+        String lowerName = filename.toLowerCase();
+
+        for (String ext : commonAudioExtensions) {
+            if (lowerName.endsWith(ext)) {
+                return filename.substring(0, filename.length() - ext.length());
+            }
+        }
+        return filename;
+    }
+
     public Song importSong(File file) throws Exception {
         // Check if song already exists by file path
         Optional<Song> existingSong = songRepository.findByFilePath(file.getAbsolutePath());
@@ -55,7 +71,7 @@ public class SongService {
         // Create Song entity
         Song song = new Song();
         song.setFilePath(file.getAbsolutePath());
-        song.setTitle(getTagValue(tag, FieldKey.TITLE, file.getName()));
+        song.setTitle(stripFileExtension(getTagValue(tag, FieldKey.TITLE, file.getName())));
         song.setDuration(audioFile.getAudioHeader().getTrackLength());
         song.setFileFormat(getFileExtension(file));
         song.setFileSizeBytes(file.length());
@@ -68,12 +84,17 @@ public class SongService {
         song.setChannels(parseChannels(audioFile.getAudioHeader().getChannels()));
         song.setCodec(audioFile.getAudioHeader().getEncodingType());
 
-        // Track number
-        String trackStr = getTagValue(tag, FieldKey.TRACK, "0");
-        try {
-            song.setTrackNum(Integer.parseInt(trackStr.split("/")[0]));
-        } catch (NumberFormatException e) {
-            song.setTrackNum(0);
+        // Track number. Stores null if missing
+        String trackStr = getTagValue(tag, FieldKey.TRACK, null);
+        if (trackStr != null && !trackStr.isBlank()) {
+            try {
+                int parsed = Integer.parseInt(trackStr.split("/")[0].trim());
+                song.setTrackNum(parsed > 0 ? parsed : null);
+            } catch (NumberFormatException e) {
+                song.setTrackNum(null);
+            }
+        } else {
+            song.setTrackNum(null);
         }
 
         // Process Album
@@ -86,18 +107,17 @@ public class SongService {
                     newAlbum.setTitle(albumTitle);
                     if (yearStr != null) {
                         try {
-                            newAlbum.setReleaseDate(LocalDate.of(Integer.parseInt(yearStr), 1, 1));
+                            newAlbum.setReleaseYear(Integer.parseInt(yearStr));
                         } catch (NumberFormatException e) {// Invalid year, skip
-
                         }
                     }
                     return albumRepository.save(newAlbum);
                 });
         song.setAlbum(album);
-            String artPath = extractAndSaveAlbumArt(audioFile, file.getAbsolutePath());
-            if (artPath != null && album.getAlbumArtPath() == null) {
-                album.setAlbumArtPath(artPath);
-                albumRepository.save(album);  // update album with art path
+        String artPath = extractAndSaveAlbumArt(audioFile, file.getAbsolutePath());
+        if (artPath != null && album.getAlbumArtPath() == null) {
+            album.setAlbumArtPath(artPath);
+            albumRepository.save(album);  // update album with art path
         }
 
         // Process Artists
@@ -105,7 +125,7 @@ public class SongService {
         List<Artist> artists = new ArrayList<>();
 
         for (String name : artistName.split("[,;&]")) {
-            String trimmedName = name.trim(); // Fixed: use new variable
+            String trimmedName = name.trim(); // Fixed: Use new variable.
             Artist artist = artistRepository.findByName(trimmedName)
                     .orElseGet(() -> {
                         Artist newArtist = new Artist();
@@ -155,10 +175,10 @@ public class SongService {
 
             // Only write to disk if the file doesn't already exist and avoids redundant writes when importing multiple songs from the same album
             File artFile = new File(artPath);
-                if (!artFile.exists()) {
-                    Files.write(Paths.get(artPath), imageData);
-                    System.out.println("Album art saved: " + artPath);
-                }
+            if (!artFile.exists()) {
+                Files.write(Paths.get(artPath), imageData);
+                System.out.println("Album art saved: " + artPath);
+            }
 
             return artPath;
 

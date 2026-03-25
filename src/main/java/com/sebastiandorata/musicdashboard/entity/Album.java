@@ -21,8 +21,8 @@ public class Album {
     @Column(name = "title", nullable = false, length = 255)
     private String title;
 
-    @Column(name = "release_date")
-    private LocalDate releaseDate;
+    @Column(name = "release_year")
+    private Integer releaseYear;
 
     @Column(name = "album_art_path", length = 500)
     private String albumArtPath;
@@ -43,7 +43,7 @@ public class Album {
         return "Album{" +
                 "albumId=" + albumId +
                 ", title='" + title + '\'' +
-                ", releaseDate=" + releaseDate +
+                ", releaseYear=" + releaseYear +
                 '}';
     }
 }

@@ -29,6 +29,12 @@ public class MainController {
     public static void registerLibrary(MyLibraryController controller) {
         myLibraryController = controller;
     }
+    public static void registerPlaylist(PlaylistController controller) {
+        playlistController = controller;
+    }
+    public static void registerAnalytics(AnalyticsController controller) {
+        analyticsController = controller;
+    }
 
     public static void navigateTo(String view) {
         switch (view) {
@@ -36,6 +42,8 @@ public class MainController {
             case "library"    -> myLibraryController.show();
             case "auth"       -> authenticationController.show();
             case "import"    -> importController.show();
+            case "analytics"    -> analyticsController.show();
+            case "playlist"    -> playlistController.show();
             default           -> System.err.println("Unknown view: " + view);
         }
     }

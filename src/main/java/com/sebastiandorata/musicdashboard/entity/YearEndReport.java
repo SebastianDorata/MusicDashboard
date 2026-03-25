@@ -9,7 +9,9 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "year_end_reports")
+@Table(name = "year_end_reports", uniqueConstraints = {//Prevent duplicates from ever being created again
+        @UniqueConstraint(columnNames = {"user_id", "year"})
+})
 public class YearEndReport {
 
     @Id
@@ -37,6 +39,10 @@ public class YearEndReport {
     @ManyToOne
     @JoinColumn(name = "top_artist_id")
     private Artist topArtist;
+
+    @ManyToOne
+    @JoinColumn(name = "top_album_id")
+    private Song topAlbum;
 
     @ManyToOne
     @JoinColumn(name = "top_genre_id")

@@ -1,6 +1,5 @@
 package com.sebastiandorata.musicdashboard.service;
 
-
 import com.sebastiandorata.musicdashboard.entity.Song;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,35 +20,43 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * Time Complexity: O(1) for all operations
+ * Space Complexity: O(n) where n = queue size
+ */
 @Service
 public class MusicPlayerService {
+
     @Autowired
     PlaybackTrackingService playbackTrackingService;
 
-
     @Getter
-    private MediaPlayer mediaPlayer;//https://openjfx.io/javadoc/25/javafx.media/javafx/scene/media/package-summary.html
+    private MediaPlayer mediaPlayer;
+
     @Getter
     private Song currentSong;
 
-    //Using the Observer pattern to notify all the controllers that use it
+
+    // Controllers listen to this to update UI when song changes
     private final ObjectProperty<Song> currentSongProperty = new SimpleObjectProperty<>();
 
-    // Observable property for current playback time
+
     private final ReadOnlyObjectWrapper<Duration> currentTime = new ReadOnlyObjectWrapper<>(Duration.ZERO);
+
+
+    private final ObjectProperty<String> playbackEventProperty = new SimpleObjectProperty<>();
+
 
     private List<Song> queue = new ArrayList<>();
     private int queuePos = -1;
 
-
     private Timeline playbackTrackingTimer;
-    private boolean hasBeenTracked = false;  // Prevent double-tracking
+    private boolean hasBeenTracked = false;
+    private boolean isNaturalSongEnd = false;
+    private boolean songEnded = false;
 
+    //TODO: When user-defined queues are implemented, add toggle for shuffle on/off
 
-      //Sets the playback queue and shuffles it. Call this before playSong() when the user starts playing from a new context.
-
-      //TODO: When user-defined queues are implemented, controllers will call setQueue(songs) with the relevant list before calling playSong(). Shuffle should become a toggle (on/off) rather than always-on.
 
     public void setQueue(List<Song> songs) {
         queue = new ArrayList<>(songs);
@@ -57,57 +64,71 @@ public class MusicPlayerService {
         queuePos = -1;
     }
 
+
     public void playSong(Song song) {
         try {
-            String filePath = song.getFilePath();// Gets the file path from song entity
+            String filePath = song.getFilePath();
             if (filePath == null || filePath.isEmpty()) {
                 System.err.println("Error: Song has no file path");
                 return;
             }
-            File audioFile = new File(song.getFilePath()); //Creates the file object
+
+            File audioFile = new File(song.getFilePath());
             if (!audioFile.exists()) {
                 System.err.println("Error: File not found: " + song.getFilePath());
                 return;
             }
 
-            // Cancel previous tracking timer if exists
+            // Cancel previous song's tracking timer to prevent orphaned timers
             if (playbackTrackingTimer != null) {
                 playbackTrackingTimer.stop();
             }
 
-            // Reset tracking flag for new song
-            hasBeenTracked = false;
 
-            //Resource Management Pattern
-            //Stop using and release the resource.
-            if (mediaPlayer != null) { //object pooling
+            hasBeenTracked = false;
+            isNaturalSongEnd = false;
+            songEnded = false;
+
+            // Resource management: MediaPlayer holds onto system audio resources, must be explicitly released
+            if (mediaPlayer != null) {
                 mediaPlayer.stop();
-                mediaPlayer.dispose(); //This prevents a memory leak
+                mediaPlayer.dispose();
             }
-            // Sync queue position to the song being played
+
+            // Sync queue position to current song
             int idx = queue.indexOf(song);
             if (idx >= 0) queuePos = idx;
 
-
-
+            // Update current song and notify all listeners
             this.currentSong = song;
-            currentSongProperty.set(song);  // Notify all controllers who are listeners
+            currentSongProperty.set(song);
 
-
-
-            //https://openjfx.io/javadoc/25/javafx.media/javafx/scene/media/Media.html#%3Cinit%3E(java.lang.String)
+            // Create MediaPlayer for this song
             Media media = new Media(audioFile.toURI().toString());
             mediaPlayer = new MediaPlayer(media);
-            // Wire up currentTime.  Platform.runLater ensures JavaFX thread safety
+
+            // Wire up current playback time listener for progress bar updates
             mediaPlayer.currentTimeProperty().addListener((obs, oldTime, newTime) ->
                     Platform.runLater(() -> currentTime.set(newTime)));
-            // Auto advance when song finishes
-            mediaPlayer.setOnEndOfMedia(this::playNext);
+
+            // Set up end-of-media handler. Stop the tracking timer BEFORE calling playNext(). Prevents the timer from firing after the song ends naturally
+            mediaPlayer.setOnEndOfMedia(() -> {
+                // Stop the timer immediately to prevent double-recording
+                if (playbackTrackingTimer != null) {
+                    playbackTrackingTimer.stop();
+                }
+                songEnded = true;
+                isNaturalSongEnd = true;
+                playNext();
+            });
+
+
             mediaPlayer.setOnError(() ->
                     System.err.println("MediaPlayer error: " + mediaPlayer.getError().getMessage()));
 
-            // Start the 20-second timer before playing
+
             startPlaybackTrackingTimer(song);
+
 
             mediaPlayer.play();
 
@@ -120,77 +141,102 @@ public class MusicPlayerService {
 
     private void startPlaybackTrackingTimer(Song song) {
         playbackTrackingTimer = new Timeline(new KeyFrame(
-                Duration.seconds(20),  // ← Wait 20 seconds
+                Duration.seconds(20),
                 event -> {
-                    if (!hasBeenTracked) {
-                        //System.out.println(" 20 seconds elapsed - tracking play for: " + song.getTitle());
+
+                    if (!hasBeenTracked && !songEnded) {
                         playbackTrackingService.recordPlay(song);
                         hasBeenTracked = true;
                     }
                 }
         ));
-        playbackTrackingTimer.setCycleCount(1);  // Only run once
+        playbackTrackingTimer.setCycleCount(1);
         playbackTrackingTimer.play();
     }
 
+
     public void playNext() {
         if (queue.isEmpty()) return;
+
+        if (!isNaturalSongEnd && currentSong != null && mediaPlayer != null) {
+            int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
+            if (secondsPlayed >= 20) {
+
+                playbackTrackingService.recordPlayWithDuration(currentSong, secondsPlayed);
+                hasBeenTracked = true;
+            }
+        }
+
+        isNaturalSongEnd = false;
+
+
         queuePos = (queuePos + 1) % queue.size();
         playSong(queue.get(queuePos));
+
+
+        playbackEventProperty.set("next");
     }
+
     public void playPrevious() {
         if (queue.isEmpty()) return;
+
+
+        if (!isNaturalSongEnd && currentSong != null && mediaPlayer != null) {
+            int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
+            if (secondsPlayed >= 20) {
+
+                playbackTrackingService.recordPlayWithDuration(currentSong, secondsPlayed);
+                hasBeenTracked = true;
+            }
+        }
+
+
+        isNaturalSongEnd = false;
+
 
         if (mediaPlayer != null && mediaPlayer.getCurrentTime().toSeconds() > 3.0) {
             mediaPlayer.seek(Duration.ZERO);
             return;
         }
 
+
         queuePos = (queuePos - 1 + queue.size()) % queue.size();
         playSong(queue.get(queuePos));
+
+
+        playbackEventProperty.set("previous");
     }
+
 
     public void pause() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();
 
-            // Pause the tracking timer when user pauses playback
+
             if (playbackTrackingTimer != null) {
                 playbackTrackingTimer.pause();
             }
         }
     }
 
+
     public void play() {
         if (mediaPlayer != null) {
             mediaPlayer.play();
 
-            // Resume the tracking timer when user resumes playback
+
             if (playbackTrackingTimer != null) {
                 playbackTrackingTimer.play();
             }
         }
     }
 
-    public void stop() {
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-
-            // Cancel tracking if stopped before 20 seconds
-            if (playbackTrackingTimer != null) {
-                playbackTrackingTimer.stop();
-            }
-        }
-    }
 
     public void seek(double seconds) {
         if (mediaPlayer != null) {
-            // Use millis-based duration for finer timescale on macOS AVFoundation
-            // Avoids CMTimeMakeWithSeconds timescale=1 rounding warning
             mediaPlayer.seek(Duration.millis(seconds * 1000.0));
         }
     }
-
 
 
     public ObjectProperty<Song> currentSongProperty() {
@@ -201,12 +247,8 @@ public class MusicPlayerService {
         return currentTime.getReadOnlyProperty();
     }
 
-
-    public String formatTime(double seconds) {
-        int totalSeconds = (int) seconds;
-        int mins = totalSeconds / 60;
-        int secs = totalSeconds % 60;
-        return String.format("%d:%02d", mins, secs);
+    public ObjectProperty<String> playbackEventProperty() {
+        return playbackEventProperty;
     }
 
 }

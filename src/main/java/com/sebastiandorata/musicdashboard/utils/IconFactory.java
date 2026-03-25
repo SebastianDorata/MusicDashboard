@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.Utils;
+package com.sebastiandorata.musicdashboard.utils;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

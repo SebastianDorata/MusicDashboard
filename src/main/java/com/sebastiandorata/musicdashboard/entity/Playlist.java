@@ -34,7 +34,7 @@ public class Playlist {
     @Column(name = "is_public")
     private Boolean isPublic = false;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "playlist_songs",
             joinColumns = @JoinColumn(name = "playlist_id"),

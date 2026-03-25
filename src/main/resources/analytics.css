@@ -1,0 +1,388 @@
+.analytics-stat-cards {
+    -fx-spacing: 15;
+    -fx-padding: 0;
+}
+
+.analytics-chart-panel {
+    -fx-padding: 15;
+    -fx-spacing: 15;
+}
+
+.stat-card {
+    -fx-background-color: #1a3a52;
+    -fx-border-radius: 6;
+    -fx-padding: 12;
+    -fx-min-width: 180;
+    -fx-pref-width: 180;
+    -fx-min-height: 120;
+    -fx-pref-height: 120;
+    -fx-spacing: 6;
+}
+
+.stat-card-title {
+    -fx-font-size: 12;
+    -fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 0.85;
+}
+
+.stat-card-value {
+    -fx-font-size: 28;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.stat-card-label {
+    -fx-font-size: 10;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: normal;
+}
+
+.stat-card-secondary-value {
+    -fx-font-size: 16;
+    -fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+}
+
+.stat-card-secondary-label {
+    -fx-font-size: 9;
+    -fx-text-fill: #999999;
+}
+
+.dashboard-stat-card {
+    -fx-background-color: #1a3a52;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-min-width: 160;
+    -fx-pref-width: 160;
+    -fx-min-height: 110;
+    -fx-pref-height: 110;
+}
+
+.dashboard-stat-title {
+    -fx-font-size: 11;
+    -fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 0.80;
+}
+
+.dashboard-stat-value {
+    -fx-font-size: 32;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.dashboard-stat-unit {
+    -fx-font-size: 12;
+    -fx-text-fill: #b3b3b3;
+    -fx-font-weight: normal;
+}
+
+.dashboard-stat-prefix {
+    -fx-font-size: 10;
+    -fx-text-fill: #999999;
+    -fx-font-weight: normal;
+}
+
+.dashboard-stat-name {
+    -fx-font-size: 13;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: normal;
+    -fx-wrap-text: true;
+}
+
+.all-time-stats-box {
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-min-width: 200;
+    -fx-pref-width: 200;
+}
+
+.all-time-title {
+    -fx-font-size: 14;
+    -fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+}
+
+.all-time-hours {
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.all-time-unit {
+    -fx-font-size: 12;
+    -fx-text-fill: #b3b3b3;
+}
+
+.year-comparison-header {
+    -fx-alignment: center;
+    -fx-spacing: 5;
+}
+
+.year-current {
+    -fx-text-fill: #00d4ff;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.year-previous {
+    -fx-text-fill: #ff9500;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.year-previous-unavailable {
+    -fx-text-fill: #666666;
+    -fx-font-size: 12;
+    -fx-font-weight: normal;
+}
+
+.year-highest {
+    -fx-text-fill: #c41e3a;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.year-highest-unavailable {
+    -fx-text-fill: #666666;
+    -fx-font-size: 12;
+    -fx-font-weight: normal;
+}
+
+.year-separator {
+    -fx-text-fill: #666666;
+    -fx-font-size: 13;
+}
+
+
+.comparison-stat-box {
+    -fx-spacing: 8;
+    -fx-padding: 8;
+}
+
+.comparison-row {
+    -fx-spacing: 6;
+    -fx-alignment: center_left;
+}
+
+.comparison-arrow {
+    -fx-font-size: 14;
+}
+
+.comparison-arrow-positive {
+    -fx-text-fill: #1db954;
+}
+
+.comparison-arrow-negative {
+    -fx-text-fill: #ff4444;
+}
+
+.comparison-value {
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+}
+
+.comparison-value-positive {
+    -fx-text-fill: #1db954;
+}
+
+.comparison-value-negative {
+    -fx-text-fill: #ff4444;
+}
+
+.comparison-label {
+    -fx-font-size: 10;
+    -fx-text-fill: #999999;
+    -fx-spacing: 2;
+}
+
+
+.chart-area {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.chart-placeholder {
+    -fx-font-size: 14;
+    -fx-text-fill: #666666;
+}
+
+
+.chart-line-current {
+    -fx-stroke: #00d4ff;
+    -fx-stroke-width: 3;
+}
+
+.chart-line-previous {
+    -fx-stroke: #ff9500;
+    -fx-stroke-width: 3;
+}
+
+.chart-line-highest {
+    -fx-stroke: #c41e3a;
+    -fx-stroke-width: 3;
+}
+
+.monthly-bar-current {
+    -fx-background-color: #00d4ff;
+}
+
+.monthly-bar-previous {
+    -fx-background-color: #ff9500;
+}
+
+.monthly-bar-highest {
+    -fx-background-color: #c41e3a;
+}
+
+
+.line-graph-stats-box {
+    -fx-background-color: #1a3a52;
+    -fx-padding: 20;
+    -fx-spacing: 12;
+    -fx-min-width: 180;
+    -fx-pref-width: 180;
+}
+
+.line-graph-stats-title {
+    -fx-font-size: 14;
+    -fx-font-weight: normal;
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 0.85;
+}
+
+.line-graph-stats-value {
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.line-graph-stats-unit {
+    -fx-font-size: 12;
+    -fx-text-fill: #b3b3b3;
+}
+
+.line-graph-delta-row {
+    -fx-spacing: 4;
+    -fx-alignment: center_left;
+}
+
+.line-graph-delta-symbol {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.line-graph-delta-positive {
+    -fx-text-fill: #1db954;
+}
+
+.line-graph-delta-negative {
+    -fx-text-fill: #ff4444;
+}
+
+.line-graph-delta-value {
+    -fx-font-size: 11;
+    -fx-text-fill: #ffffff;
+}
+
+.line-graph-delta-label {
+    -fx-font-size: 10;
+    -fx-text-fill: #b3b3b3;
+}
+
+
+.chart {
+    -fx-padding: 15;
+}
+
+.chart-title {
+    -fx-font-size: 14;
+    -fx-text-fill: #ffffff;
+}
+
+.chart-legend {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 11;
+}
+
+.axis {
+    -fx-tick-label-fill: #b3b3b3;
+    -fx-text-fill: #b3b3b3;
+}
+
+.axis-label {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 11;
+}
+
+.chart-plot-background {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: rgba(255, 255, 255, 0.05);
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgba(255, 255, 255, 0.05);
+}
+
+.year-header-current {
+    -fx-text-fill: #00d4ff;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.year-header-previous {
+    -fx-text-fill: #ff9500;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.year-header-highest {
+    -fx-text-fill: #c41e3a;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+}
+
+.year-header-separator {
+    -fx-text-fill: #666666;
+}
+
+.analytics-subtitle {
+    -fx-font-size: 12;
+    -fx-text-fill: #ffffff;
+}
+
+
+.analytics-dark-bg {
+    -fx-background-color: #0a0e27;
+}
+
+.analytics-card-bg {
+    -fx-background-color: #1e1e1e;
+}
+
+.analytics-list-panel {
+    -fx-padding: 15;
+    -fx-spacing: 8;
+}
+
+.analytics-list-item {
+    -fx-padding: 8 10;
+    -fx-background-color: #1e1e1e;
+    -fx-border-radius: 4;
+    -fx-spacing: 10;
+}
+
+.analytics-list-name {
+    -fx-font-size: 12;
+    -fx-text-fill: #ffffff;
+}
+
+.analytics-list-value {
+    -fx-font-size: 12;
+    -fx-text-fill: #1db954;
+    -fx-font-weight: bold;
+}

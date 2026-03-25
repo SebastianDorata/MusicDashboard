@@ -23,10 +23,10 @@ public class Artist {
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
 
-    @ManyToMany(mappedBy = "artists")
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
     private List<Song> songs;
 
-    @ManyToMany(mappedBy = "artists")
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
     private List<Album> albums;
 
     @Override

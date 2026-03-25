@@ -10,7 +10,7 @@ import java.util.List;
 public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory, Long> {
     // Returns all history for a user, most recent first
     // No deduplication. Same song repeated = multiple rows
-    List<PlaybackHistory> findByUserIdOrderByPlayedAtDesc(Long userId);
 
-    List<PlaybackHistory> findTop20ByUserIdOrderByPlayedAtDesc(Long userId);
+
+    List<PlaybackHistory> findByUserIdOrderByPlayedAtDesc(Long userId);
 }

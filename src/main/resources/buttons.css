@@ -1,8 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   Buttons for the music player
-═══════════════════════════════════════════════════════════ */
-
-.player-btn-primary { /* Play/Pause — filled green */
+.player-btn-primary {
     -fx-background-color: transparent;
     -fx-border-color: rgb(76, 175, 80);
     -fx-text-fill: rgb(76, 175, 80);
@@ -23,7 +19,6 @@
     -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.7), 16, 0.3, 0, 3);
 }
 
-/********************************************************************/
 
 .player-btn-secondary {
     -fx-background-color: transparent;
@@ -39,9 +34,9 @@
     -fx-text-fill: white;
 }
 
-/********************************************************************/
 
-.player-btn { /* Prev / Next — ghost style */
+
+.player-btn {
     -fx-background-color: transparent;
     -fx-border-color: rgb(76, 175, 80);
     -fx-text-fill: rgb(76, 175, 80);
@@ -63,12 +58,9 @@
 .player-btn-primary .image-view {
     -fx-effect: dropshadow(gaussian, rgba(10, 22, 40, 0.3), 2, 0, 0, 1);
 }
-.player-btn .image-view { /* Makes icons white if they're black */
+.player-btn .image-view {
     -fx-blend-mode: screen;
 }
-/* ═══════════════════════════════════════════════════════════
-   General Buttons
-   ═══════════════════════════════════════════════════════════ */
 .tab-BtnA{
     -fx-background-color: #1DB954;
     -fx-text-fill: white;

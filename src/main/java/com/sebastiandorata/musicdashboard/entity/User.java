@@ -33,7 +33,7 @@ public class User {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
-    // Constructor
+
     public User() {
         this.createdAt = LocalDateTime.now();
     }
