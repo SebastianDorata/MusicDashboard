@@ -39,14 +39,88 @@ public class CardFactory extends UIComponent {
     private Label weeklyAlbumLabel;
 
 
+    public HBox createStatCards() {
+        HBox cards = new HBox(15);
+        cards.getStyleClass().add("stat-cards-row");
 
+        VBox card1 = createCombinedPlaybackAvgCard();
+
+        todaySongLabel   = new Label("—");
+        todayAlbumLabel  = new Label("—");
+        weeklySongLabel  = new Label("—");
+        weeklyAlbumLabel = new Label("—");
+
+        VBox card2 = createNamedStatCard("Top Song Today", todaySongLabel);
+        VBox card3 = createNamedStatCard("Top Album Today", todayAlbumLabel);
+        VBox card4 = createNamedStatCard("Top Song This Week", weeklySongLabel);
+        VBox card5 = createNamedStatCard("Top Album This Week", weeklyAlbumLabel);
+
+
+        for (VBox card : new VBox[]{card1, card2, card3, card4, card5}) {
+            HBox.setHgrow(card, Priority.ALWAYS);
+            card.setMaxWidth(Double.MAX_VALUE);
+        }
+
+        cards.getChildren().addAll(card1, card2, card3, card4, card5);
+
+        refreshStatCards();
+        musicPlayerService.currentSongProperty()
+                .addListener((obs, oldSong, newSong) -> refreshStatCards());
+
+        return cards;
+    }
+
+
+    private VBox createCombinedPlaybackAvgCard() {
+        VBox card = new VBox(12);
+        card.getStyleClass().add("dashboard-stat-card");
+
+        Label playbackTitle = new Label("Playback Duration Today");
+        playbackTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
+
+        playbackValueLabel = new Label("0");
+        playbackValueLabel.getStyleClass().add("dashboard-stat-value");
+
+        playbackUnitLabel = new Label("Minutes");
+        playbackUnitLabel.getStyleClass().add("dashboard-stat-unit");
+
+        VBox playbackSection = new VBox(4);
+        playbackSection.getChildren().addAll(playbackTitle, playbackValueLabel, playbackUnitLabel);
+
+
+        Region separator = new Region();
+        separator.setPrefHeight(10);
+
+        Label avgTitle = new Label("Avg Listening Period");
+        avgTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
+
+        HBox avgValueRow = new HBox(6);
+        avgValueRow.setAlignment(Pos.CENTER_LEFT);
+
+        Label avgPrefix = new Label("Avg");
+        avgPrefix.getStyleClass().add("dashboard-stat-prefix");
+
+        avgSessionValueLabel = new Label("0");
+        avgSessionValueLabel.getStyleClass().add("dashboard-stat-value");
+
+        avgSessionUnitLabel = new Label("min/session");
+        avgSessionUnitLabel.getStyleClass().add("dashboard-stat-unit");
+
+        avgValueRow.getChildren().addAll(avgPrefix, avgSessionValueLabel);
+
+        VBox avgSection = new VBox(4);
+        avgSection.getChildren().addAll(avgTitle, avgValueRow, avgSessionUnitLabel);
+
+        card.getChildren().addAll(playbackSection, separator, avgSection);
+        return card;
+    }
     public static VBox createSongCard(Song song, MusicPlayerService musicPlayerService) {
         VBox card = new VBox(10);
         card.setPrefWidth(160);
         card.setPrefHeight(220);
         card.setPadding(new Insets(15));
         card.setAlignment(Pos.TOP_CENTER);
-        card.getStyleClass().add("dashboard-card");
+        card.getStyleClass().add("dashboard-stat-card");
         card.setCursor(javafx.scene.Cursor.HAND);
 
 
@@ -87,8 +161,6 @@ public class CardFactory extends UIComponent {
 
         return card;
     }
-
-
     public static VBox createAlbumCard(Album album, MusicPlayerService musicPlayerService) {
         VBox card = new VBox(10);
         card.setPrefWidth(160);
@@ -136,43 +208,10 @@ public class CardFactory extends UIComponent {
     }
 
 
-    public static VBox createArtistCard(Artist artist, MusicPlayerService musicPlayerService) {
-        VBox card = new VBox(10);
-        card.setPrefWidth(160);
-        card.setPrefHeight(220);
-        card.setPadding(new Insets(15));
-        card.setAlignment(Pos.TOP_CENTER);
-        card.getStyleClass().add("dashboard-card");
-        card.setCursor(javafx.scene.Cursor.HAND);
 
 
-        Label artistInitial = new Label(
-                artist.getName().substring(0, 1).toUpperCase()
-        );
-        artistInitial.getStyleClass().add("wh-grn-style");
 
 
-        Label name = new Label(artist.getName());
-        name.getStyleClass().addAll("txt-white-sm-bld");
-        name.setWrapText(true);
-        name.setMaxWidth(130);
-
-
-        int songCount = artist.getSongs() != null ? artist.getSongs().size() : 0;
-        Label songsLabel = new Label(songCount + " songs");
-        songsLabel.getStyleClass().addAll("txt-grey-sm");
-
-        card.getChildren().addAll(artistInitial, name, songsLabel);
-
-
-        card.setOnMouseClicked(e -> {
-            if (artist.getSongs() != null && !artist.getSongs().isEmpty()) {
-                musicPlayerService.playSong(artist.getSongs().get(0));
-            }
-        });
-
-        return card;
-    }
 
 
     public static VBox createListPanel(String panelTitle, VBox listContent) {
@@ -191,76 +230,6 @@ public class CardFactory extends UIComponent {
         panel.getChildren().addAll(title, scrollPane);
         return panel;
     }
-
-    public HBox createStatCards() {
-        HBox cards = new HBox(15);
-        cards.getStyleClass().add("stat-cards-row");
-        cards.getChildren().add(createCombinedPlaybackAvgCard());
-        todaySongLabel   = new Label("—");
-        todayAlbumLabel  = new Label("—");
-        weeklySongLabel  = new Label("—");
-        weeklyAlbumLabel = new Label("—");
-
-        cards.getChildren().addAll(
-                createNamedStatCard("Top Song Today",      todaySongLabel),
-                createNamedStatCard("Top Album Today",     todayAlbumLabel),
-                createNamedStatCard("Top Song This Week",  weeklySongLabel),
-                createNamedStatCard("Top Album This Week", weeklyAlbumLabel)
-        );
-
-
-        refreshStatCards();
-        musicPlayerService.currentSongProperty().addListener((obs, oldSong, newSong) -> refreshStatCards());
-
-        return cards;
-    }
-
-
-
-    private VBox createCombinedPlaybackAvgCard() {
-        VBox card = new VBox(12);
-        card.getStyleClass().add("dashboard-stat-card");
-
-        Label playbackTitle = new Label("Playback Duration Today");
-        playbackTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
-
-        playbackValueLabel = new Label("0");
-        playbackValueLabel.getStyleClass().add("dashboard-stat-value");
-
-        playbackUnitLabel = new Label("Minutes");
-        playbackUnitLabel.getStyleClass().add("dashboard-stat-unit");
-
-        VBox playbackSection = new VBox(4);
-        playbackSection.getChildren().addAll(playbackTitle, playbackValueLabel, playbackUnitLabel);
-
-
-        Region separator = new Region();
-        separator.setPrefHeight(10);
-
-        Label avgTitle = new Label("Avg Listening Period");
-        avgTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
-
-        HBox avgValueRow = new HBox(6);
-        avgValueRow.setAlignment(Pos.CENTER_LEFT);
-
-        Label avgPrefix = new Label("Avg");
-        avgPrefix.getStyleClass().add("dashboard-stat-prefix");
-
-        avgSessionValueLabel = new Label("0");
-        avgSessionValueLabel.getStyleClass().add("dashboard-stat-value");
-
-        avgSessionUnitLabel = new Label("min/session");
-        avgSessionUnitLabel.getStyleClass().add("dashboard-stat-unit");
-
-        avgValueRow.getChildren().addAll(avgPrefix, avgSessionValueLabel);
-
-        VBox avgSection = new VBox(4);
-        avgSection.getChildren().addAll(avgTitle, avgValueRow, avgSessionUnitLabel);
-
-        card.getChildren().addAll(playbackSection, separator, avgSection);
-        return card;
-    }
-
     private VBox createNamedStatCard(String titleText, Label valueLabel) {
         VBox card = new VBox(8);
         card.getStyleClass().add("dashboard-stat-card");

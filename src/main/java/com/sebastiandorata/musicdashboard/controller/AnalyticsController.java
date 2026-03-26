@@ -112,10 +112,10 @@ public class AnalyticsController {
         topArtistsList = new VBox(8);
 
         VBox topSongsContainer = CardFactory.createListPanel("Top 10 Songs", topSongsList);
-        topSongsContainer.setPrefHeight(AppUtils.APP_HEIGHT * 0.4);
+        topSongsContainer.setPrefHeight(AppUtils.APP_HEIGHT * 0.5);
 
         VBox topArtistsContainer = CardFactory.createListPanel("Top 10 Artists", topArtistsList);
-        topArtistsContainer.setPrefHeight(AppUtils.APP_HEIGHT * 0.4);
+        topArtistsContainer.setPrefHeight(AppUtils.APP_HEIGHT * 0.5);
 
         container.getChildren().addAll(topSongsContainer, topArtistsContainer);
         return container;

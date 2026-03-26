@@ -1,82 +1,38 @@
 package com.sebastiandorata.musicdashboard.controller;
 
-import com.sebastiandorata.musicdashboard.controllerUtils.PlaybackPanelController;
-import com.sebastiandorata.musicdashboard.controllerUtils.RecentlyPlayedController;
-import com.sebastiandorata.musicdashboard.controllerUtils.StatsChartController;
-import com.sebastiandorata.musicdashboard.controllerUtils.TopArtistsController;
-import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
-import com.sebastiandorata.musicdashboard.service.PlaybackTrackingService;
-import com.sebastiandorata.musicdashboard.service.SongService;
-import com.sebastiandorata.musicdashboard.service.UserSessionService;
+import com.sebastiandorata.musicdashboard.controllerUtils.*;
+import com.sebastiandorata.musicdashboard.service.*;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import com.sebastiandorata.musicdashboard.utils.CardFactory;
 import jakarta.annotation.PostConstruct;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-/**
- * Main Dashboard Orchestrator
- *
- * Responsibility: Assemble UI from component controllers
- * Does NOT: Implement individual features (those are in component controllers)
- *
- * Benefits:
- * - Clean separation of concerns
- * - Each component is independently testable
- * - Easy to add/remove/modify features
- *
- * Dashboard Layout:
- * - Left: Navigation menu
- * - Center: Now Playing bar + Stat cards (5 cards) + Graph section
- * - Right: Top Artists + Recently Played
- */
 @Component
 public class DashboardController {
 
-    // Injected component controllers
-    @Autowired
-    private PlaybackPanelController playbackPanelController;
+    @Autowired private PlaybackPanelController playbackPanelController;
+    @Autowired private RecentlyPlayedController recentlyPlayedController;
+    @Autowired private TopArtistsController topArtistsController;
+    @Autowired private DashboardGraphController dashboardGraphController;
+    @Autowired private CardFactory cardFactory;
 
-    @Autowired
-    private RecentlyPlayedController recentlyPlayedController;
+    @Lazy @Autowired private MusicPlayerService musicPlayerService;
 
-    @Autowired
-    private TopArtistsController topArtistsController;
-
-    @Autowired
-    private StatsChartController statsChartController;
-
-    @Autowired
-    private CardFactory cardFactory;
-
-    @Lazy
-    @Autowired
-    private MusicPlayerService musicPlayerService;
-
-    @Setter
-    @Getter
-    @Lazy
-    @Autowired
+    @Setter @Getter @Lazy @Autowired
     private SongService songService;
 
-    @Setter
-    @Getter
-    @Lazy
-    @Autowired
+    @Setter @Getter @Lazy @Autowired
     private PlaybackTrackingService playbackTrackingService;
 
-    @Autowired
-    private UserSessionService userSessionService;
+    @Autowired private UserSessionService userSessionService;
 
     @PostConstruct
     public void register() {
@@ -97,25 +53,39 @@ public class DashboardController {
         MainController.switchViews(scene);
     }
 
+
     private Scene createScene() {
         BorderPane root = new BorderPane();
-            root.setLeft(createLeftMenu());
-            root.setCenter(createCenterMenu());
-            root.setRight(createRightMenu());
+
+        VBox left = createLeftMenu();
+        VBox center = createCenterMenu();
+        VBox right = createRightMenu();
+
+        center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        root.setLeft(left);
+        root.setCenter(center);
+        root.setRight(right);
+
         return new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
 
+
     private VBox createLeftMenu() {
         VBox left = new VBox(20);
-            left.setPadding(new Insets(20));
-            left.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-            left.getStyleClass().add("green-background");
+        left.setPadding(new Insets(20));
+        left.getStyleClass().add("green-background");
 
-        javafx.scene.control.Button libraryBtn = createLeftButton("My Library");
-        javafx.scene.control.Button playlistBtn = createLeftButton("My Playlist");
-        javafx.scene.control.Button importBtn = createLeftButton("Import Files");
-        javafx.scene.control.Button reportsBtn = createLeftButton("My Reports");
+
+        left.setMinWidth(220);
+        left.setPrefWidth(250);
+        left.setMaxWidth(300);
+
+        Button libraryBtn = createLeftButton("My Library");
+        Button playlistBtn = createLeftButton("My Playlist");
+        Button importBtn = createLeftButton("Import Files");
+        Button reportsBtn = createLeftButton("My Reports");
 
         libraryBtn.setOnAction(e -> MainController.navigateTo("library"));
         playlistBtn.setOnAction(e -> MainController.navigateTo("playlist"));
@@ -123,49 +93,58 @@ public class DashboardController {
         reportsBtn.setOnAction(e -> MainController.navigateTo("analytics"));
 
         left.getChildren().addAll(
-                wrap(libraryBtn), wrap(playlistBtn), wrap(importBtn), wrap(reportsBtn)
+                wrap(libraryBtn),
+                wrap(playlistBtn),
+                wrap(importBtn),
+                wrap(reportsBtn)
         );
+
         return left;
     }
 
     private HBox wrap(Button btn) {
-        return new HBox(btn);
+        HBox box = new HBox(btn);
+        box.setMaxWidth(Double.MAX_VALUE);
+        return box;
     }
 
     private Button createLeftButton(String text) {
         Button btn = new Button(text);
         btn.getStyleClass().add("Left-Btn");
+        btn.setMaxWidth(Double.MAX_VALUE);
         return btn;
     }
 
-
     private VBox createCenterMenu() {
         VBox center = new VBox(20);
-            center.setPadding(new Insets(20));
-            center.setPrefWidth(AppUtils.APP_WIDTH * 0.5);
+        center.setPadding(new Insets(20));
+
+        center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+        HBox playbackPanel = playbackPanelController.createPanel();
+        HBox cards = cardFactory.createStatCards();
+        HBox graphPanel = dashboardGraphController.createPanel();
 
 
-            HBox playbackPanel = playbackPanelController.createPanel();
-            HBox cards = cardFactory.createStatCards();
-            VBox graphSection = statsChartController.createGraphSection();
+        playbackPanel.setMaxWidth(Double.MAX_VALUE);
+        cards.setMaxWidth(Double.MAX_VALUE);
+        graphPanel.setMaxWidth(Double.MAX_VALUE);
 
-        center.getChildren().addAll(playbackPanel, cards, graphSection);
+
+        VBox.setVgrow(graphPanel, Priority.ALWAYS);
+        graphPanel.setMaxHeight(Double.MAX_VALUE);
+
+        center.getChildren().addAll(playbackPanel, cards, graphPanel);
 
         return center;
     }
 
-
     private VBox createRightMenu() {
         VBox right = new VBox(25);
-            right.setPadding(new Insets(20));
-            right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-
-
+        right.setPadding(new Insets(20));
+        right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
         VBox topArtistsPanel = topArtistsController.createPanel();
         VBox recentlyPlayedPanel = recentlyPlayedController.createPanel();
-
         right.getChildren().addAll(topArtistsPanel, recentlyPlayedPanel);
-        return right;
-    }
-
+        return right; }
 }

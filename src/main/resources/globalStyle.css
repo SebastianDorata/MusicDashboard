@@ -101,8 +101,7 @@
     -fx-background-color: #1e1e1e;
 }
 
-/* Dark (#121212) page background — replaces setStyle calls in
-   AnalyticsController, MyLibraryController, and PlaylistController */
+
 .dark-page-bg {
     -fx-background-color: #121212;
 }
@@ -128,9 +127,7 @@
 }
 
 
-/* ── TOP ARTISTS ROW ── */
-/* Single definition — removed the earlier duplicate that used 6px padding
-   and rgba(255,255,255,0.1) border. This version is the canonical one. */
+
 .artist-row {
     -fx-padding: 8 0;
     -fx-border-color: rgba(255,255,255,0.05);

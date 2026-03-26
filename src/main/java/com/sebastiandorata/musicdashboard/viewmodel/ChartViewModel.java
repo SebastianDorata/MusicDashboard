@@ -52,6 +52,10 @@ public class ChartViewModel {
     }
 
 
+    /**
+     * Time Complexity: O(y + n) where y = available years, n = total playback records
+     * Space Complexity: O(m * s) where m = 12 months, s ≤ 3 series = O(1)
+     */
     public void loadChartData(int selectedYear, Consumer<ChartData> onSuccess) {
         dataLoadingService.loadAsync(
                 () -> {
@@ -59,23 +63,36 @@ public class ChartViewModel {
                     List<Integer> allYears = yearEndReportService.getAvailableYears();
                     Integer highestYear = findHighestListeningYear(allYears);
 
+                    boolean hasPreviousYear = allYears.contains(previousYear);
+                    boolean isPreviousYearHighest = hasPreviousYear && previousYear.equals(highestYear);
+
                     Map<YearMonth, Integer> currentYearData =
                             yearEndReportService.getMonthlyListeningTime(selectedYear);
 
                     Map<YearMonth, Integer> previousYearData = new HashMap<>();
-                    if (allYears.contains(previousYear)) {
+                    if (hasPreviousYear) {
                         previousYearData.putAll(
                                 yearEndReportService.getMonthlyListeningTime(previousYear)
+                        );
+                    }
+
+                    Map<YearMonth, Integer> highestYearData = new HashMap<>();
+                    if (!isPreviousYearHighest && highestYear != null && !highestYear.equals(selectedYear)) {
+                        highestYearData.putAll(
+                                yearEndReportService.getMonthlyListeningTime(highestYear)
                         );
                     }
 
                     return new ChartData(
                             currentYearData,
                             previousYearData,
+                            highestYearData,
                             selectedYear,
                             previousYear,
                             highestYear,
-                            allYears
+                            allYears,
+                            hasPreviousYear,
+                            isPreviousYearHighest
                     );
                 },
                 onSuccess
@@ -197,6 +214,7 @@ public class ChartViewModel {
 
         return highestYear;
     }
+
     public List<Integer> getAllAvailableYears() {
         return yearEndReportService.getAvailableYears();
     }
