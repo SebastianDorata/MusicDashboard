@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 
 public class ArtistViewBuilder {
 
-    private final LibraryContext      ctx;
+    private final LibraryHandler ctx;
     private final SongViewBuilder songListBuilder;
     private final Consumer<Album>     onAlbumSelected;
     private final LibraryService      libraryService;
 
-    public ArtistViewBuilder(LibraryContext ctx,
+    public ArtistViewBuilder(LibraryHandler ctx,
                              Consumer<Album> onAlbumSelected,
                              LibraryService libraryService) {
         this.ctx             = ctx;

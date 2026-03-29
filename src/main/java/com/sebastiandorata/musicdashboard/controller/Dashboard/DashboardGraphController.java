@@ -1,9 +1,6 @@
-package com.sebastiandorata.musicdashboard.controllerUtils;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
-import com.sebastiandorata.musicdashboard.utils.AppUtils;
-import com.sebastiandorata.musicdashboard.utils.DashboardLineChartBuilder;
-import com.sebastiandorata.musicdashboard.utils.SmoothLineChart;
-import com.sebastiandorata.musicdashboard.viewmodel.ChartViewModel;
+import com.sebastiandorata.musicdashboard.controllerUtils.UIComponent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -154,7 +151,7 @@ public class DashboardGraphController extends UIComponent {
         return section;
     }
 
-    // ── Data Loading ───────────────────────────────────────────────
+
 
     private void loadInfoData() {
         int currentYear = LocalDate.now().getYear();

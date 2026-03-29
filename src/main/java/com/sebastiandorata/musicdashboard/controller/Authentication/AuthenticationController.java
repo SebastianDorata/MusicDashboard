@@ -1,5 +1,7 @@
-package com.sebastiandorata.musicdashboard.controller;
+package com.sebastiandorata.musicdashboard.controller.Authentication;
 
+import com.sebastiandorata.musicdashboard.controller.Dashboard.DashboardController;
+import com.sebastiandorata.musicdashboard.controller.MainController;
 import com.sebastiandorata.musicdashboard.entity.User;
 import com.sebastiandorata.musicdashboard.service.AuthenticationService;
 import com.sebastiandorata.musicdashboard.service.UserSessionService;
@@ -22,7 +24,7 @@ public class AuthenticationController {
     @Lazy  @Autowired private AuthenticationService authenticationService;
     @Autowired         private UserSessionService    sessionService;
     @Getter @Setter
-    @Lazy  @Autowired private DashboardController   dashboardController;
+    @Lazy  @Autowired private DashboardController dashboardController;
 
 
     private final TextField       usernameField  = new TextField();

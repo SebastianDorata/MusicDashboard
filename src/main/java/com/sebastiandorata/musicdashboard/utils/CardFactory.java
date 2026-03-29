@@ -2,11 +2,10 @@ package com.sebastiandorata.musicdashboard.utils;
 
 import com.sebastiandorata.musicdashboard.controllerUtils.UIComponent;
 import com.sebastiandorata.musicdashboard.entity.Album;
-import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 
-import com.sebastiandorata.musicdashboard.viewmodel.StatCardsViewModel;
+import com.sebastiandorata.musicdashboard.controller.Analytics.viewmodel.StatCardsViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

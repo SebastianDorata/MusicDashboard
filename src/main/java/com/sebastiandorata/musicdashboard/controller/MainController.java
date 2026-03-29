@@ -1,5 +1,10 @@
 package com.sebastiandorata.musicdashboard.controller;
 
+import com.sebastiandorata.musicdashboard.controller.Analytics.AnalyticsController;
+import com.sebastiandorata.musicdashboard.controller.Authentication.AuthenticationController;
+import com.sebastiandorata.musicdashboard.controller.Dashboard.DashboardController;
+import com.sebastiandorata.musicdashboard.controller.UserLibrary.MyLibraryController;
+import com.sebastiandorata.musicdashboard.controller.UserLibrary.PlaylistController;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;

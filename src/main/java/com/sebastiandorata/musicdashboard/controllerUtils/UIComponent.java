@@ -22,12 +22,6 @@ public abstract class UIComponent {
         dataLoadingService.loadAsync(loader, onSuccess);
     }
 
-    protected <T> void loadDataAsync(Supplier<T> loader, Consumer<T> onSuccess, Consumer<Exception> onError) {
-        dataLoadingService.loadAsync(loader, onSuccess, onError);
-    }
-
-
-
     protected Long getCurrentUserId() {
         return userSessionService.getCurrentUserId();
     }
@@ -37,11 +31,4 @@ public abstract class UIComponent {
         AppUtils.logError(componentName, message, exception);
     }
 
-    protected void logError(String componentName, String message) {
-        AppUtils.logError(componentName, message);
-    }
-
-    protected void logInfo(String componentName, String message) {
-        AppUtils.logInfo(componentName, message);
-    }
 }

@@ -1,7 +1,9 @@
-package com.sebastiandorata.musicdashboard.controller;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
-import com.sebastiandorata.musicdashboard.controllerUtils.*;
+import com.sebastiandorata.musicdashboard.controller.MainController;
+import com.sebastiandorata.musicdashboard.controller.UserLibrary.MyLibraryController;
 import com.sebastiandorata.musicdashboard.service.*;
+import com.sebastiandorata.musicdashboard.controllerUtils.ArtistDiscographyNavigation;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import com.sebastiandorata.musicdashboard.utils.CardFactory;
 import jakarta.annotation.PostConstruct;
@@ -23,8 +25,10 @@ public class DashboardController {
     @Autowired private TopArtistsController topArtistsController;
     @Autowired private DashboardGraphController dashboardGraphController;
     @Autowired private CardFactory cardFactory;
+    @Autowired private ArtistDiscographyNavigation artistDiscographyNavigation;
 
-    @Lazy @Autowired private MusicPlayerService musicPlayerService;
+    @Lazy @Autowired
+    private MusicPlayerService musicPlayerService;
 
     @Setter @Getter @Lazy @Autowired
     private SongService songService;
@@ -32,7 +36,11 @@ public class DashboardController {
     @Setter @Getter @Lazy @Autowired
     private PlaybackTrackingService playbackTrackingService;
 
-    @Autowired private UserSessionService userSessionService;
+    @Autowired
+    private UserSessionService userSessionService;
+
+    // Used to navigate into an artist's discography from the Top 5 Artists panel and Now Playing bar
+    @Lazy @Autowired private MyLibraryController myLibraryController;
 
     @PostConstruct
     public void register() {
@@ -77,7 +85,6 @@ public class DashboardController {
         left.setPadding(new Insets(20));
         left.getStyleClass().add("green-background");
 
-
         left.setMinWidth(220);
         left.setPrefWidth(250);
         left.setMaxWidth(300);
@@ -121,15 +128,14 @@ public class DashboardController {
 
         center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        HBox playbackPanel = playbackPanelController.createPanel();
+        // Artist click navigates to My Library showing that artist's discography
+        HBox playbackPanel = playbackPanelController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback());
         HBox cards = cardFactory.createStatCards();
         HBox graphPanel = dashboardGraphController.createPanel();
-
 
         playbackPanel.setMaxWidth(Double.MAX_VALUE);
         cards.setMaxWidth(Double.MAX_VALUE);
         graphPanel.setMaxWidth(Double.MAX_VALUE);
-
 
         VBox.setVgrow(graphPanel, Priority.ALWAYS);
         graphPanel.setMaxHeight(Double.MAX_VALUE);
@@ -143,8 +149,12 @@ public class DashboardController {
         VBox right = new VBox(25);
         right.setPadding(new Insets(20));
         right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-        VBox topArtistsPanel = topArtistsController.createPanel();
+
+        // Artist click navigates to My Library showing that artist's discography
+        VBox topArtistsPanel = topArtistsController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback());
         VBox recentlyPlayedPanel = recentlyPlayedController.createPanel();
+
         right.getChildren().addAll(topArtistsPanel, recentlyPlayedPanel);
-        return right; }
+        return right;
+    }
 }

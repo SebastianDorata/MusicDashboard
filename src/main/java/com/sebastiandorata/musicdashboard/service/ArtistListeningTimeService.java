@@ -71,7 +71,7 @@ public class ArtistListeningTimeService {
 
 
             int duration = (play.getDurationPlayedSeconds() != null ? play.getDurationPlayedSeconds() : 0);
-            if (duration < 20) continue;  // Skip sub-20-second plays
+            if (duration <= 0) continue;
 
             // Add duration to each artist on this song
             for (Artist artist : play.getSong().getArtists()) {
@@ -100,7 +100,7 @@ public class ArtistListeningTimeService {
                 .filter(h -> h.getSong() != null && h.getSong().getArtists() != null)
                 .filter(h -> h.getSong().getArtists().contains(artist))
                 .mapToInt(h -> (h.getDurationPlayedSeconds() != null ? h.getDurationPlayedSeconds() : 0))
-                .filter(duration -> duration >= 20)
+                .filter(duration -> duration > 0)
                 .sum();
     }
 }

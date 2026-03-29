@@ -12,9 +12,9 @@ import java.util.List;
 
 public class SongHandler {
 
-    private final LibraryContext ctx;
+    private final LibraryHandler ctx;
 
-    public SongHandler(LibraryContext ctx) {
+    public SongHandler(LibraryHandler ctx) {
         this.ctx = ctx;
     }
 

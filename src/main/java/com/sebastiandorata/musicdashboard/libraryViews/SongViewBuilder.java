@@ -14,9 +14,9 @@ import java.util.List;
 
 public class SongViewBuilder {
 
-    private final LibraryContext ctx;
+    private final LibraryHandler ctx;
 
-    public SongViewBuilder(LibraryContext ctx) {
+    public SongViewBuilder(LibraryHandler ctx) {
         this.ctx = ctx;
     }
 

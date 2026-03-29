@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.utils;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
 import javafx.scene.Group;
 import javafx.scene.Node;

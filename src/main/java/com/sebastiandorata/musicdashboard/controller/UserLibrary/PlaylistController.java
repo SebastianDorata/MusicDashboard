@@ -1,5 +1,6 @@
-package com.sebastiandorata.musicdashboard.controller;
+package com.sebastiandorata.musicdashboard.controller.UserLibrary;
 
+import com.sebastiandorata.musicdashboard.controller.MainController;
 import com.sebastiandorata.musicdashboard.entity.Playlist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.service.FavouriteService;
@@ -13,7 +14,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;

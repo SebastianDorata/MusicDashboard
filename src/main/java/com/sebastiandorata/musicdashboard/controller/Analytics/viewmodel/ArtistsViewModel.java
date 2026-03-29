@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.viewmodel;
+package com.sebastiandorata.musicdashboard.controller.Analytics.viewmodel;
 
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.service.ArtistListeningTimeService;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 
 @Service
-public class TopArtistsViewModel {
+public class ArtistsViewModel {
 
     @Autowired
     private ArtistListeningTimeService artistListeningTimeService;
@@ -22,10 +22,12 @@ public class TopArtistsViewModel {
 
 
     public static class TopArtistRowData {
+        public Artist artist; // null for placeholder rows when fewer than 5 artists exist
         public String artistName;
         public String listeningTime;
 
-        public TopArtistRowData(String artistName, String listeningTime) {
+        public TopArtistRowData(Artist artist, String artistName, String listeningTime) {
+            this.artist = artist;
             this.artistName = artistName;
             this.listeningTime = listeningTime;
         }
@@ -42,7 +44,6 @@ public class TopArtistsViewModel {
         );
     }
 
-
     private List<TopArtistRowData> buildTopArtistsData() {
 
         List<ArtistListeningTimeService.ArtistTimeData> topArtists =
@@ -51,39 +52,17 @@ public class TopArtistsViewModel {
         List<TopArtistRowData> result = new ArrayList<>();
         for (ArtistListeningTimeService.ArtistTimeData data : topArtists) {
             result.add(new TopArtistRowData(
+                    data.artist,
                     data.artist.getName(),
                     data.formatTime()
             ));
         }
 
-
         while (result.size() < 5) {
-            result.add(new TopArtistRowData("—", "—"));
+            result.add(new TopArtistRowData(null, "—", "—"));
         }
 
         return result;
     }
 
-
-    public String formatArtistTime(Artist artist) {
-        if (artist == null) return "—";
-        Integer seconds = artistListeningTimeService.getArtistTotalSeconds(artist);
-        return formatSeconds(seconds);
-    }
-
-
-    private String formatSeconds(Integer seconds) {
-        if (seconds == null || seconds == 0) return "—";
-
-        int hours = seconds / 3600;
-        int minutes = (seconds % 3600) / 60;
-
-        if (hours > 0) {
-            return hours + "h " + minutes + "m";
-        } else if (minutes > 0) {
-            return minutes + "m";
-        } else {
-            return "0m";
-        }
-    }
 }

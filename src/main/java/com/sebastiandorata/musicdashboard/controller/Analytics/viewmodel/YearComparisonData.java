@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.viewmodel;
+package com.sebastiandorata.musicdashboard.controller.Analytics.viewmodel;
 
 
 public class YearComparisonData {

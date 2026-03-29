@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.utils;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
 import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;

@@ -1,5 +1,6 @@
-package com.sebastiandorata.musicdashboard.controller;
+package com.sebastiandorata.musicdashboard.controller.Analytics;
 
+import com.sebastiandorata.musicdashboard.controller.MainController;
 import com.sebastiandorata.musicdashboard.service.DataLoadingService;
 import com.sebastiandorata.musicdashboard.service.YearEndReportService;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;

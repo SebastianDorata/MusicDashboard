@@ -1,11 +1,12 @@
-package com.sebastiandorata.musicdashboard.controllerUtils;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
+import com.sebastiandorata.musicdashboard.controllerUtils.UIComponent;
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import com.sebastiandorata.musicdashboard.utils.AlbumArtView;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import com.sebastiandorata.musicdashboard.utils.IconFactory;
-import jakarta.annotation.PostConstruct;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -14,6 +15,8 @@ import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+
+import java.util.function.Consumer;
 
 
 @Component
@@ -28,15 +31,14 @@ public class PlaybackPanelController extends UIComponent {
     private HBox nowPlaying;
 
 
-    public HBox createPanel() {
+    public HBox createPanel(Consumer<Artist> onArtistClicked) {
         nowPlaying = new HBox(0);
         nowPlaying.getStyleClass().add("now-playing-bar");
         nowPlaying.setAlignment(Pos.CENTER_LEFT);
 
         StackPane artContainer = createAlbumArtContainer();
 
-
-        VBox infoSection = createNowPlayingInfoSection();
+        VBox infoSection = createNowPlayingInfoSection(onArtistClicked);
         HBox.setHgrow(infoSection, Priority.ALWAYS);
 
         nowPlaying.getChildren().addAll(artContainer, infoSection);
@@ -88,7 +90,7 @@ public class PlaybackPanelController extends UIComponent {
         return artContainer;
     }
 
-    private VBox createNowPlayingInfoSection() {
+    private VBox createNowPlayingInfoSection(Consumer<Artist> onArtistClicked) {
         VBox infoSection = new VBox(0);
         infoSection.getStyleClass().add("now-playing-info");
 
@@ -124,7 +126,7 @@ public class PlaybackPanelController extends UIComponent {
         // Initialize with currently playing song
         Song alreadyPlaying = musicPlayerService.getCurrentSong();
         if (alreadyPlaying != null) {
-            updateSongDisplay(songTitle, artistName, alreadyPlaying, progressSlider, remainingTime);
+            updateSongDisplay(songTitle, artistName, alreadyPlaying, progressSlider, remainingTime, onArtistClicked);
             playPauseBtn.setGraphic(IconFactory.createIcon("pause", 24));
             playPauseBtn.setUserData("pause");
         }
@@ -133,13 +135,15 @@ public class PlaybackPanelController extends UIComponent {
         musicPlayerService.currentSongProperty().addListener((obs, oldSong, newSong) -> {
             if (newSong != null) {
                 nowPlaying.getStyleClass().add("is-playing");
-                updateSongDisplay(songTitle, artistName, newSong, progressSlider, remainingTime);
+                updateSongDisplay(songTitle, artistName, newSong, progressSlider, remainingTime, onArtistClicked);
                 playPauseBtn.setGraphic(IconFactory.createIcon("pause", 24));
                 playPauseBtn.setUserData("pause");
             } else {
                 nowPlaying.getStyleClass().remove("is-playing");
                 songTitle.setText("No song playing");
                 artistName.setText("—");
+                artistName.getStyleClass().removeAll("artist-name-clickable");
+                artistName.setOnMouseClicked(null);
                 currentTime.setText("0:00");
                 remainingTime.setText("-0:00");
                 progressSlider.setValue(0);
@@ -164,12 +168,26 @@ public class PlaybackPanelController extends UIComponent {
         return infoSection;
     }
 
-    private void updateSongDisplay(Label songTitle, Label artistName, Song song, Slider progressSlider, Label remainingTime) {
+    private void updateSongDisplay(Label songTitle, Label artistName, Song song,Slider progressSlider, Label remainingTime, Consumer<Artist> onArtistClicked) {
         songTitle.setText(song.getTitle());
-        String artistText = song.getArtists() != null && !song.getArtists().isEmpty()
-                ? song.getArtists().get(0).getName()
-                : "Unknown Artist";
+
+        // Extract the artist ENTITY (not just the string) to enable clickable navigation
+        Artist firstArtist = (song.getArtists() != null && !song.getArtists().isEmpty())
+                ? song.getArtists().get(0)
+                : null;
+
+        String artistText = firstArtist != null ? firstArtist.getName() : "Unknown Artist";
         artistName.setText(artistText);
+
+        // Make clickable only if we have a real artist entity
+        if (firstArtist != null) {
+            artistName.getStyleClass().add("artist-name-clickable");
+            artistName.setOnMouseClicked(e -> onArtistClicked.accept(firstArtist));
+        } else {
+            artistName.getStyleClass().removeAll("artist-name-clickable");
+            artistName.setOnMouseClicked(null);
+        }
+
         progressSlider.setMax(song.getDuration());
         remainingTime.setText("-" + AppUtils.formatTime(song.getDuration()));
 

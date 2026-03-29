@@ -1,5 +1,6 @@
-package com.sebastiandorata.musicdashboard.controller;
+package com.sebastiandorata.musicdashboard.controller.UserLibrary;
 
+import com.sebastiandorata.musicdashboard.controller.MainController;
 import com.sebastiandorata.musicdashboard.entity.Album;
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
@@ -22,13 +23,11 @@ import java.util.List;
 @Component
 public class MyLibraryController {
 
-
     @Lazy @Autowired private MusicPlayerService musicPlayerService;
     @Lazy @Autowired private SongService        songService;
     @Autowired        private PlaylistService   playlistService;
     @Autowired        private FavouriteService  favouriteService;
     @Autowired        private LibraryService    libraryService;
-
 
     private String  currentView        = "albums";
     private String  currentDisplayMode = "grid";
@@ -39,20 +38,17 @@ public class MyLibraryController {
     private ToggleButton listToggle;
     private ToggleButton gridToggle;
 
-
-    private LibraryContext         ctx;
-    private SongHandler menuHandler;
-    private SongViewBuilder songListBuilder;
-    private AlbumViewBuilder albumDetailBuilder;
-    private ArtistViewBuilder      artistViewBuilder;
-    private FavouritesViewBuilder  favouritesBuilder;
+    private LibraryHandler ctx;
+    private SongHandler           menuHandler;
+    private SongViewBuilder       songListBuilder;
+    private AlbumViewBuilder      albumDetailBuilder;
+    private ArtistViewBuilder     artistViewBuilder;
+    private FavouritesViewBuilder favouritesBuilder;
 
     @PostConstruct
     public void register() {
         MainController.registerLibrary(this);
     }
-
-
 
     public void show() {
         currentView        = "albums";
@@ -61,7 +57,24 @@ public class MyLibraryController {
         currentArtist      = null;
 
         initBuilders();
+        applyScene();
+    }
 
+    /**
+     * Entry point from the dashboard Top 5 Artists panel.
+     * Opens My Library already drilled into the given artist's discography (grid view).
+     */
+    public void showWithArtist(Artist artist) {
+        currentView        = "artists";
+        currentDisplayMode = "grid";
+        currentAlbum       = null;
+        currentArtist      = artist;
+
+        initBuilders();
+        applyScene();
+    }
+
+    private void applyScene() {
         Scene scene = createScene();
         try {
             scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
@@ -73,7 +86,7 @@ public class MyLibraryController {
     }
 
     private void initBuilders() {
-        ctx = new LibraryContext(
+        ctx = new LibraryHandler(
                 musicPlayerService, playlistService, favouriteService,
                 (song, node) -> menuHandler.show(song, node)
         );
@@ -83,8 +96,6 @@ public class MyLibraryController {
         artistViewBuilder  = new ArtistViewBuilder(ctx, this::drillIntoAlbum, libraryService);
         favouritesBuilder  = new FavouritesViewBuilder(ctx);
     }
-
-
 
     private Scene createScene() {
         BorderPane root = new BorderPane();
@@ -170,8 +181,6 @@ public class MyLibraryController {
         return btn;
     }
 
-
-
     private void switchView(String view) {
         currentView   = view;
         currentAlbum  = null;
@@ -227,8 +236,6 @@ public class MyLibraryController {
         listToggle.setSelected(true);
         loadContent();
     }
-
-
 
     private void loadContent() {
         contentArea.getChildren().clear();
@@ -292,7 +299,6 @@ public class MyLibraryController {
         contentArea.getChildren().add(favouritesBuilder.build(currentDisplayMode));
         gridToggle.setVisible(true);
     }
-
 
     private ListView<Album> buildAlbumsListView(List<Album> albums) {
         ListView<Album> lv = new ListView<>();

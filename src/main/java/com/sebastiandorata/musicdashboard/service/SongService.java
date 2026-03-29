@@ -225,7 +225,5 @@ public class SongService {
         return songRepository.findAll();
     }
 
-    public Optional<Song> getSongById(Long id) {
-        return songRepository.findById(id);
-    }
+
 }

@@ -18,9 +18,9 @@ public class AlbumSongCell extends ListCell<Song> {
     private final Label         playCount;
     private final Label         dateAdded;
     private final Button        menuBtn;
-    private final LibraryContext ctx;
+    private final LibraryHandler ctx;
 
-    public AlbumSongCell(LibraryContext ctx) {
+    public AlbumSongCell(LibraryHandler ctx) {
         this.ctx = ctx;
 
         trackNum = new Label();

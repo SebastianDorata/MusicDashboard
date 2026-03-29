@@ -1,37 +1,41 @@
-.header{
-    -fx-text-fill: green;
-    -fx-font-size: 96px;
-    -fx-font-weight: 300;
-}
 .txt-white{
     -fx-text-fill: white;
 }
-.txt-white-lg{
+.txt-white-sm{
     -fx-text-fill: white;
-    -fx-font-size: 48px;
-}
-.wt-smmd-bld{
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-.txt-white-md-bld{
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-}
-.txt-white-md{
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
+    -fx-font-size: 13px;
 }
 .txt-white-sm-bld{
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
 }
-.txt-white-sm{
+
+.txt-white-ttl-bld {
     -fx-text-fill: white;
-    -fx-font-size: 13px;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.95;
+}
+.wt-smmd-bld{
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+
+.txt-white-md{
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+}
+.txt-white-md-bld{
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.txt-white-lg{
+    -fx-text-fill: white;
+    -fx-font-size: 48px;
 }
 
 .txt-black-sm{
@@ -51,6 +55,12 @@
     -fx-text-fill: #b3b3b3;
     -fx-font-size: 13px;
 }
+
+.padding-btm{
+    -fx-padding: 0 0 20 0;
+}
+
+
 
 .cursor{
     -fx-cursor:hand;
@@ -72,7 +82,7 @@
     -fx-spacing: 12;
 }
 .wh-grn-style{
-    -fx-text-fill: white;
+   -fx-text-fill: white;
    -fx-font-size: 60px;
    -fx-font-weight: bold;
    -fx-background-color: #4CAF50;
@@ -126,29 +136,6 @@
     -fx-pref-height: 20;
 }
 
-
-
-.artist-row {
-    -fx-padding: 8 0;
-    -fx-border-color: rgba(255,255,255,0.05);
-    -fx-border-width: 0 0 1 0;
-}
-
-.artist-name {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 13px;
-}
-
-.artist-time {
-    -fx-text-fill: #b3b3b3;
-    -fx-font-size: 13px;
-    -fx-min-width: 70;
-}
-
-.scroll-pane{
-    -fx-background: #121212;
-    -fx-background-color: #121212;
-}
 
 .dropZone{
     fx-border-color: #4CAF50;

@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.viewmodel;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
 import java.time.YearMonth;
 import java.util.List;

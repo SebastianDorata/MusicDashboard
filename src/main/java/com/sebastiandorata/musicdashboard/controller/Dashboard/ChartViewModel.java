@@ -1,8 +1,9 @@
-package com.sebastiandorata.musicdashboard.viewmodel;
+package com.sebastiandorata.musicdashboard.controller.Dashboard;
 
 import com.sebastiandorata.musicdashboard.entity.YearEndReport;
 import com.sebastiandorata.musicdashboard.service.DataLoadingService;
 import com.sebastiandorata.musicdashboard.service.YearEndReportService;
+import com.sebastiandorata.musicdashboard.controller.Analytics.viewmodel.YearComparisonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

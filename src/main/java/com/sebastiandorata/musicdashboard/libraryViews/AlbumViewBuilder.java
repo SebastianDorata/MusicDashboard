@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 
 public class AlbumViewBuilder {
 
-    private final LibraryContext ctx;
+    private final LibraryHandler ctx;
     private final Runnable onBack;
     private final Consumer<Artist> onArtistClick;
 
-    public AlbumViewBuilder(LibraryContext ctx, Runnable onBack, Consumer<Artist> onArtistClick) {
+    public AlbumViewBuilder(LibraryHandler ctx, Runnable onBack, Consumer<Artist> onArtistClick) {
         this.ctx           = ctx;
         this.onBack        = onBack;
         this.onArtistClick = onArtistClick;

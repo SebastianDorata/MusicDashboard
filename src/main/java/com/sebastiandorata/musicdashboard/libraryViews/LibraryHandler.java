@@ -9,7 +9,7 @@ import javafx.scene.Node;
 import java.util.function.BiConsumer;
 
 
-public class LibraryContext {
+public class LibraryHandler {
 
     public final MusicPlayerService musicPlayerService;
     public final PlaylistService    playlistService;
@@ -18,7 +18,7 @@ public class LibraryContext {
 
     public final BiConsumer<Song, Node> onSongMenu;
 
-    public LibraryContext(MusicPlayerService musicPlayerService,
+    public LibraryHandler(MusicPlayerService musicPlayerService,
                           PlaylistService    playlistService,
                           FavouriteService   favouriteService,
                           BiConsumer<Song, Node> onSongMenu) {

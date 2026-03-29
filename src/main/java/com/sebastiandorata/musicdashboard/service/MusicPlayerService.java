@@ -111,10 +111,9 @@ public class MusicPlayerService {
                     playbackTrackingTimer = null;
                 }
 
-                // Only record if not already tracked
-                if (!hasBeenTracked && currentSong != null) {
-                    // Song completed fully
-                    playbackTrackingService.recordPlayWithDuration(currentSong,
+                // Update the existing record with the full song duration instead of creating a new one
+                if (currentSong != null) {
+                    playbackTrackingService.updateCurrentPlayDuration(
                             (int) mediaPlayer.getTotalDuration().toSeconds());
                     hasBeenTracked = true;
                 }
@@ -140,14 +139,12 @@ public class MusicPlayerService {
         playbackTrackingTimer = new Timeline(new KeyFrame(
                 Duration.seconds(20),
                 event -> {
-                    // Only record if not already tracked and song hasn't ended
+                    // recordPlay() CREATES the DB record at 20s mark
+                    // and stores currentPlaybackId for updateCurrentPlayDuration() to find later
                     if (!hasBeenTracked && !songEnded && mediaPlayer != null) {
-                        int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
-                        // Record with actual duration played so far
-                        playbackTrackingService.recordPlayWithDuration(song, secondsPlayed);
+                        playbackTrackingService.recordPlay(song);
                         hasBeenTracked = true;
                     }
-                    // Cancel timer after firing to prevent any further issues
                     if (playbackTrackingTimer != null) {
                         playbackTrackingTimer.stop();
                         playbackTrackingTimer = null;
@@ -159,11 +156,14 @@ public class MusicPlayerService {
     }
 
     private void recordPlayIfNeeded() {
-        // Check if we need to record playback when skipping
+        // Check if we need to record playback when skipping.
+        // hasBeenTracked means recordPlay() already fired at the 20s mark,
+        // so we just update the duration on that existing record.
         if (!hasBeenTracked && currentSong != null && mediaPlayer != null && !songEnded) {
             int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
             if (secondsPlayed >= 20) {
-                playbackTrackingService.recordPlayWithDuration(currentSong, secondsPlayed);
+                // Update the existing record rather than creating a new one
+                playbackTrackingService.updateCurrentPlayDuration(secondsPlayed);
                 hasBeenTracked = true;
             }
         }
@@ -191,10 +191,11 @@ public class MusicPlayerService {
         if (queue.isEmpty()) return;
 
         // Check if we should record current playback before changing songs
+        // Update the existing record rather than creating a new one
         if (!isNaturalSongEnd && !hasBeenTracked && currentSong != null && mediaPlayer != null) {
             int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
             if (secondsPlayed >= 20) {
-                playbackTrackingService.recordPlayWithDuration(currentSong, secondsPlayed);
+                playbackTrackingService.updateCurrentPlayDuration(secondsPlayed);
                 hasBeenTracked = true;
             }
         }
@@ -250,7 +251,4 @@ public class MusicPlayerService {
         return currentTime.getReadOnlyProperty();
     }
 
-    public ObjectProperty<String> playbackEventProperty() {
-        return playbackEventProperty;
-    }
 }

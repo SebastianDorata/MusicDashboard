@@ -67,14 +67,18 @@ public class DailyListeningStatsService {
 
         if (todayPlays.isEmpty()) return 0;
 
-        // Only count sessions >= 20 seconds
+        /**
+         * Only counts sessions with a recorded duration (> 0).
+         * Threshold kept consistent with {@link ArtistListeningTimeService#getTopArtistsAllTime(int)}
+         * and {@link ArtistListeningTimeService#getArtistTotalSeconds(Artist)}
+         */
         int totalSeconds = todayPlays.stream()
-                .filter(h -> h.getDurationPlayedSeconds() != null && h.getDurationPlayedSeconds() >= 20)
+                .filter(h -> h.getDurationPlayedSeconds() != null && h.getDurationPlayedSeconds() > 0)
                 .mapToInt(PlaybackHistory::getDurationPlayedSeconds)
                 .sum();
 
         long sessionCount = todayPlays.stream()
-                .filter(h -> h.getDurationPlayedSeconds() != null && h.getDurationPlayedSeconds() >= 20)
+                .filter(h -> h.getDurationPlayedSeconds() != null && h.getDurationPlayedSeconds() > 0)
                 .count();
 
         if (sessionCount == 0) return 0;

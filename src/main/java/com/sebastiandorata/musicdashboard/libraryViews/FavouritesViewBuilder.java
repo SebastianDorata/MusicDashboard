@@ -9,10 +9,10 @@ import java.util.List;
 
 public class FavouritesViewBuilder {
 
-    private final LibraryContext ctx;
+    private final LibraryHandler ctx;
     private final SongViewBuilder songListBuilder;
 
-    public FavouritesViewBuilder(LibraryContext ctx) {
+    public FavouritesViewBuilder(LibraryHandler ctx) {
         this.ctx             = ctx;
         this.songListBuilder = new SongViewBuilder(ctx);
     }
