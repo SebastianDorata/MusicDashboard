@@ -25,7 +25,7 @@
     -fx-text-fill: #ffffff;
     -fx-opacity: 0.85;
 }
-
+/*TODO: Change these to global*/
 .stat-card-value {
     -fx-font-size: 28;
     -fx-font-weight: bold;

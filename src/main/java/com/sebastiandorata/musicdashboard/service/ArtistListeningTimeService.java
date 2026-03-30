@@ -3,6 +3,7 @@ package com.sebastiandorata.musicdashboard.service;
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.PlaybackHistory;
 import com.sebastiandorata.musicdashboard.repository.PlaybackHistoryRepository;
+import com.sebastiandorata.musicdashboard.utils.PlaybackConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,7 @@ public class ArtistListeningTimeService {
      * Time Complexity: O(n log k) where n = total plays, k = limit
      * Query all plays: O(n)
      * Group by artist: O(n)
+     * Filter & validate: O(n)
      * Take top k: O(k)
      * Space Complexity: O(n) for grouping, O(k) for result
      */
@@ -69,9 +71,12 @@ public class ArtistListeningTimeService {
         for (PlaybackHistory play : allPlays) {
             if (play.getSong() == null || play.getSong().getArtists() == null) continue;
 
+            // Use centralized validation constant to check if play is valid
+            if (!PlaybackConstants.isValidPlay(play.getDurationPlayedSeconds())) {
+                continue;  // Skip null durations and plays < 20 seconds
+            }
 
-            int duration = (play.getDurationPlayedSeconds() != null ? play.getDurationPlayedSeconds() : 0);
-            if (duration <= 0) continue;
+            int duration = play.getDurationPlayedSeconds();
 
             // Add duration to each artist on this song
             for (Artist artist : play.getSong().getArtists()) {
@@ -99,8 +104,8 @@ public class ArtistListeningTimeService {
         return allPlays.stream()
                 .filter(h -> h.getSong() != null && h.getSong().getArtists() != null)
                 .filter(h -> h.getSong().getArtists().contains(artist))
-                .mapToInt(h -> (h.getDurationPlayedSeconds() != null ? h.getDurationPlayedSeconds() : 0))
-                .filter(duration -> duration > 0)
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
+                .mapToInt(PlaybackHistory::getDurationPlayedSeconds)
                 .sum();
     }
 }

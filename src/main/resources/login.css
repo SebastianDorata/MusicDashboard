@@ -1,21 +1,21 @@
-.main-background {
+.main-background {/*Used*/
     -fx-background-color: #121212;
 }
 
-.header {
+.header {/*Used*/
     -fx-text-fill: #1DB954;
     -fx-font-size: 42px;
     -fx-font-weight: bold;
     -fx-padding: 60 0 8 0;
 }
 
-.login-subtitle {
+.login-subtitle {/*Used*/
     -fx-text-fill: #b3b3b3;
     -fx-font-size: 15px;
     -fx-padding: 0 0 36 0;
 }
 
-.login-card {
+.login-card {/*Used*/
     -fx-background-color: #1a1a2e;
     -fx-background-radius: 16;
     -fx-border-radius: 16;
@@ -27,21 +27,15 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 24, 0, 0, 6);
 }
 
-.login-card-title {
+.login-card-title {/*Used*/
     -fx-text-fill: white;
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-padding: 0 0 20 0;
 }
 
-.login-field-label {
-    -fx-text-fill: #b3b3b3;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-padding: 0 0 4 2;
-}
 
-.username-Field,
+.username-Field,/*Used*/
 .password-Field,
 .email-Field {
     -fx-background-color: #252540;
@@ -64,44 +58,7 @@
     -fx-background-color: #2a2a4a;
 }
 
-.login-btn-primary {
-    -fx-background-color: #1DB954;
-    -fx-text-fill: white;
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-padding: 11 0 11 0;
-    -fx-pref-height: 44;
-    -fx-max-width: Infinity;
-    -fx-cursor: hand;
-}
 
-.login-btn-primary:hover {
-    -fx-background-color: #1ed760;
-}
-
-.login-btn-primary:pressed {
-    -fx-background-color: #1aa34a;
-}
-
-.login-btn-secondary {
-    -fx-background-color: transparent;
-    -fx-text-fill: #1DB954;
-    -fx-font-size: 13px;
-    -fx-border-color: #1DB954;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-border-width: 1;
-    -fx-padding: 9 0 9 0;
-    -fx-pref-height: 40;
-    -fx-max-width: Infinity;
-    -fx-cursor: hand;
-}
-
-.login-btn-secondary:hover {
-    -fx-background-color: rgba(29, 185, 84, 0.12);
-}
 
 .login-divider-label {
     -fx-text-fill: #555577;

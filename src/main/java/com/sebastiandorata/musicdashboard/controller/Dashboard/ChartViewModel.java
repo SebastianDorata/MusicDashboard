@@ -52,6 +52,43 @@ public class ChartViewModel {
         }
     }
 
+    /**
+     * Public data class for chart rendering.
+     * Contains all series data (current, previous, highest years) plus metadata.
+     */
+    public static class ChartData {
+        public Map<YearMonth, Integer> currentYearData;
+        public Map<YearMonth, Integer> previousYearData;
+        public Map<YearMonth, Integer> highestYearData;
+        public Integer selectedYear;
+        public Integer previousYear;
+        public Integer highestYear;
+        public List<Integer> allYears;
+        public boolean hasPreviousYear;
+        public boolean isPreviousYearHighest;
+
+        public ChartData(
+                Map<YearMonth, Integer> currentYearData,
+                Map<YearMonth, Integer> previousYearData,
+                Map<YearMonth, Integer> highestYearData,
+                Integer selectedYear,
+                Integer previousYear,
+                Integer highestYear,
+                List<Integer> allYears,
+                boolean hasPreviousYear,
+                boolean isPreviousYearHighest) {
+            this.currentYearData = currentYearData;
+            this.previousYearData = previousYearData;
+            this.highestYearData = highestYearData;
+            this.selectedYear = selectedYear;
+            this.previousYear = previousYear;
+            this.highestYear = highestYear;
+            this.allYears = allYears;
+            this.hasPreviousYear = hasPreviousYear;
+            this.isPreviousYearHighest = isPreviousYearHighest;
+        }
+    }
+
 
     /**
      * Time Complexity: O(y + n) where y = available years, n = total playback records
@@ -102,7 +139,7 @@ public class ChartViewModel {
 
     /**
      * Time Complexity: O(y) where y = number of years in history
-     * Space Complexity: O(1) - returns fixed data structure
+     * Space Complexity: O(1). Returns fixed data structure
      */
     public void loadAllTimeStatsForGraph(int selectedYear, Consumer<AllTimeStatsData> onSuccess) {
         dataLoadingService.loadAsync(
@@ -158,42 +195,28 @@ public class ChartViewModel {
         );
     }
 
-    public void loadYearComparison(int selectedYear, Consumer<YearComparisonData> onSuccess) {
-        dataLoadingService.loadAsync(
-                () -> {
-                    List<Integer> allYears = yearEndReportService.getAvailableYears();
-                    Integer previousYear = selectedYear - 1;
-                    Integer highestYear = findHighestListeningYear(allYears);
-
-                    boolean hasPreviousYear = allYears.contains(previousYear);
-                    boolean hasHighestYear = highestYear != null && !highestYear.equals(selectedYear);
-
-                    return new YearComparisonData(previousYear, highestYear, hasPreviousYear, hasHighestYear);
-                },
-                onSuccess
-        );
+    /**
+     * Retrieves all available years with listening data.
+     *
+     * Time Complexity: O(n) where n = playback history size
+     * Space Complexity: O(y) where y = unique years
+     *
+     * Reserved for future features that may need year selection or filtering.
+     * Current use: Informational for graph header labels.
+     */
+    public List<Integer> getAllAvailableYears() {
+        return yearEndReportService.getAvailableYears();
     }
 
-    public void loadAllTimeStats(Consumer<Integer> onSuccess) {
-        dataLoadingService.loadAsync(
-                () -> {
-                    List<Integer> allYears = yearEndReportService.getAvailableYears();
-                    int totalAllTimeHours = 0;
-
-                    for (Integer year : allYears) {
-                        YearEndReport report = yearEndReportService.getOrGenerateYearReport(year);
-                        if (report != null) {
-                            totalAllTimeHours += report.getTotalListeningTimeMinutes() / 60;
-                        }
-                    }
-
-                    return totalAllTimeHours;
-                },
-                onSuccess
-        );
-    }
-
-
+    /**
+     * Finds the year with the highest total listening time.
+     *
+     * Time Complexity: O(y) where y = number of years
+     * Space Complexity: O(1)
+     *
+     * @param years list of years with listening data
+     * @return the year with highest listening time, or null if list is empty
+     */
     private Integer findHighestListeningYear(List<Integer> years) {
         if (years == null || years.isEmpty()) return null;
 
@@ -214,9 +237,5 @@ public class ChartViewModel {
         }
 
         return highestYear;
-    }
-
-    public List<Integer> getAllAvailableYears() {
-        return yearEndReportService.getAvailableYears();
     }
 }

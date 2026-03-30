@@ -40,7 +40,7 @@ public class CardFactory extends UIComponent {
 
     public HBox createStatCards() {
         HBox cards = new HBox(15);
-        cards.getStyleClass().add("stat-cards-row");
+        cards.getStyleClass().addAll("stat-cards-row","wt-smmd-bld");
 
         VBox card1 = createCombinedPlaybackAvgCard();
 
@@ -78,7 +78,7 @@ public class CardFactory extends UIComponent {
         playbackTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
 
         playbackValueLabel = new Label("0");
-        playbackValueLabel.getStyleClass().add("dashboard-stat-value");
+        playbackValueLabel.getStyleClass().add("txt-white-bld-thirty");
 
         playbackUnitLabel = new Label("Minutes");
         playbackUnitLabel.getStyleClass().add("dashboard-stat-unit");
@@ -100,7 +100,7 @@ public class CardFactory extends UIComponent {
         avgPrefix.getStyleClass().add("dashboard-stat-prefix");
 
         avgSessionValueLabel = new Label("0");
-        avgSessionValueLabel.getStyleClass().add("dashboard-stat-value");
+        avgSessionValueLabel.getStyleClass().add("txt-white-bld-thirty");
 
         avgSessionUnitLabel = new Label("min/session");
         avgSessionUnitLabel.getStyleClass().add("dashboard-stat-unit");
@@ -149,7 +149,7 @@ public class CardFactory extends UIComponent {
             artistName = song.getArtists().get(0).getName();
         }
         Label artist = new Label(artistName);
-        artist.getStyleClass().addAll("txt-grey-sm");
+        artist.getStyleClass().addAll("wt-smmd-bld");
         artist.setWrapText(true);
         artist.setMaxWidth(130);
 
@@ -166,7 +166,7 @@ public class CardFactory extends UIComponent {
         card.setPrefHeight(220);
         card.setPadding(new Insets(15));
         card.setAlignment(Pos.TOP_CENTER);
-        card.getStyleClass().add("dashboard-card");
+        card.getStyleClass().add("wt-smmd-bld");
         card.setCursor(javafx.scene.Cursor.HAND);
 
 

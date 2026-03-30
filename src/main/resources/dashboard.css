@@ -32,15 +32,7 @@
 }
 
 .dashboard-stat-title {
-    -fx-font-weight: normal;
-    -fx-opacity: 0.9;
     -fx-wrap-text: true;
-}
-
-.dashboard-stat-value {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
 }
 
 .dashboard-stat-unit {
@@ -63,6 +55,11 @@
     -fx-wrap-text: true;
     -fx-text-overrun: ellipsis;
 }
+.dashboard-stat-value {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
 
 .stat-cards-row {
     -fx-padding: 0;
@@ -74,10 +71,13 @@
     -fx-alignment: top-left;
     -fx-padding: 22 28 18 24;
 }
-
+.empty-player-msg{
+    -fx-max-width: Infinity;
+    -fx-text-overrun: ellipsis;
+}
 .now-playing-artist {
     -fx-text-fill: #7eb8f7;
-    -fx-font-size: 13px;
+    -fx-font-size: 20px;
 }
 
 .now-playing-slider {

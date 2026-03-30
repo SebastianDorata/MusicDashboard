@@ -95,7 +95,7 @@ public class PlaybackPanelController extends UIComponent {
         infoSection.getStyleClass().add("now-playing-info");
 
         Label songTitle = new Label("No song playing");
-        songTitle.getStyleClass().addAll("txt-white-md-bld", "empty-msg");
+        songTitle.getStyleClass().addAll("txt-white-bld-thirty", "empty-player-msg");
 
         Label artistName = new Label("—");
         artistName.getStyleClass().add("now-playing-artist");
@@ -215,7 +215,7 @@ public class PlaybackPanelController extends UIComponent {
         Button nextBtn = new Button();
         nextBtn.setGraphic(IconFactory.createIcon("next", 20));
 
-        prevBtn.getStyleClass().addAll("player-btn", "player-btn-secondary", "cursor");
+        prevBtn.getStyleClass().addAll("player-btn", "player-btn-secondary", "cursor");//TODO: add cursor css
         playPauseBtn.getStyleClass().addAll("player-btn", "player-btn-primary", "cursor");
         nextBtn.getStyleClass().addAll("player-btn", "player-btn-secondary", "cursor");
 

@@ -166,7 +166,7 @@ public class MyLibraryController {
         ScrollPane scroll = new ScrollPane(contentArea);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(false);
-        scroll.getStyleClass().add("scroll-pane");
+        //scroll.getStyleClass().add("scroll-pane");//TODO: Make style in global. Currently in Library.css
         VBox.setVgrow(scroll, Priority.ALWAYS);
         BorderPane.setAlignment(scroll, Pos.TOP_LEFT);
         return scroll;
@@ -263,7 +263,7 @@ public class MyLibraryController {
     private void loadSongsView() {
         List<Song> songs = songService.getAllSongs();
         Label header = new Label("All Songs (" + songs.size() + ")");
-        header.getStyleClass().add("song-header");
+        header.getStyleClass().add("txt-white-md-bld");
         contentArea.getChildren().add(header);
 
         if ("list".equals(currentDisplayMode)) {
@@ -276,7 +276,7 @@ public class MyLibraryController {
     private void loadAlbumsView() {
         List<Album> albums = libraryService.getAllAlbums();
         Label header = new Label("All Albums (" + albums.size() + ")");
-        header.getStyleClass().add("song-header");
+        header.getStyleClass().add("txt-white-md-bld");
         contentArea.getChildren().add(header);
 
         if ("list".equals(currentDisplayMode)) {
@@ -289,7 +289,7 @@ public class MyLibraryController {
     private void loadArtistsView() {
         List<Artist> artists = libraryService.getAllArtists();
         Label header = new Label("Artists (" + artists.size() + ")");
-        header.getStyleClass().add("song-header");
+        header.getStyleClass().add("txt-white-md-bld");
         contentArea.getChildren().add(header);
         contentArea.getChildren().add(artistViewBuilder.buildArtistList(artists, this::drillIntoArtist));
         gridToggle.setVisible(false);

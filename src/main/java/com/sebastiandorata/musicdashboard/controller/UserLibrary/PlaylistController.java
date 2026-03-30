@@ -51,6 +51,7 @@ public class PlaylistController {
         try {
             scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/playlist.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/buttons.css").toExternalForm());
         } catch (Exception e) {
             System.out.println("CSS not found, using default styles");
         }
@@ -78,7 +79,7 @@ public class PlaylistController {
         backBtn.setOnAction(e -> MainController.navigateTo("dashboard"));
 
         Label title = new Label("My Playlists");
-        title.getStyleClass().add("section-title");
+        title.getStyleClass().add("txt-white-md-bld");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -121,14 +122,14 @@ public class PlaylistController {
         sidebar.getStyleClass().add("playlist-sidebar");
 
         Label heading = new Label("Playlists");
-        heading.getStyleClass().add("playlist-sidebar-heading");
+        heading.getStyleClass().add("txt-black-sm");
         VBox.setMargin(heading, new Insets(0, 0, 8, 4));
         sidebar.getChildren().add(heading);
 
         List<Playlist> playlists = loadPlaylists();
         if (playlists.isEmpty()) {
             Label msg = new Label("No playlists yet.\nClick \"+ New Playlist\" to start.");
-            msg.getStyleClass().add("playlist-sidebar-empty");
+            msg.getStyleClass().add("txt-grey-md");
             msg.setWrapText(true);
             VBox.setMargin(msg, new Insets(20, 4, 0, 4));
             sidebar.getChildren().add(msg);
@@ -201,7 +202,7 @@ public class PlaylistController {
         icon.getStyleClass().add("playlist-empty-icon");
 
         Label msg = new Label("Select a playlist to view its songs");
-        msg.getStyleClass().add("playlist-empty-msg");
+        msg.getStyleClass().add("empty-msg");
 
         box.getChildren().addAll(icon, msg);
         return box;
@@ -221,23 +222,23 @@ public class PlaylistController {
         VBox info = new VBox(4);
 
         Label typeTag = new Label("PLAYLIST");
-        typeTag.getStyleClass().add("playlist-type-tag");
+        typeTag.getStyleClass().add("txt-grey-sm-bld");
 
         Label nameLabel = new Label(playlist.getName());
-        nameLabel.getStyleClass().add("playlist-detail-name");
+        nameLabel.getStyleClass().add("txt-white-bld-thirty");
 
         info.getChildren().addAll(typeTag, nameLabel);
 
         if (playlist.getDescription() != null && !playlist.getDescription().isBlank()) {
             Label desc = new Label(playlist.getDescription());
-            desc.getStyleClass().add("playlist-description-label");
+            desc.getStyleClass().add("txt-grey-md");
             desc.setWrapText(true);
             info.getChildren().add(desc);
         }
 
         int songCount = playlist.getSongs() != null ? playlist.getSongs().size() : 0;
         Label countLabel = new Label(songCount + " song" + (songCount == 1 ? "" : "s"));
-        countLabel.getStyleClass().add("playlist-song-count");
+        countLabel.getStyleClass().add("txt-grey-md");
         info.getChildren().add(countLabel);
 
         nameRow.getChildren().addAll(icon, info);
@@ -281,7 +282,7 @@ public class PlaylistController {
             emIcon.getStyleClass().add("playlist-empty-songs-icon");
 
             Label emMsg = new Label("This playlist is empty.\nAdd songs from My Library.");
-            emMsg.getStyleClass().add("playlist-empty-songs-msg");
+            emMsg.getStyleClass().add("empty-msg");
             emMsg.setWrapText(true);
             emMsg.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
@@ -296,15 +297,15 @@ public class PlaylistController {
 
         Label hashH = new Label("#");
         hashH.setMinWidth(32);
-        hashH.getStyleClass().add("playlist-column-label");
+        hashH.getStyleClass().add("txt-grey-md");
 
         Label titleH = new Label("TITLE");
-        titleH.getStyleClass().add("playlist-column-label");
+        titleH.getStyleClass().add("txt-grey-md");
         HBox.setHgrow(titleH, Priority.ALWAYS);
 
         Label durH = new Label("DURATION");
         durH.setMinWidth(80);
-        durH.getStyleClass().add("playlist-column-label");
+        durH.getStyleClass().add("txt-grey-md");
 
         headers.getChildren().addAll(hashH, titleH, durH);
         container.getChildren().add(headers);
@@ -323,11 +324,11 @@ public class PlaylistController {
 
         Label indexLbl = new Label(String.valueOf(index));
         indexLbl.setMinWidth(32);
-        indexLbl.getStyleClass().add("playlist-song-index");
+        indexLbl.getStyleClass().add("playlist-song-main");
 
         VBox info = new VBox(2);
         Label titleLbl = new Label(song.getTitle() != null ? song.getTitle() : "Unknown Title");
-        titleLbl.getStyleClass().add("playlist-song-title");
+        titleLbl.getStyleClass().add("txt-white-sm");
 
         String artist = (song.getArtists() != null && !song.getArtists().isEmpty())
                 ? song.getArtists().get(0).getName() : "Unknown Artist";
@@ -339,7 +340,7 @@ public class PlaylistController {
 
         Label durLbl = new Label(AppUtils.formatDuration(song.getDuration()));
         durLbl.setMinWidth(80);
-        durLbl.getStyleClass().add("playlist-song-duration");
+        durLbl.getStyleClass().add("playlist-song-main");
 
         row.getChildren().addAll(indexLbl, info, durLbl);
 

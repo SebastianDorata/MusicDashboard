@@ -1,38 +1,21 @@
+.playlist-sidebar {
+    -fx-background-color: #1a1a1a;
+}
 .playlist-sidebar-scroll {
     -fx-background: #1a1a1a;
     -fx-background-color: #1a1a1a;
     -fx-border-color: #333333;
     -fx-border-width: 0 1 0 0;
 }
-
 .playlist-detail-scroll {
     -fx-background: #121212;
     -fx-background-color: #121212;
 }
-
-
-
-.playlist-sidebar {
-    -fx-background-color: #1a1a1a;
-}
-
-.playlist-sidebar-heading {
-    -fx-text-fill: #aaaaaa;
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-}
-
-.playlist-sidebar-empty {
-    -fx-text-fill: #666666;
-    -fx-font-size: 13px;
-}
-
 .playlist-row {
     -fx-background-color: transparent;
     -fx-background-radius: 8;
     -fx-cursor: hand;
 }
-
 
 .playlist-row:hover {
     -fx-background-color: #252525;
@@ -47,76 +30,16 @@
 .playlist-row-selected:hover {
     -fx-background-color: #2a2a4a;
 }
-
-.playlist-row-name {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+.playlist-empty-icon {
+    -fx-font-size: 48px;
 }
-
-.playlist-row-count {
-    -fx-text-fill: #888888;
-    -fx-font-size: 11px;
-}
-
-.playlist-type-tag {
-    -fx-text-fill: #888888;
-    -fx-font-size: 11px;
-    -fx-font-weight: bold;
-}
-
-.playlist-detail-name {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 28px;
-    -fx-font-weight: bold;
-}
-
-.playlist-description-label {
-    -fx-text-fill: #aaaaaa;
-    -fx-font-size: 13px;
-}
-
-.playlist-song-count {
-    -fx-text-fill: #888888;
-    -fx-font-size: 13px;
-}
-
-.playlist-rename-btn {
-    -fx-background-color: #2a2a2a;
-    -fx-text-fill: #ffffff;
-    -fx-cursor: hand;
-    -fx-background-radius: 6;
-}
-
-.playlist-rename-btn:hover {
-    -fx-background-color: #3a3a3a;
-}
-
-.playlist-delete-btn {
-    -fx-background-color: #4a1a1a;
-    -fx-text-fill: #ff6b6b;
-    -fx-cursor: hand;
-    -fx-background-radius: 6;
-}
-
-.playlist-delete-btn:hover {
-    -fx-background-color: #5a2a2a;
-}
-
 .playlist-header-separator {
     -fx-background-color: #333333;
 }
-
 .playlist-column-header {
     -fx-border-color: transparent transparent #333333 transparent;
     -fx-border-width: 0 0 1 0;
 }
-
-.playlist-column-label {
-    -fx-text-fill: #666666;
-    -fx-font-size: 12px;
-}
-
 .playlist-song-row {
     -fx-background-color: transparent;
     -fx-background-radius: 6;
@@ -127,42 +50,18 @@
     -fx-background-color: #1e1e1e;
     -fx-background-radius: 6;
 }
-
-.playlist-song-index {
+.playlist-song-main {
     -fx-text-fill: #888888;
     -fx-font-size: 13px;
 }
-
-
-.playlist-song-title {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 14px;
+.playlist-row-count {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
 }
-
 .playlist-song-artist {
     -fx-text-fill: #888888;
     -fx-font-size: 12px;
 }
-
-.playlist-song-duration {
-    -fx-text-fill: #888888;
-    -fx-font-size: 13px;
-}
-
-.playlist-empty-icon {
-    -fx-font-size: 48px;
-}
-
-.playlist-empty-msg {
-    -fx-text-fill: #666666;
-    -fx-font-size: 16px;
-}
-
 .playlist-empty-songs-icon {
     -fx-font-size: 36px;
-}
-
-.playlist-empty-songs-msg {
-    -fx-text-fill: #666666;
-    -fx-font-size: 14px;
 }

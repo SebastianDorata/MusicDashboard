@@ -33,6 +33,12 @@
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+.txt-white-bld-thirty{
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+
 .txt-white-lg{
     -fx-text-fill: white;
     -fx-font-size: 48px;
@@ -55,25 +61,21 @@
     -fx-text-fill: #b3b3b3;
     -fx-font-size: 13px;
 }
+.txt-grey-md-bld{
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
 
 .padding-btm{
     -fx-padding: 0 0 20 0;
 }
 
-
-
-.cursor{
-    -fx-cursor:hand;
-}
-
-.cursor: hover{
-    -fx-text-fill: #4265c7;
-}
-
-
 .empty-msg{
     -fx-max-width: Infinity;
     -fx-text-overrun: ellipsis;
+    -fx-text-fill: #5C5B5B;
+    -fx-font-size: 16px;
 
 }
 
@@ -91,7 +93,10 @@
    -fx-alignment: center;
    -fx-background-radius: 65;
 }
-
+/**
+ * @used-in
+ *     - DashboardController.createLeftMenu()
+ */
 .green-background{
     -fx-background-color: #4CAF50;
     -fx-background-radius:15;
@@ -111,7 +116,10 @@
     -fx-background-color: #1e1e1e;
 }
 
-
+/**
+ * @used-in
+ *     - AnalyticsController
+ */
 .dark-page-bg {
     -fx-background-color: #121212;
 }
@@ -156,4 +164,8 @@
     -fx-background-color:#4CAF50;
     -fx-padding:20;
     -fx-background-radius:20;
+}
+
+.lt-Green{
+    -fx-background-color:#1DB954;
 }

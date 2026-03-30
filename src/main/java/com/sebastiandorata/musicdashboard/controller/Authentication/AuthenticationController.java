@@ -42,6 +42,7 @@ public class AuthenticationController {
         try {
             scene.getStylesheets().add(getClass().getResource("/login.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/buttons.css").toExternalForm());
         } catch (Exception e) {
             System.out.println("CSS not found, using default styles");
         }
@@ -121,7 +122,7 @@ public class AuthenticationController {
 
     private VBox fieldGroup(String labelText, Control field) {
         Label lbl = new Label(labelText);
-        lbl.getStyleClass().add("login-field-label");
+        lbl.getStyleClass().add("txt-grey-sm-bld");
         VBox group = new VBox(4, lbl, field);
         return group;
     }

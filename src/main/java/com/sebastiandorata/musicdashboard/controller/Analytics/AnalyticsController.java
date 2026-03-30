@@ -21,7 +21,7 @@ import java.time.Year;
 public class AnalyticsController {
 
     @Lazy @Autowired private YearEndReportService yearEndReportService;
-    @Autowired        private DataLoadingService  dataLoadingService;
+    @Autowired private DataLoadingService  dataLoadingService;
 
     private ComboBox<Integer> yearSelector;
     private VBox topSongsList;
@@ -68,7 +68,7 @@ public class AnalyticsController {
         backBtn.setOnAction(e -> MainController.navigateTo("dashboard"));
 
         Label title = new Label("My Reports");
-        title.getStyleClass().add("section-title");
+        title.getStyleClass().add("txt-white-sm-bld");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -102,7 +102,7 @@ public class AnalyticsController {
 
         ScrollPane scrollPane = new ScrollPane(centerContent);
         scrollPane.setFitToWidth(true);
-        scrollPane.getStyleClass().add("scroll-pane");
+        //scrollPane.getStyleClass().add("scroll-pane"); TODO: Add css.
         return scrollPane;
     }
 
@@ -127,7 +127,7 @@ public class AnalyticsController {
     private ComboBox<Integer> createYearSelector() {
         ComboBox<Integer> selector = new ComboBox<>();
         selector.setPrefWidth(150);
-        selector.getStyleClass().add("year-selector");
+        //selector.getStyleClass().add("year-selector");  TODO: Add css.
 
         dataLoadingService.loadAsync(
                 () -> yearEndReportService.getAvailableYears(),
@@ -176,14 +176,14 @@ public class AnalyticsController {
 
     private HBox buildRankRow(int rank, String name) {
         HBox row = new HBox(12);
-        row.getStyleClass().add("analytics-rank-row");
+        //row.getStyleClass().add("analytics-rank-row");  TODO: Add css.
 
         Label rankLbl = new Label(rank + ".");
-        rankLbl.getStyleClass().add("analytics-rank-number");
+        //ankLbl.getStyleClass().add("analytics-rank-number");  TODO: Add css.
         rankLbl.setMinWidth(28);
 
         Label nameLbl = new Label(name != null ? name : "Unknown");
-        nameLbl.getStyleClass().add("analytics-rank-name");
+        //nameLbl.getStyleClass().add("analytics-rank-name");  TODO: Add css.
         HBox.setHgrow(nameLbl, Priority.ALWAYS);
 
         row.getChildren().addAll(rankLbl, nameLbl);

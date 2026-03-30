@@ -135,7 +135,7 @@ public class DashboardLineChartBuilder {
 
     private Label buildSeparator() {
         Label sep = new Label("v");
-        sep.getStyleClass().add("year-header-separator");
+        sep.getStyleClass().add("txt-grey-md");
         return sep;
     }
 }

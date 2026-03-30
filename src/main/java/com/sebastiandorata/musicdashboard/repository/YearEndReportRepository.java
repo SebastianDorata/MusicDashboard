@@ -12,6 +12,9 @@ import java.util.Optional;
 public interface YearEndReportRepository extends JpaRepository<YearEndReport, Long> {
 
     Optional<YearEndReport> findByUserIdAndYear(Long userId, Integer year);
+    //Optional<YearEndReport> findByUserIdAndYear(Long userId, int year);
+
+
 
     List<YearEndReport> findByUserId(Long userId);
 }

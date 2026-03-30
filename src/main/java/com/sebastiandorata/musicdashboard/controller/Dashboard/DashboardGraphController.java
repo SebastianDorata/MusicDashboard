@@ -68,11 +68,11 @@ public class DashboardGraphController extends UIComponent {
     private VBox buildInfoSection() {
         VBox info = new VBox();
         info.getStyleClass().add("graph-info-section");
-        info.setPrefWidth(250);              // optional starting size
+        info.setPrefWidth(250);
         info.setMinWidth(200);
 
         Label header = new Label("All Time Stats");
-        header.getStyleClass().add("graph-info-header");
+        header.getStyleClass().add("txt-white-md-bld");
 
         HBox totalRow = buildTotalHoursRow();
         HBox deltaVsPreviousRow = buildDeltaVsPreviousRow();
@@ -88,10 +88,10 @@ public class DashboardGraphController extends UIComponent {
         row.getStyleClass().add("graph-total-row");
 
         totalHoursValueLabel = new Label("—");
-        totalHoursValueLabel.getStyleClass().add("graph-total-value");
+        totalHoursValueLabel.getStyleClass().add("txt-white-md-bld");
 
         Label hoursUnit = new Label("Hours");
-        hoursUnit.getStyleClass().add("graph-total-unit");
+        hoursUnit.getStyleClass().add("txt-white-md-bld");
 
         row.getChildren().addAll(totalHoursValueLabel, hoursUnit);
         return row;
@@ -103,13 +103,13 @@ public class DashboardGraphController extends UIComponent {
         row.getStyleClass().add("graph-delta-row");
 
         deltaVsPreviousSymbolLabel = new Label("▲");
-        deltaVsPreviousSymbolLabel.getStyleClass().addAll("graph-delta-symbol", "graph-delta-positive");
+        deltaVsPreviousSymbolLabel.getStyleClass().addAll("graph-delta-main", "lt-Green");
 
         deltaVsPreviousValueLabel = new Label("—");
-        deltaVsPreviousValueLabel.getStyleClass().addAll("graph-delta-value", "graph-delta-positive");
+        deltaVsPreviousValueLabel.getStyleClass().addAll("graph-delta-main", "lt-Green");
 
         Label staticText = new Label("hours v last year");
-        staticText.getStyleClass().add("graph-delta-static");
+        staticText.getStyleClass().add("txt-white-sm-bld");
 
         row.getChildren().addAll(deltaVsPreviousSymbolLabel, deltaVsPreviousValueLabel, staticText);
         return row;
@@ -121,13 +121,13 @@ public class DashboardGraphController extends UIComponent {
         row.getStyleClass().add("graph-delta-row");
 
         deltaVsAllTimeSymbolLabel = new Label("▲");
-        deltaVsAllTimeSymbolLabel.getStyleClass().addAll("graph-delta-symbol", "graph-delta-positive");
+        deltaVsAllTimeSymbolLabel.getStyleClass().addAll("graph-delta-main", "lt-Green");
 
         deltaVsAllTimeValueLabel = new Label("—");
-        deltaVsAllTimeValueLabel.getStyleClass().addAll("graph-delta-value", "graph-delta-positive");
+        deltaVsAllTimeValueLabel.getStyleClass().addAll("graph-delta-main", "lt-Green");
 
         Label hoursText = new Label("hours");
-        hoursText.getStyleClass().add("graph-delta-static");
+        hoursText.getStyleClass().add("txt-white-sm-bld");
 
         Label allTimeText = new Label("all time");
         allTimeText.getStyleClass().add("graph-delta-alltime");
@@ -203,35 +203,28 @@ public class DashboardGraphController extends UIComponent {
             // This ensures the legend is completely removed from the chart,
             // overriding any CSS rules that might try to show it.
             chart.setLegendVisible(false);
-            // ──────────────────────────────────────────────────────────
 
             VBox.setVgrow(chart, Priority.ALWAYS);
             chartSection.getChildren().setAll(title, chart);
         });
     }
 
-    // ── Helpers ────────────────────────────────────────────────────
-
-    /**
-     * Applies the correct arrow symbol and colour class to a delta label pair.
-     * Null delta (e.g. no previous year) shows an em-dash with no value.
-     */
     private void applyDelta(Label symbolLabel, Label valueLabel, Integer delta, NumberFormat fmt) {
         if (delta == null) {
             symbolLabel.setText("—");
-            symbolLabel.getStyleClass().setAll("graph-delta-symbol", "graph-delta-neutral");
+            symbolLabel.getStyleClass().setAll("graph-delta-main", "txt-grey-md");
             valueLabel.setText("");
-            valueLabel.getStyleClass().setAll("graph-delta-value", "graph-delta-neutral");
+            valueLabel.getStyleClass().setAll("graph-delta-main", "txt-grey-md");
             return;
         }
 
         boolean positive = delta >= 0;
-        String colourClass = positive ? "graph-delta-positive" : "graph-delta-negative";
+        String colourClass = positive ? "lt-Green" : "graph-delta-negative";
 
         symbolLabel.setText(positive ? "▲" : "▼");
-        symbolLabel.getStyleClass().setAll("graph-delta-symbol", colourClass);
+        symbolLabel.getStyleClass().setAll("graph-delta-main", colourClass);
 
         valueLabel.setText(fmt.format(Math.abs(delta)));
-        valueLabel.getStyleClass().setAll("graph-delta-value", colourClass);
+        valueLabel.getStyleClass().setAll("graph-delta-main", colourClass);
     }
 }

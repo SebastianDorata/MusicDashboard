@@ -5,6 +5,7 @@ import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.PlaybackHistory;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.repository.PlaybackHistoryRepository;
+import com.sebastiandorata.musicdashboard.utils.PlaybackConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,9 @@ public class DailyListeningStatsService {
 
     /**
      * Time Complexity: O(n) where n = plays today
-     * Space Complexity: O(n) for filtering
+     * Space Complexity: O(m) where m = filtered results
+     *
+     * Only counts valid plays (>= 20 seconds) to match analytics consistency.
      */
     public Integer getTodayListeningTimeMinutes() {
         Long userId = userSessionService.getCurrentUserId();
@@ -47,9 +50,10 @@ public class DailyListeningStatsService {
 
         List<PlaybackHistory> todayPlays = getTodayPlaybacks(userId);
 
-        // Sum all durationPlayedSeconds, convert to minutes
+        // Sum all valid plays, convert to minutes
         int totalSeconds = todayPlays.stream()
-                .mapToInt(h -> h.getDurationPlayedSeconds() != null ? h.getDurationPlayedSeconds() : 0)
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
+                .mapToInt(PlaybackHistory::getDurationPlayedSeconds)
                 .sum();
 
         return totalSeconds / 60;
@@ -57,7 +61,9 @@ public class DailyListeningStatsService {
 
     /**
      * Time Complexity: O(n) where n = plays today
-     * Space Complexity: O(n) for filtering
+     * Space Complexity: O(m) where m = filtered results
+     *
+     * Only counts valid sessions (>= 20 seconds) to match analytics consistency.
      */
     public Integer getTodayAverageSessionSeconds() {
         Long userId = userSessionService.getCurrentUserId();
@@ -65,29 +71,25 @@ public class DailyListeningStatsService {
 
         List<PlaybackHistory> todayPlays = getTodayPlaybacks(userId);
 
-        if (todayPlays.isEmpty()) return 0;
+        List<Integer> validSessions = todayPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
+                .map(PlaybackHistory::getDurationPlayedSeconds)
+                .collect(Collectors.toList());
 
-        /**
-         * Only counts sessions with a recorded duration (> 0).
-         * Threshold kept consistent with {@link ArtistListeningTimeService#getTopArtistsAllTime(int)}
-         * and {@link ArtistListeningTimeService#getArtistTotalSeconds(Artist)}
-         */
-        int totalSeconds = todayPlays.stream()
-                .filter(h -> h.getDurationPlayedSeconds() != null && h.getDurationPlayedSeconds() > 0)
-                .mapToInt(PlaybackHistory::getDurationPlayedSeconds)
+        if (validSessions.isEmpty()) return 0;
+
+        int totalSeconds = validSessions.stream()
+                .mapToInt(Integer::intValue)
                 .sum();
 
-        long sessionCount = todayPlays.stream()
-                .filter(h -> h.getDurationPlayedSeconds() != null && h.getDurationPlayedSeconds() > 0)
-                .count();
-
-        if (sessionCount == 0) return 0;
-        return (int) (totalSeconds / sessionCount);
+        return totalSeconds / validSessions.size();
     }
 
     /**
      * Time Complexity: O(n log n) for sorting via max()
      * Space Complexity: O(n) for grouping map
+     *
+     * Only considers valid plays.
      */
     public Song getTodayTopSong() {
         Long userId = userSessionService.getCurrentUserId();
@@ -96,6 +98,7 @@ public class DailyListeningStatsService {
         List<PlaybackHistory> todayPlays = getTodayPlaybacks(userId);
 
         return todayPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
                 .collect(Collectors.groupingBy(PlaybackHistory::getSong, Collectors.counting()))
                 .entrySet().stream()
                 .max(Map.Entry.comparingByValue())
@@ -106,6 +109,8 @@ public class DailyListeningStatsService {
     /**
      * Time Complexity: O(n log n) for sorting via max()
      * Space Complexity: O(n) for grouping map
+     *
+     * Only considers valid plays.
      */
     public Album getTodayTopAlbum() {
         Long userId = userSessionService.getCurrentUserId();
@@ -114,6 +119,7 @@ public class DailyListeningStatsService {
         List<PlaybackHistory> todayPlays = getTodayPlaybacks(userId);
 
         return todayPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
                 .map(h -> h.getSong().getAlbum())
                 .filter(album -> album != null)  // Skip songs without albums
                 .collect(Collectors.groupingBy(a -> a, Collectors.counting()))
@@ -126,6 +132,8 @@ public class DailyListeningStatsService {
     /**
      * Time Complexity: O(n log n) for sorting
      * Space Complexity: O(n)
+     *
+     * Only considers valid plays.
      */
     public Artist getTodayTopArtist() {
         Long userId = userSessionService.getCurrentUserId();
@@ -134,6 +142,7 @@ public class DailyListeningStatsService {
         List<PlaybackHistory> todayPlays = getTodayPlaybacks(userId);
 
         return todayPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
                 .flatMap(h -> h.getSong().getArtists().stream())
                 .collect(Collectors.groupingBy(a -> a, Collectors.counting()))
                 .entrySet().stream()
@@ -145,6 +154,8 @@ public class DailyListeningStatsService {
     /**
      * Time Complexity: O(n log n) for sorting via max()
      * Space Complexity: O(n) for grouping map
+     *
+     * Only considers valid plays.
      */
     public Song getWeeklyTopSong() {
         Long userId = userSessionService.getCurrentUserId();
@@ -153,6 +164,7 @@ public class DailyListeningStatsService {
         List<PlaybackHistory> weeklyPlays = getWeeklyPlaybacks(userId);
 
         return weeklyPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
                 .collect(Collectors.groupingBy(PlaybackHistory::getSong, Collectors.counting()))
                 .entrySet().stream()
                 .max(Map.Entry.comparingByValue())
@@ -163,6 +175,8 @@ public class DailyListeningStatsService {
     /**
      * Time Complexity: O(n log n) for sorting via max()
      * Space Complexity: O(n) for grouping map
+     *
+     * Only considers valid plays.
      */
     public Album getWeeklyTopAlbum() {
         Long userId = userSessionService.getCurrentUserId();
@@ -171,6 +185,7 @@ public class DailyListeningStatsService {
         List<PlaybackHistory> weeklyPlays = getWeeklyPlaybacks(userId);
 
         return weeklyPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
                 .map(h -> h.getSong().getAlbum())
                 .filter(album -> album != null)  // Skip songs without albums
                 .collect(Collectors.groupingBy(a -> a, Collectors.counting()))
@@ -183,6 +198,8 @@ public class DailyListeningStatsService {
     /**
      * Time Complexity: O(n log n) for sorting via max()
      * Space Complexity: O(n) for grouping map
+     *
+     * Only considers valid plays.
      */
     public Artist getWeeklyTopArtist() {
         Long userId = userSessionService.getCurrentUserId();
@@ -191,6 +208,7 @@ public class DailyListeningStatsService {
         List<PlaybackHistory> weeklyPlays = getWeeklyPlaybacks(userId);
 
         return weeklyPlays.stream()
+                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
                 .flatMap(h -> h.getSong().getArtists().stream())
                 .collect(Collectors.groupingBy(a -> a, Collectors.counting()))
                 .entrySet().stream()
