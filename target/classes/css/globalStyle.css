@@ -1,0 +1,265 @@
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL STYLES
+   Shared across all pages. No page-specific rules here.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Root ──────────────────────────────────────────────────── */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #1e1e1e, #2a2a2a);
+}
+
+/* ─── Text — White ──────────────────────────────────────────── */
+.txt-white {
+    -fx-text-fill: white;
+}
+.txt-white-sm {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+}
+.txt-white-sm-bld {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.txt-white-ttl-bld {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.95;
+    -fx-underline:true;
+}
+.wt-smmd-bld {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+.txt-white-md {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+}
+.txt-white-md-bld {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.txt-white-bld-thirty {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+.txt-white-bld-forty{
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+}
+.txt-white-lg {
+    -fx-text-fill: white;
+    -fx-font-size: 48px;
+}
+.txt-Scale {
+    -fx-font-size: 1.2em;
+    -fx-wrap-text: true;
+    -fx-text-overrun: ELLIPSIS;
+}
+.txt-centre-underline {
+    -fx-underline: true;
+    -fx-alignment: center;
+}
+
+/* ─── Text — Grey ───────────────────────────────────────────── */
+.txt-grey-sm {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 11px;
+}
+.txt-grey-sm-normal {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 11px;
+    -fx-font-weight: normal;
+    -fx-min-width: 25;
+}
+.txt-grey-sm-bld {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.txt-grey-md {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 13px;
+}
+.txt-grey-md-bld {
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ─── Text — Black ──────────────────────────────────────────── */
+.txt-black-sm {
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+}
+
+/* ─── Text — Accent colours ─────────────────────────────────── */
+.Green-Secondary-txt-bld {
+    -fx-font-size: 12px;
+    -fx-text-fill: #1db954;
+    -fx-font-weight: bold;
+}
+.txt-Red-md-bld {
+    -fx-text-fill: #c41e3a;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.txt-Orange-md-bld {
+    -fx-text-fill: #D6790D;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.txt-bbBlue-md-bld {
+    -fx-text-fill: #00d4ff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* ─── Background colours ────────────────────────────────────── */
+.Dark-page-bg {
+    -fx-background-color: #121212;
+}
+.dark-page-bg {
+    -fx-background-color: #1a1a1a;
+}
+.main-bkColour {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #404040;
+}
+.blue-background {
+    -fx-background-color: #1f3a3f;
+    -fx-border-color: #3a6f78;
+}
+.light-grey-background {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: #404040;
+}
+.trans-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.Red-background {
+    -fx-background-color: #c41e3a;
+}
+.Green-Primary {
+    -fx-background-color: #4CAF50;
+}
+.Green-Secondary {
+    -fx-background-color: #1DB954;
+}
+.Dark-blue-background {
+    -fx-background-color: #0d2342;
+}
+.Dark-blue-background-secondary {
+    -fx-background-color: #1A3A52;
+}
+.Purple-background {
+    -fx-background-color: #0a0e27;
+}
+.header-background {
+    -fx-background-color: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-background-radius: 0 20 20 0;
+    -fx-border-radius: 0 20 20 0;
+    -fx-border-color: rgba(76,175,80,0.45);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.25), 20, 0.15, 4, 0);
+}
+
+/* ─── Border colours ────────────────────────────────────────── */
+.Green-Primary-boarder {
+    -fx-border-color: #4CAF50;
+}
+.Green-Secondary-boarder {
+    -fx-border-color: #1DB954;
+}
+
+/* ─── Cursor ────────────────────────────────────────────────── */
+/* Used: PlaybackPanelController.createPlayerControls() */
+.Cursor {
+    -fx-cursor: hand;
+}
+/* Used: TopArtistController.buildArtistRow(), CardFactory.setupLabel() */
+.Cursor-Hand {
+    -fx-cursor: hand;
+}
+.Cursor-Hand:hover {
+    -fx-text-fill: #1db954;
+    -fx-underline: true;
+}
+
+/* ─── Album art ─────────────────────────────────────────────── */
+.album-art-container {
+    -fx-background-color: linear-gradient(to bottom right, #1a2a4a, #0d1f3c);
+    -fx-background-radius: 20 0 0 20;
+}
+.album-art-placeholder {
+    -fx-font-size: 36px;
+    -fx-text-fill: rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Misc layout helpers ───────────────────────────────────── */
+.empty-msg {
+    -fx-max-width: Infinity;
+    -fx-text-overrun: ellipsis;
+}
+.radius-padding-twenty {
+    -fx-border-radius: 0 20 20 0;
+    -fx-background-radius: 0 20 20 0;
+    -fx-padding: 20;
+    -fx-spacing:20;
+}
+.padding-btm {
+    -fx-padding: 0 0 40 0;
+}
+.cntr-spc-sm {
+    -fx-alignment: center;
+    -fx-spacing: 12;
+}
+
+/* ─── Drop zone (Import page) ───────────────────────────────── */
+.dropZone {
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-background-color: #1e1e1e;
+    -fx-background-radius: 15;
+}
+.dropZone:hover {
+    -fx-border-color: #1DB954;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-background-color: #1a2e1a;
+    -fx-background-radius: 15;
+}
+
+/* ─── Scroll bars ───────────────────────────────────────────── */
+.scroll-pane {
+    -fx-background-color: #121212;
+}
+.scroll-pane .viewport {
+    -fx-background-color: #121212;
+}
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #404040;
+    -fx-background-radius: 5;
+}
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #606060;
+}
+
+/* ─── Tooltip ───────────────────────────────────────────────── */
+.tooltip {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px;
+}
