@@ -1,18 +1,29 @@
 package com.sebastiandorata.musicdashboard.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * JPA entity representing a music album.
+ *
+ * <p>Holds the title, optional release year, and album art file path.
+ * Owns a one-to-many relationship to its {@link Song songs} and a
+ * many-to-many relationship to its {@link Artist artists} via the
+ * {@code album_artists} join table.</p>
+ */
 @Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "albums")
 public class Album {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "album_id")

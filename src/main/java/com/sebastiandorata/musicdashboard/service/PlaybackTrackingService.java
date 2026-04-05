@@ -55,12 +55,10 @@ public class PlaybackTrackingService {
         history.setCompleted(false);
         PlaybackHistory saved = playbackHistoryRepository.save(history);
         currentPlaybackId = saved.getPlaybackId();
-        /** Bug fix. Originally recordPlay() saves to the DB but throws away the returned entity,
-         * so currentPlaybackId stays null forever. Then when updateCurrentPlayDuration() is called,
-         * it hits the null check and immediately returns, doing nothing.
-         * The solution now captures the saved entity's ID
-         */
-
+// Bug fix. Originally recordPlay() saves to the DB but throws away the returned entity,
+// so currentPlaybackId stays null forever. Then when updateCurrentPlayDuration() is called,
+//it hits the null check and immediately returns, doing nothing.
+//The solution now captures the saved entity's ID
         song.setListenCount((song.getListenCount() != null ? song.getListenCount() : 0) + 1);
         songRepository.save(song);
     }

@@ -1,13 +1,24 @@
 package com.sebastiandorata.musicdashboard.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * JPA entity recording a single playback event.
+ *
+ * <p>Stores the {@link User}, the {@link Song} played, the wall-clock
+ * timestamp ({@code played_at}), the duration played in seconds, and
+ * whether the song was played to completion. Composite indexes on
+ * (user_id, played_at) and (song_id, played_at) accelerate the analytics
+ * queries that filter by user and date range.</p>
+ */
 @Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "playback_history", indexes = {
         @Index(name = "idx_user_played_at", columnList = "user_id, played_at"),
@@ -15,6 +26,7 @@ import java.time.LocalDateTime;
 })
 public class PlaybackHistory {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "playback_id")

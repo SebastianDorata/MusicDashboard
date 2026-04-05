@@ -1,18 +1,28 @@
 package com.sebastiandorata.musicdashboard.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * JPA entity representing a user-created playlist.
+ *
+ * <p>Stores the playlist name, optional description, creation timestamp,
+ * and public/private visibility flag. Songs are linked via the
+ * {@code playlist_songs} join table (many-to-many, EAGER fetch).</p>
+ */
 @Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "playlists")
 public class Playlist {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "playlist_id")

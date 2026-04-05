@@ -9,6 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Spring Data JPA repository for {@link Favourite} entities.
+ *
+ * <p>Provides methods to retrieve all favourites for a user, check whether
+ * a specific song is already favourited, and fetch the exact
+ * {@link Favourite} record for toggling or deletion.</p>
+ */
 @Repository
 public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
 

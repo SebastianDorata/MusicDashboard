@@ -36,7 +36,7 @@ public class MusicPlayerService {
     @Getter
     private Song currentSong;
 
-    // Controllers listen to this to update UI when song changes
+    // Controllers listen to update UI when song changes
     private final ObjectProperty<Song> currentSongProperty = new SimpleObjectProperty<>();
 
     private final ReadOnlyObjectWrapper<Duration> currentTime = new ReadOnlyObjectWrapper<>(Duration.ZERO);
@@ -155,10 +155,13 @@ public class MusicPlayerService {
         playbackTrackingTimer.play();
     }
 
+    /**
+     *Check if we need to record playback when skipping.
+     *hasBeenTracked means recordPlay() already fired at the 20s mark,
+     *so we just update the duration on that existing record.
+     */
     private void recordPlayIfNeeded() {
-        // Check if we need to record playback when skipping.
-        // hasBeenTracked means recordPlay() already fired at the 20s mark,
-        // so we just update the duration on that existing record.
+
         if (!hasBeenTracked && currentSong != null && mediaPlayer != null && !songEnded) {
             int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
             if (secondsPlayed >= 20) {

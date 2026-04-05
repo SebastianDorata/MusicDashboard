@@ -13,7 +13,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+/**
+ * Manages the current user's favourited songs.
+ *
+ * <p>Provides add, remove, toggle, and query operations. All methods
+ * resolve the current user from {@link UserSessionService} and delegate
+ * persistence to {@link FavouriteRepository}.
+ * Throws {@link IllegalStateException} if no user is logged in, and
+ * {@link IllegalArgumentException} for duplicate add or missing-song
+ * remove attempts.</p>
+ */
 @Service
 public class FavouriteService {
 

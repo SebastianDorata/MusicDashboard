@@ -8,14 +8,23 @@ import javafx.scene.layout.GridPane;
 
 import java.time.LocalDateTime;
 
+/**
+ * Shared utility methods and application-wide constants.
+ * <p>Contains:
+ * <ul>
+ *   <li>Application window dimension constants</li>
+ *   <li>Time and duration formatting helpers</li>
+ *   <li>JavaFX dialog construction helpers</li>
+ *   <li>Error display helper</li>
+ *   <li>Album art {@link ImageView} builder</li>
+ *   <li>Structured error logging</li>
+ * </ul>
+ */
 public class AppUtils {
 
     public static final int APP_WIDTH  = 1800;
     public static final int APP_HEIGHT = 1200;
 
-    // ── Time formatting ───────────────────────────────────────────
-
-    // Formats a LocalDateTime as "3m ago"
     public static String formatRelativeTime(LocalDateTime time) {
         if (time == null) return "";
         long minutes = java.time.Duration.between(time, LocalDateTime.now()).toMinutes();
@@ -34,7 +43,6 @@ public class AppUtils {
         return String.format("%d:%02d", mins, secs);
     }
 
-    // Formats a duration in seconds as "3:45"
     public static String formatDuration(Integer seconds) {
         if (seconds == null || seconds <= 0) return "--:--";
         return String.format("%d:%02d", seconds / 60, seconds % 60);
@@ -53,7 +61,7 @@ public class AppUtils {
     public static void styleDialog(Dialog<?> dialog) {
         try {
             dialog.getDialogPane().getStylesheets()
-                    .add(AppUtils.class.getResource("/globalStyle.css").toExternalForm());
+                    .add(AppUtils.class.getResource("/css/globalStyle.css").toExternalForm());
         } catch (Exception ignored) {}
     }
 
@@ -65,8 +73,6 @@ public class AppUtils {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 
 
     public static ImageView buildAlbumArt(int size) {
@@ -83,11 +89,5 @@ public class AppUtils {
         if (exception != null) exception.printStackTrace();
     }
 
-    public static void logError(String componentName, String message) {
-        logError(componentName, message, null);
-    }
 
-    public static void logInfo(String componentName, String message) {
-        System.out.println("[" + componentName + "] " + message);
-    }
 }

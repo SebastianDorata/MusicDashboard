@@ -10,7 +10,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Thin facade for song, album, and artist retrieval.
+ *
+ * <p>Delegates to the underlying repositories and {@link SongImportService}.
+ * Also resolves the complete album list for an artist, falling back from
+ * the artist's direct {@code albums} relationship to albums inferred
+ * across the artist's songs when no direct relationship exists.</p>
+ */
 @Service
 public class LibraryService {
 
@@ -19,7 +26,7 @@ public class LibraryService {
     @Autowired
     private ArtistRepository artistRepository;
     @Autowired
-    private SongService      songService;
+    private SongImportService      songService;
 
     public List<Song>   getAllSongs()    { return songService.getAllSongs(); }
     public List<Album>  getAllAlbums()   { return albumRepository.findAll(); }

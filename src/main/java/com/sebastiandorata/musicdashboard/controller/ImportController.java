@@ -13,7 +13,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,24 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for the Import page.
+ *
+ * <p>Provides a drag-and-drop zone for importing music files into the library.
+ * Folders are supported and recursively scanned for supported audio files.
+ *
+ * <p>The import process runs on a background thread via {@link ImportService},
+ * with progress and completion callbacks dispatched back to the JavaFX thread
+ * via {@link javafx.application.Platform#runLater(Runnable)}.
+ *
+ * <p>UI state during import:
+ * <ul>
+ *   <li>A {@link ProgressBar} shows per-file progress.</li>
+ *   <li>A count label shows "Importing X / Y".</li>
+ *   <li>A status label shows the current file name.</li>
+ *   <li>On completion, a summary of imported, skipped, and failed counts is shown.</li>
+ * </ul>
+ */
 @Component
 public class ImportController {
 
@@ -31,7 +49,6 @@ public class ImportController {
     private Label statusLabel;
     private Label countLabel;
     private ProgressBar progressBar;
-    private Button backBtn;
     private VBox dropZone;
 
     @PostConstruct
@@ -40,12 +57,16 @@ public class ImportController {
     }
 
     public void show() {
-        Scene scene = createScene();
+        Scene scene = this.createScene();
+
         try {
-            scene.getStylesheets().add(getClass().getResource("/globalStyle.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/globalStyle.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/buttons.css").toExternalForm());
+
         } catch (Exception e) {
-            System.out.println("CSS not found");
+            System.out.println("CSS not found: " + e.getMessage());
         }
+
         MainController.switchViews(scene);
     }
 
@@ -53,17 +74,21 @@ public class ImportController {
         VBox root = new VBox(25);
             root.setAlignment(Pos.TOP_CENTER);
             root.setPadding(new Insets(30));
-            root.getStyleClass().add("main-bkColour");
+            root.getStyleClass().add("header-background");
+        StackPane header = new StackPane();
+        header.setMaxWidth(Double.MAX_VALUE);
 
-            backBtn = new Button("Home");
-            backBtn.getStyleClass().add("btn-blue");
-            backBtn.setOnAction(e -> MainController.navigateTo("dashboard"));
+        Button homeBtn = new Button("← Dashboard");
+        homeBtn.getStyleClass().addAll("nav-btn-back", "txt-white-md-bld");
+        homeBtn.setOnAction(e -> MainController.navigateTo("dashboard"));
+        StackPane.setAlignment(homeBtn, Pos.CENTER_LEFT);
 
-            Label title = new Label("Import Music");
-                title.getStyleClass().add("section-title");
+        Label title = new Label("My Library");
+        title.getStyleClass().addAll("txt-white-bld-forty", "txt-centre-underline");
+        StackPane.setAlignment(title, Pos.CENTER);
 
-            HBox header = new HBox(20, backBtn, title);
-                header.setAlignment(Pos.CENTER_LEFT);
+        header.getChildren().addAll(homeBtn, title);
+        root.getChildren().add(header);
 
                 dropZone = new VBox(15);
                 dropZone.setAlignment(Pos.CENTER);
@@ -89,7 +114,7 @@ public class ImportController {
                 progressBar.setPrefWidth(700);
                 progressBar.setVisible(false);
 
-        root.getChildren().addAll(header, dropZone, progressBar, countLabel, statusLabel);
+        root.getChildren().addAll(dropZone, progressBar, countLabel, statusLabel);
         return new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
@@ -136,15 +161,11 @@ public class ImportController {
 
     private void beginImport(List<File> files) {
         int total = files.size();
-
-        // Set up the UI before handing off to the service
         progressBar.setVisible(true);
         progressBar.setProgress(0);
         countLabel.setText("Importing 0 / " + total);
         statusLabel.setText("Starting import...");
-        backBtn.setDisable(true);
 
-        // Hand off all logic to the service, passing UI callbacks wrapped in Platform.runLater
         importService.startImport(
                 files,
 
@@ -162,8 +183,10 @@ public class ImportController {
                             + skipped + " skipped, "
                             + failed + " failed");
                     statusLabel.setText("Import complete.");
-                    backBtn.setDisable(false);
+                    //backBtn.setDisable(false);
                 })
         );
     }
+
+
 }

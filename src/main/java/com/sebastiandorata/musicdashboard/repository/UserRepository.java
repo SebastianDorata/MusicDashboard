@@ -4,7 +4,13 @@ import com.sebastiandorata.musicdashboard.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
-
+/**
+ * Spring Data JPA repository for {@link User} entities.
+ *
+ * <p>Provides finders and existence checks by email and username, used
+ * during login (find by email or username) and registration (check for
+ * duplicates before creating a new account).</p>
+ */
 public interface UserRepository extends JpaRepository <User, Long>{
 
     Optional<User> findByEmail(String email);

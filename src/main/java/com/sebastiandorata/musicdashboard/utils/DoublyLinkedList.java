@@ -33,6 +33,14 @@ public class DoublyLinkedList<T> {
         this.size = 0;
     }
 
+    /**
+     * Appends {@code value} to the tail of the list.
+     *
+     * <p>Time Complexity: O(1)
+     * Space Complexity: O(1)
+     *
+     * @param value the value to append
+     */
     public void add(T value) {
         Node<T> newNode = new Node<>(value);
         if (isEmpty()) {
@@ -45,6 +53,14 @@ public class DoublyLinkedList<T> {
         size++;
     }
 
+    /**
+     * Prepends {@code value} to the head of the list.
+     *
+     * <p>Time Complexity: O(1)
+     * Space Complexity: O(1)
+     *
+     * @param value the value to prepend
+     */
     public void addFirst(T value) {
         Node<T> newNode = new Node<>(value);
         if (isEmpty()) {
@@ -57,6 +73,16 @@ public class DoublyLinkedList<T> {
         size++;
     }
 
+    /**
+     * Returns the element at the given index using bidirectional traversal.
+     * Traversal starts from the head if {@code index < size / 2},
+     * or from the tail otherwise.
+     *
+     * <p>Time Complexity: O(n) worst case; O(n/2) average
+     *
+     * @param index the zero-based index of the element to retrieve
+     * @return the element at {@code index}, or {@code null} if out of bounds
+     */
     public T get(int index) {
         if (index < 0 || index >= size) return null;
 
@@ -75,10 +101,24 @@ public class DoublyLinkedList<T> {
         return current.value;
     }
 
+    /**
+     * Returns the first element in the list without removing it.
+     *
+     * <p>Time Complexity: O(1)
+     *
+     * @return the head element, or {@code null} if the list is empty
+     */
     public T getFirst() {
         return isEmpty() ? null : head.value;
     }
 
+    /**
+     * Returns the last element in the list without removing it.
+     *
+     * <p>Time Complexity: O(1)
+     *
+     * @return the tail element, or {@code null} if the list is empty
+     */
     public T getLast() {
         return isEmpty() ? null : tail.value;
     }
@@ -108,6 +148,14 @@ public class DoublyLinkedList<T> {
         return window;
     }
 
+    /**
+     * Removes and returns the first element in the list.
+     *
+     * <p>Time Complexity: O(1)
+     * Space Complexity: O(1)
+     *
+     * @return the removed head element, or {@code null} if the list is empty
+     */
     public T removeFirst() {
         if (isEmpty()) return null;
 
@@ -122,6 +170,14 @@ public class DoublyLinkedList<T> {
         return value;
     }
 
+    /**
+     * Removes and returns the last element in the list.
+     *
+     * <p>Time Complexity: O(1)
+     * Space Complexity: O(1)
+     *
+     * @return the removed tail element, or {@code null} if the list is empty
+     */
     public T removeLast() {
         if (isEmpty()) return null;
 
@@ -136,14 +192,27 @@ public class DoublyLinkedList<T> {
         return value;
     }
 
-    public int size() {
-        return size;
-    }
 
+    /**
+     * Returns {@code true} if the list contains no elements.
+     *
+     * <p>Time Complexity: O(1)
+     *
+     * @return {@code true} if the list is empty
+     */
     public boolean isEmpty() {
         return size == 0;
     }
 
+    /**
+     * Returns {@code true} if the list contains an element equal to
+     * {@code value} according to {@link Object#equals(Object)}.
+     *
+     * <p>Time Complexity: O(n)
+     *
+     * @param value the value to search for
+     * @return {@code true} if a matching element is found
+     */
     public boolean contains(T value) {
         Node<T> current = head;
         while (current != null) {
@@ -155,6 +224,14 @@ public class DoublyLinkedList<T> {
         return false;
     }
 
+    /**
+     * Returns all elements as a new {@link java.util.List} in head-to-tail order.
+     *
+     * <p>Time Complexity: O(n)
+     * Space Complexity: O(n)
+     *
+     * @return a {@link java.util.List} containing all elements in order
+     */
     public List<T> toList() {
         List<T> result = new ArrayList<>();
         Node<T> current = head;

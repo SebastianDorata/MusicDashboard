@@ -1,21 +1,33 @@
 package com.sebastiandorata.musicdashboard.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * JPA entity that persists a pre-computed weekly listening summary for one user.
+ *
+ * <p>Stores the total songs played, total listening minutes, and the top
+ * {@link Song}, {@link Artist}, album {@link Song}, and {@link Genre} for
+ * the requested ISO week. A unique constraint on
+ * (user_id, year, week_of_year) prevents duplicate reports.</p>
+ */
 @Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "weekly_reports", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "year", "week_of_year"})
 })
 public class WeeklyReport {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "report_id")
     private Long reportId;
 
     @ManyToOne

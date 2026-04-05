@@ -1,17 +1,28 @@
 package com.sebastiandorata.musicdashboard.entity;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * JPA entity for the offline action queue.
+ *
+ * <p>Stores a pending operation (action type and JSON-serialised payload),
+ * its current status ({@code pending}, {@code synced}, {@code failed}),
+ * and the timestamps for creation and last sync. Intended for future
+ * multi-device sync support.</p>
+ */
 @Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "sync_queue")
 public class SyncQueueEntry {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sync_id")

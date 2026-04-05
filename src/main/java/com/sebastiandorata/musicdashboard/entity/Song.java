@@ -2,21 +2,33 @@ package com.sebastiandorata.musicdashboard.entity;
 
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * JPA entity representing a music track.
+ *
+ * <p>Stores the title, absolute file path, and full audio metadata
+ * (duration, format, codec, bit rate, sample rate, channels, file size,
+ * track number). Also maintains playback statistics: listen count and
+ * date first listened. Participates in many-to-many relationships with
+ * {@link Artist artists} and {@link Genre genres}, and a many-to-one
+ * relationship with its {@link Album}.</p>
+ */
 @Setter
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "songs")
 public class Song {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "song_id")
     private Long songID;
 

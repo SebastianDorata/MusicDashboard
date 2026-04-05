@@ -12,6 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+/**
+ * Generates and persists monthly listening reports for the current user.
+ *
+ * <p>Filters the full playback history to the requested year and month,
+ * then computes total songs played, total listening minutes, and the top
+ * song, artist, album, and genre. Uses {@code SERIALIZABLE} transaction
+ * isolation with a {@link org.springframework.dao.DataIntegrityViolationException}
+ * catch to prevent duplicate reports under concurrent access (TOCTOU).</p>
+ *
+ * <p>Time Complexity: O(n) where n = playback history entries for the month</p>
+ */
 
 @Service
 public class MonthlyReportService {
@@ -32,10 +43,10 @@ public class MonthlyReportService {
      * Returns an existing monthly report for the current user, year, and month,
      * or generates a new one if none exists.
      *
-     * Uses SERIALIZABLE isolation to prevent race conditions during generation.
+     * <p>Uses SERIALIZABLE isolation to prevent race conditions during generation.</p>
      *
-     * Time Complexity: O(n) where n = playback history for the month
-     * Space Complexity: O(n) for filtering
+     * <p>Time Complexity: O(n) where n = playback history for the month.</p>
+     * <p>Space Complexity: O(n) for filtering.</p>
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public MonthlyReport getOrGenerateMonthlyReport(int year, int month) {
