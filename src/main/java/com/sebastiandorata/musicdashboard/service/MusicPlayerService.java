@@ -114,7 +114,7 @@ public class MusicPlayerService {
                 // Update the existing record with the full song duration instead of creating a new one
                 if (currentSong != null) {
                     playbackTrackingService.updateCurrentPlayDuration(
-                            (int) mediaPlayer.getTotalDuration().toSeconds());
+                            (int) mediaPlayer.getTotalDuration().toSeconds(), true);
                     hasBeenTracked = true;
                 }
 
@@ -166,7 +166,7 @@ public class MusicPlayerService {
             int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
             if (secondsPlayed >= 20) {
                 // Update the existing record rather than creating a new one
-                playbackTrackingService.updateCurrentPlayDuration(secondsPlayed);
+                playbackTrackingService.updateCurrentPlayDuration(secondsPlayed, false);
                 hasBeenTracked = true;
             }
         }
@@ -198,7 +198,7 @@ public class MusicPlayerService {
         if (!isNaturalSongEnd && !hasBeenTracked && currentSong != null && mediaPlayer != null) {
             int secondsPlayed = (int) mediaPlayer.getCurrentTime().toSeconds();
             if (secondsPlayed >= 20) {
-                playbackTrackingService.updateCurrentPlayDuration(secondsPlayed);
+                playbackTrackingService.updateCurrentPlayDuration(secondsPlayed, false);
                 hasBeenTracked = true;
             }
         }

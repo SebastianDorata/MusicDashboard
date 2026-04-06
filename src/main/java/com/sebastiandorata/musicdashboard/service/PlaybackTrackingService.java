@@ -72,11 +72,12 @@ public class PlaybackTrackingService {
         return playbackHistoryRepository.findByUserIdOrderByPlayedAtDesc(userId);
     }
 
-    public void updateCurrentPlayDuration(Integer durationPlayedSeconds) {
+    public void updateCurrentPlayDuration(Integer durationPlayedSeconds, boolean completed) {
         if (currentPlaybackId == null) return;
 
         playbackHistoryRepository.findById(currentPlaybackId).ifPresent(history -> {
             history.setDurationPlayedSeconds(durationPlayedSeconds);
+            history.setCompleted(completed); //set autoplayed songs to true for completion
             playbackHistoryRepository.save(history);
         });
 
