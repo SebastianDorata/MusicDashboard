@@ -127,7 +127,14 @@ public class SongImportService {
 
         // Artists
         String artistName = getTagValue(tag, FieldKey.ARTIST, "Unknown Artist");
-        song.setArtists(resolveArtists(artistName));
+        List<Artist> artists = resolveArtists(artistName);
+        song.setArtists(artists);
+        for (Artist artist : artists) {
+            if (!album.getArtists().contains(artist)) {
+                album.getArtists().add(artist);
+            }
+        }
+        albumRepository.save(album);
 
         // Genres
         String genreName = getTagValue(tag, FieldKey.GENRE, "Unknown");
