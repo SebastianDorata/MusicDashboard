@@ -20,6 +20,7 @@
 | Lombok | - | Reduces boilerplate code |
 | [jaudiotagger](https://github.com/RouHim/jaudiotagger) | 2.0.16 | Reading audio file metadata (artist, album, track info) |
 | PostgreSQL | 18 | Relational database |
+\
 Separating the application into distinct layers ensures each part of the system has a single, well-defined responsibility, making the codebase easier to navigate, debug, and extend without risking breaks to the underlying database logic.
 
 ---
