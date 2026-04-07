@@ -45,17 +45,17 @@
 
 .txt-white-bld-thirty {
     -fx-text-fill: white;
-    -fx-font-size: 30px;
+    -fx-font-size: 23px;
     -fx-font-weight: bold;
 }
 .txt-white-bld-forty{
     -fx-text-fill: white;
-    -fx-font-size: 30px;
+    -fx-font-size: 25px;
     -fx-font-weight: bold;
 }
 .txt-white-lg {
     -fx-text-fill: white;
-    -fx-font-size: 48px;
+    -fx-font-size: 40px;
 }
 .txt-Scale {
     -fx-font-size: 1.2em;
@@ -215,7 +215,7 @@
     -fx-spacing:20;
 }
 .padding-btm {
-    -fx-padding: 0 0 40 0;
+    -fx-padding: 0 0 20 0;
 }
 .cntr-spc-sm {
     -fx-alignment: center;

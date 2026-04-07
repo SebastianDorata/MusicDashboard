@@ -91,6 +91,7 @@ public class DashboardController {
         root.setLeft(left);
         root.setCenter(center);
         root.setRight(right);
+        //BorderPane.setVgrow(right, Priority.ALWAYS);
 
         return new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
@@ -149,8 +150,8 @@ public class DashboardController {
     private VBox createCenterMenu() {
         VBox center = new VBox(20);
         center.setPadding(new Insets(20));
-
         center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        center.setFillWidth(true);
 
         // Artist click navigates to My Library showing that artist's discography
         HBox playbackPanel = playbackPanelController.createPanel(
@@ -176,7 +177,10 @@ public class DashboardController {
 
         playbackPanel.setMaxWidth(Double.MAX_VALUE);
         cards.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(cards, Priority.ALWAYS);
+
         graphPanel.setMaxWidth(Double.MAX_VALUE);
+        graphPanel.setMinHeight(200);
 
         VBox.setVgrow(graphPanel, Priority.ALWAYS);
         graphPanel.setMaxHeight(Double.MAX_VALUE);
@@ -190,6 +194,9 @@ public class DashboardController {
         VBox right = new VBox(10);
         right.setStyle("-fx-padding: 10px");
         right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
+        right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
+        right.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(right, Priority.ALWAYS);
 
         // Artist click navigates to My Library showing that artist's discography
         VBox topArtistsPanel = topArtistsController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback());

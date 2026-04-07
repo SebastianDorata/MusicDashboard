@@ -55,7 +55,8 @@ public class TopArtistsController extends UIComponent {
     public VBox createPanel(Consumer<Artist> onArtistClicked) {
         VBox topArtist = new VBox(0);
         topArtist.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-        topArtist.setPrefHeight(AppUtils.APP_HEIGHT * 0.38);
+        topArtist.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(topArtist, Priority.SOMETIMES);
         topArtist.getStyleClass().addAll("top-artists-panel","panels");
 
         Label title = new Label("Top 5 Artists All-Time");

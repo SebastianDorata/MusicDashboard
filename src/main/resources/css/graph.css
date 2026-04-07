@@ -6,12 +6,12 @@
 
     .graph-info-section {/* Left 25% DashboardGraphController.buildInfoSection()*/
         -fx-padding: 20;
-        -fx-spacing: 50;
+        -fx-spacing: 20;
         /*-fx-border-color: red;*/
     }
 
     .graph-chart-section {/* Right 75% DashboardGraphController.buildChartSection())*/
-        -fx-padding: 30 0 0 0;
+        -fx-padding: 10 0 0 0;
         -fx-border-radius:20;
         /*-fx-border-color: red;*/
 
@@ -51,7 +51,7 @@
 
 .graph-delta-row {
     -fx-alignment: center-left;
-    -fx-padding: 4 0 0 0;
+    -fx-padding: 2 0 0 0;
     -fx-spacing: 4;
 }
 
@@ -64,7 +64,7 @@
 
 .graph-total-row {
     -fx-alignment: center-left;
-    -fx-padding: 18 0 6 0;
+    -fx-padding: 6 0 4 0;
 
 }
 .year-comparison-header {

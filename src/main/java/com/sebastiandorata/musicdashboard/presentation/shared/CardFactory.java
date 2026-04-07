@@ -75,7 +75,11 @@ public class CardFactory extends UIComponent {
         for (VBox card : new VBox[]{card1, card2, card3, card4, card5}) {
             HBox.setHgrow(card, Priority.ALWAYS);
             card.setMaxWidth(Double.MAX_VALUE);
+            card.setPrefWidth(0);
         }
+        cards.setMaxWidth(Double.MAX_VALUE);
+        cards.setFillHeight(true);
+        HBox.setHgrow(cards, Priority.ALWAYS);
         cards.getChildren().addAll(card1, card2, card3, card4, card5);
 
         // Refresh, always works on the labels above
@@ -111,59 +115,62 @@ public class CardFactory extends UIComponent {
     private VBox createCombinedPlaybackAvgCard(Label playbackValueLabel, Label playbackUnitLabel,
                                                Label avgSessionValueLabel,
                                                Label avgSessionUnitLabel) {
-        VBox card = new VBox(12);
-        card.getStyleClass().addAll("dashboard-stat-card", "wt-smmd-bld","panels");
+        VBox card = new VBox(6);
+        card.setMaxWidth(Double.MAX_VALUE);
+        card.setMaxHeight(Double.MAX_VALUE);
+        card.setFillWidth(true);
+        card.getStyleClass().addAll("dashboard-stat-card", "wt-smmd-bld", "panels");
 
-        Label playbackTitle = new Label("Playback Duration Today");
-        playbackTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
-        playbackValueLabel.getStyleClass().add("txt-white-bld-thirty");
+        Label playbackTitle = new Label("Playback Today");
+        playbackTitle.getStyleClass().addAll("txt-white-sm-bld", "dashboard-stat-title");
+        playbackTitle.setWrapText(true);
+
+        playbackValueLabel.getStyleClass().add("txt-white-sm-bld");
         playbackUnitLabel.getStyleClass().add("txt-white-sm");
 
-        VBox playbackSection = new VBox(4,
-                playbackTitle, playbackValueLabel, playbackUnitLabel);
+        HBox playbackSection = new HBox(4, playbackValueLabel, playbackUnitLabel);
+        playbackSection.setAlignment(Pos.CENTER_LEFT);
 
         Region separator = new Region();
-        separator.setPrefHeight(10);
+        separator.setPrefHeight(6);
 
-        Label avgTitle = new Label("Avg Listening Period");
+        Label avgTitle = new Label("Avg Session");
         avgTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
+        avgTitle.setWrapText(true);
 
         Label avgPrefix = new Label("Avg");
         avgPrefix.getStyleClass().add("txt-white-sm");
-        avgSessionValueLabel.getStyleClass().add("txt-white-bld-thirty");
-        avgSessionUnitLabel.getStyleClass().add("dashboard-stat-unit");
 
-        HBox avgValueRow = new HBox(6, avgPrefix, avgSessionValueLabel);
+        avgSessionValueLabel.getStyleClass().add("txt-white-sm-bld");
+        avgSessionUnitLabel.getStyleClass().add("txt-white-sm");
+
+        HBox avgValueRow = new HBox(4, avgPrefix, avgSessionValueLabel, avgSessionUnitLabel);
         avgValueRow.setAlignment(Pos.CENTER_LEFT);
 
-        VBox avgSection = new VBox(4, avgTitle, avgValueRow, avgSessionUnitLabel);
-
-        card.getChildren().addAll(playbackSection, separator, avgSection);
+        card.getChildren().addAll(playbackTitle, playbackSection, separator, avgTitle, avgValueRow);
         return card;
     }
 
     private VBox createNamedStatCard(String titleText, Label valueLabel) {
-        VBox card = new VBox(8);
-        card.getStyleClass().addAll("dashboard-stat-card","panels");
+        VBox card = new VBox(6);
+        card.getStyleClass().addAll("dashboard-stat-card", "panels");
 
         Label title = new Label(titleText);
         title.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
-
-        valueLabel.getStyleClass().addAll("dashboard-stat-name","txt-white-md-bld");
+        title.setWrapText(true);
+        title.setMaxWidth(Double.MAX_VALUE);
+        valueLabel.getStyleClass().addAll("dashboard-stat-name", "txt-white-md-bld");
         valueLabel.setWrapText(true);
         valueLabel.setAlignment(Pos.CENTER);
-        valueLabel.setMaxWidth(180);
+        valueLabel.setMaxWidth(Double.MAX_VALUE);
 
         VBox valueContainer = new VBox(valueLabel);
         valueContainer.setAlignment(Pos.CENTER);
+        VBox.setVgrow(valueContainer, Priority.ALWAYS);
 
-        Region spacer = new Region();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-
-        card.getChildren().addAll(title, spacer, valueContainer);
+        card.getChildren().addAll(title, valueContainer);
         return card;
     }
-
     public static VBox createAlbumCard(Album album, MusicPlayerService musicPlayerService) {
         VBox card = new VBox(10);
         card.setPrefWidth(160);

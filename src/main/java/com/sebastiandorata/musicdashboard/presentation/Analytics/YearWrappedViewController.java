@@ -93,7 +93,7 @@ public class YearWrappedViewController {
         wrapper.setPadding(new Insets(30, 0, 30, 0));
         wrapper.getChildren().addAll(slidePane, nav);
 
-        // Bind to scene size — fires once on attach, then on every resize
+        // Bind to scene size.
         slidePane.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 resizeSlides(newScene.getWidth(), newScene.getHeight());

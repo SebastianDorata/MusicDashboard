@@ -32,10 +32,7 @@ public class JavaFxApplication extends Application {
         }
 
         stage.setTitle("Music Dashboard");
-        stage.setWidth(com.sebastiandorata.musicdashboard.utils.AppUtils.APP_WIDTH);
-        stage.setHeight(com.sebastiandorata.musicdashboard.utils.AppUtils.APP_HEIGHT);
-        stage.setMinWidth(com.sebastiandorata.musicdashboard.utils.AppUtils.APP_WIDTH);
-        stage.setMinHeight(com.sebastiandorata.musicdashboard.utils.AppUtils.APP_HEIGHT);
+        stage.setMaximized(true);
         MainController.setMainStage(stage);
 
         stage.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -50,6 +47,7 @@ public class JavaFxApplication extends Application {
                 });
             }
         });
+
         AuthenticationController authController = applicationContext.getBean(AuthenticationController.class);
         authController.show();
     }

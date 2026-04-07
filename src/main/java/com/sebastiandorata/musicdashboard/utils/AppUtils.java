@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
  */
 public class AppUtils {
 
-    public static final int APP_WIDTH  = 1800;
-    public static final int APP_HEIGHT = 1200;
+    public static final double APP_WIDTH  = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
+    public static final double APP_HEIGHT = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
 
     public static String formatRelativeTime(LocalDateTime time) {
         if (time == null) return "";

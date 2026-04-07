@@ -48,8 +48,8 @@ public class DashboardGraphController extends UIComponent {
     public HBox createPanel() {
         HBox panel = new HBox();
         panel.getStyleClass().addAll("dashboard-graph-panel","panels");
-        panel.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(panel, Priority.ALWAYS);
+        panel.setMinHeight(200);                    // ← add this
+        HBox.setHgrow(panel, Priority.ALWAYS);
 
         VBox infoSection = buildInfoSection();
         infoSection.setMinWidth(200);

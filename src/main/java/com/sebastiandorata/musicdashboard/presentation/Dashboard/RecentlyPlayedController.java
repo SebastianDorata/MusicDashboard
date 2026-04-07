@@ -58,7 +58,7 @@ public class RecentlyPlayedController extends UIComponent {
 
 
         Label title = new Label("Recently Played");
-        title.getStyleClass().addAll("txt-white-bld-thirty","txt-centre-underline", "padding-btm");
+        title.getStyleClass().addAll("txt-white-md-bld","txt-centre-underline", "padding-btm");
 
         VBox historyList = new VBox(0);
         historyList.getStyleClass().add("trans-background");
