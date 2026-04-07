@@ -10,6 +10,15 @@
 ## Tech Stack
 
 ## System Architecture (N-Tier) and Dependencies
+| Layer                | Technology                  | Responsibility                                             |
+|----------------------|-----------------------------|------------------------------------------------------------|
+| **Client**           | JavaFX                      | UI & user interaction                                      |
+| **Controller**       | Spring-managed components   | Handles requests between UI and service layer              |
+| **Service**          | Business Logic & Validation | Centralizes all business rules and validation              |
+| **DTO**              | Read-only objects           | Purpose-built snapshots that expose only what the UI needs |
+| **Model / Entities** | Hibernate JPA Entities      | Maps database tables to Java objects                       |
+| **Database**         | PostgreSQL                  | Relational data storage                                    |
+
 
 | Library                                                  | Version | Purpose                                                 |
 |----------------------------------------------------------|---------|---------------------------------------------------------|
@@ -21,6 +30,10 @@
 | [jaudiotagger](https://github.com/RouHim/jaudiotagger)   | 2.0.16  | Reading audio file metadata (artist, album, track info) |
 | PostgreSQL                                               | 18      | Relational database                                     |
 
+
+                         
+
+Separating the application into distinct layers ensures each part of the system has a single, well-defined responsibility, making the codebase easier to navigate, debug, and extend without risking breaks to the underlying database logic.
 Separating the application into distinct layers ensures each part of the system has a single, well-defined responsibility, making the codebase easier to navigate, debug, and extend without risking breaks to the underlying database logic.
 
 ## Academic Foundation
