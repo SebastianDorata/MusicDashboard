@@ -1,0 +1,165 @@
+/* ═══════════════════════════════════════════════════════════════
+   Responsive notes:
+   The info section width is now controlled in DashboardGraphController
+   via AppUtils breakpoint helpers (170 / 220 / 260 px depending on screen).
+   css here only sets padding, spacing, and visual rules & no fixed widths.
+   ═══════════════════════════════════════════════════════════════ */
+
+/*  Outer panel ────────────────────────────────────────────── */
+.dashboard-graph-panel {
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 16;
+
+}
+
+/*  Info section (left 22 %) ──────────────────────────────── */
+.graph-info-section {
+    -fx-padding: 10 16 10 10;
+    -fx-spacing: 14;
+}
+
+/*  Chart section (right 78 %) ────────────────────────────── */
+.graph-chart-section {
+    -fx-padding: 8 0 0 0;
+    -fx-border-radius: 20;
+}
+
+/*  Line chart node ────────────────────────────────────────── */
+.dashboard-line-chart {
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-border-radius: 20;
+}
+.chart-series-line {
+    -fx-stroke-width: 3px;
+}
+.chart-line-symbol {
+    -fx-background-radius: 20px;
+    -fx-padding: 2px;
+}
+
+/*  Chart title row ────────────────────────────────────────── */
+.graph-chart-title-row {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+}
+
+/* Delta / stat labels ────────────────────────────────────── */
+.graph-delta-alltime {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9d4edd;
+}
+.graph-delta-negative {
+    -fx-text-fill: #ff4444;
+}
+.graph-delta-row {
+    -fx-alignment: center-left;
+    -fx-padding: 2 0 0 0;
+    -fx-spacing: 4;
+}
+.graph-delta-main {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.graph-total-row {
+    -fx-alignment: center-left;
+    -fx-padding: 4 0 4 0;
+}
+
+/* Year comparison header ─────────────────────────────────── */
+.year-comparison-header {
+    -fx-alignment: center;
+    -fx-spacing: 8;
+}
+.year-header-current {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00d4ff;
+}
+.year-header-highest {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9d4edd;
+}
+.year-header-previous {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff9500;
+}
+
+/* Axis & grid ────────────────────────────────────────────── */
+.dashboard-line-chart .axis {
+    -fx-text-fill: #b3b3b3;
+    -fx-tick-label-fill: #b3b3b3;
+}
+.dashboard-line-chart .axis-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b3b3b3;
+}
+.dashboard-line-chart .chart-alternative-row-fill {
+    -fx-background-color: transparent;
+}
+.dashboard-line-chart .chart-horizontal-grid-lines {
+    -fx-stroke: null;
+}
+.dashboard-line-chart .chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+    -fx-opacity: 0;
+}
+.dashboard-line-chart .chart-legend {
+    -fx-legend-visible: false;
+}
+.dashboard-line-chart .chart-legend-item {
+    -fx-font-size: 11px;
+    -fx-text-fill: #b3b3b3;
+}
+.dashboard-line-chart .chart-line-symbol:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+.dashboard-line-chart .chart-plot-background {
+    -fx-background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Series colours ─────────────────────────────────────────── */
+.dashboard-line-chart .default-color0.chart-series-line {
+    -fx-stroke: #00d4ff;
+    -fx-stroke-width: 3;
+}
+.dashboard-line-chart .default-color0 .chart-line-symbol {
+    -fx-background-color: #00d4ff, #1e1e1e;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 3;
+    -fx-padding: 2;
+}
+.dashboard-line-chart .default-color0.chart-legend-item-symbol {
+    -fx-background-color: #00d4ff;
+}
+.dashboard-line-chart .default-color1.chart-series-line {
+    -fx-stroke: #ff9500;
+    -fx-stroke-width: 3;
+}
+.dashboard-line-chart .default-color1 .chart-line-symbol {
+    -fx-background-color: #ff9500, #1e1e1e;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 3;
+    -fx-padding: 2;
+}
+.dashboard-line-chart .default-color1.chart-legend-item-symbol {
+    -fx-background-color: #ff9500;
+}
+.dashboard-line-chart .default-color2.chart-series-line {
+    -fx-stroke: #9d4edd;
+    -fx-stroke-width: 3;
+}
+.dashboard-line-chart .default-color2 .chart-line-symbol {
+    -fx-background-color: #9d4edd, #1e1e1e;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 3;
+    -fx-padding: 2;
+}
+.dashboard-line-chart .default-color2.chart-legend-item-symbol {
+    -fx-background-color: #9d4edd;
+}

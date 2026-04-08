@@ -1,0 +1,36 @@
+
+/* ─── Row labels ────────────────────────────────────────────── */
+/* Referenced by RowConfig, consumed by AnalyticsRowFactory */
+.analytics-row-secondary {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 12px;
+}
+.analytics-row-meta {
+    -fx-text-fill: #999999;
+    -fx-font-size: 11px;
+}
+
+/* ─── Row container ─────────────────────────────────────────── */
+.analytics-list-item {
+    -fx-padding: 15 10 15 10;
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-border-color: #404040;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+/* ─── Section container ─────────────────────────────────────── */
+.analytics-section-container {
+    -fx-padding: 20;
+}
+
+/* ─── Bottom player container ───────────────────────────────── */
+.analytics-player-container {
+    -fx-padding: 5;
+}
+.sidebarAnalytics {
+    -fx-background-color: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-border-color: rgba(76,175,80,0.45);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.25), 20, 0.15, 4, 0);
+}
