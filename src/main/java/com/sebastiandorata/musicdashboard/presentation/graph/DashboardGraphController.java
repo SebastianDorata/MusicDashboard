@@ -1,9 +1,12 @@
 package com.sebastiandorata.musicdashboard.presentation.graph;
 
 import com.sebastiandorata.musicdashboard.presentation.UIComponent;
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,13 +50,12 @@ public class DashboardGraphController extends UIComponent {
 
     public HBox createPanel() {
         HBox panel = new HBox();
-        panel.getStyleClass().addAll("dashboard-graph-panel","panels");
-        panel.setMinHeight(200);                    // ← add this
+        panel.getStyleClass().addAll("dashboard-graph-panel", "panels");
         HBox.setHgrow(panel, Priority.ALWAYS);
 
+
         VBox infoSection = buildInfoSection();
-        infoSection.setMinWidth(200);
-        infoSection.setPrefWidth(250);
+
 
         chartSection = buildChartSection();
         HBox.setHgrow(chartSection, Priority.ALWAYS);
@@ -71,8 +73,8 @@ public class DashboardGraphController extends UIComponent {
     private VBox buildInfoSection() {
         VBox info = new VBox();
         info.getStyleClass().add("graph-info-section");
-        info.setPrefWidth(300);
-        info.setMinWidth(200);
+        info.setPrefWidth(AppUtils.scale(300));  // was 300
+        info.setMinWidth(AppUtils.scale(200));   // was 200
 
         Label header = new Label("All Time Stats");
         header.getStyleClass().addAll("txt-white-bld-thirty","txt-centre-underline");

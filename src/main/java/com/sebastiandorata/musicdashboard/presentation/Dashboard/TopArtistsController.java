@@ -54,10 +54,14 @@ public class TopArtistsController extends UIComponent {
      */
     public VBox createPanel(Consumer<Artist> onArtistClicked) {
         VBox topArtist = new VBox(0);
-        topArtist.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-        topArtist.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(topArtist, Priority.SOMETIMES);
-        topArtist.getStyleClass().addAll("top-artists-panel","panels");
+
+        // Responsive fix: clamped width helper
+        topArtist.setPrefWidth(AppUtils.rightPanelPrefWidth());
+
+        // Do NOT write setMaxHeight or VBox.setVgrow(Priority.ALWAYS/SOMETIMES) again.
+        // The TopArtists panel is intentionally fixed-height (content-sized: title + exactly 5 rows).
+        // Let the parent give extra space to RecentlyPlayed instead.
+        topArtist.getStyleClass().addAll("top-artists-panel", "panels");
 
         Label title = new Label("Top 5 Artists All-Time");
         title.getStyleClass().addAll("txt-white-bld-thirty", "txt-centre-underline");
@@ -70,7 +74,6 @@ public class TopArtistsController extends UIComponent {
 
         refreshTopArtists(artistRows, onArtistClicked);
 
-        // Listen to playback from currentSongProperty instead so that all events (double-clicking from Recently Played) are captured and refresh on song changes
         musicPlayerService.currentSongProperty().addListener((obs, oldSong, newSong) -> {
             if (newSong != null) {
                 new Thread(() -> {

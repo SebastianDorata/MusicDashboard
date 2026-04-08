@@ -5,13 +5,13 @@ import com.sebastiandorata.musicdashboard.presentation.ArtistDiscographyNavigati
 import com.sebastiandorata.musicdashboard.presentation.Dashboard.TopArtistsController;
 import com.sebastiandorata.musicdashboard.presentation.graph.DashboardGraphController;
 import com.sebastiandorata.musicdashboard.presentation.helpers.PlayerConfig;
-import com.sebastiandorata.musicdashboard.presentation.helpers.SidebarBuilder;
+import com.sebastiandorata.musicdashboard.presentation.shared.CardFactory;
+import com.sebastiandorata.musicdashboard.presentation.shared.SidebarBuilder;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import com.sebastiandorata.musicdashboard.service.PlaybackTrackingService;
 import com.sebastiandorata.musicdashboard.service.SongImportService;
 import com.sebastiandorata.musicdashboard.service.UserSessionService;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
-import com.sebastiandorata.musicdashboard.presentation.shared.CardFactory;
 import jakarta.annotation.PostConstruct;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -29,6 +29,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 /**
  * Top-level controller for the Dashboard page.
  *
@@ -61,16 +62,20 @@ public class DashboardController {
         MainController.registerDashboard(this);
     }
 
+
+
+
     public void show() {
         Scene scene = this.createScene();
 
         try {
             scene.getStylesheets().add(getClass().getResource("/css/globalStyle.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/buttons.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/graph.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/musicPlayer.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/analytics.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/reports.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/graph.css").toExternalForm());
+
         } catch (Exception e) {
             System.out.println("CSS not found: " + e.getMessage());
         }
@@ -79,25 +84,28 @@ public class DashboardController {
     }
 
 
+
+
+
     private Scene createScene() {
         BorderPane root = new BorderPane();
-
         VBox left = createLeftMenu();
-        VBox center = createCenterMenu();
-        VBox right = createRightMenu();
-
-        center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
         root.setLeft(left);
-        root.setCenter(center);
-        root.setRight(right);
-        //BorderPane.setVgrow(right, Priority.ALWAYS);
 
-        return new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
+        VBox rightHalf = new VBox(10);
+        HBox top = createTopMenu();
+        HBox bottom = createBottomMenu();
+
+
+        VBox.setVgrow(top, Priority.NEVER);
+        VBox.setVgrow(bottom, Priority.ALWAYS);
+
+        rightHalf.getChildren().addAll(top, bottom);
+        root.setCenter(rightHalf);
+
+        Scene scene = new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
+        return scene;
     }
-
-
-
 
     private VBox createLeftMenu() {
 
@@ -143,66 +151,60 @@ public class DashboardController {
         return sidebar;
     }
 
-
-
-
-
-    private VBox createCenterMenu() {
+    private HBox createTopMenu() {
+        HBox root = new HBox();
+        root.getStyleClass().add("HomepageTopMenu");
         VBox center = new VBox(20);
-        center.setPadding(new Insets(20));
-        center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        center.getStyleClass().add("HomepageTopHalf");
+
+
         center.setFillWidth(true);
-
-        // Artist click navigates to My Library showing that artist's discography
-        HBox playbackPanel = playbackPanelController.createPanel(
-                artistDiscographyNavigation.getArtistDrillInCallback(),
-                PlayerConfig.PlayerSize.LARGE
-        );
-
-        // Create stat cards with navigation behavior:
-        // Single-click on any album or song name: Navigates to album view
-        // Double-click on song names: Plays the song immediately
-        HBox cards = cardFactory.createStatCards(
-                album -> {
-                    // Single-click: Navigate to album drill-down view
-                    myLibraryController.showWithAlbum(album);
-                },
-                song -> {
-                    // Double-click: Play the song immediately
-                    musicPlayerService.playSong(song);
-                }
-        );
-
-        HBox graphPanel = dashboardGraphController.createPanel();
-
+        HBox playbackPanel = playbackPanelController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback(), PlayerConfig.PlayerSize.LARGE);
         playbackPanel.setMaxWidth(Double.MAX_VALUE);
-        cards.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(cards, Priority.ALWAYS);
+        VBox.setVgrow(playbackPanel, Priority.NEVER);
 
-        graphPanel.setMaxWidth(Double.MAX_VALUE);
-        graphPanel.setMinHeight(200);
 
-        VBox.setVgrow(graphPanel, Priority.ALWAYS);
-        graphPanel.setMaxHeight(Double.MAX_VALUE);
+        HBox cards = cardFactory.createStatCards(album -> myLibraryController.showWithAlbum(album), song -> musicPlayerService.playSong(song));
+        cards.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-        center.getChildren().addAll(playbackPanel, cards, graphPanel);
+        VBox.setVgrow(cards, Priority.ALWAYS);
 
-        return center;
-    }
+        center.getChildren().addAll(playbackPanel, cards);
 
-    private VBox createRightMenu() {
-        VBox right = new VBox(10);
-        right.setStyle("-fx-padding: 10px");
-        right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-        right.setPrefWidth(AppUtils.APP_WIDTH * 0.25);
-        right.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(right, Priority.ALWAYS);
-
-        // Artist click navigates to My Library showing that artist's discography
         VBox topArtistsPanel = topArtistsController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback());
-        VBox recentlyPlayedPanel = recentlyPlayedController.createPanel();
+        topArtistsPanel.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(topArtistsPanel, Priority.ALWAYS);
 
-        right.getChildren().addAll(topArtistsPanel, recentlyPlayedPanel);
-        return right;
+        HBox.setHgrow(center, Priority.ALWAYS);
+        root.getChildren().addAll(center, topArtistsPanel);
+        return root;
     }
+
+    private HBox createBottomMenu() {
+        HBox root = new HBox();
+        root.getStyleClass().add("HomepageBottomMenu");
+            VBox center = new VBox(20);
+            center.setPadding(new Insets(5));
+            center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            center.setFillWidth(true);
+                HBox graphPanel = dashboardGraphController.createPanel();
+                    graphPanel.setMaxWidth(Double.MAX_VALUE);
+                    VBox.setVgrow(graphPanel, Priority.ALWAYS);
+                    graphPanel.setMaxHeight(Double.MAX_VALUE);
+            center.getChildren().addAll(graphPanel);
+
+                VBox right = new VBox(10);
+                    right.setPrefWidth(AppUtils.rightPanelPrefWidth());
+                    right.setMaxHeight(Double.MAX_VALUE);
+                    right.setPadding(new Insets(5));
+                    VBox.setVgrow(right, Priority.ALWAYS);
+                        VBox recentlyPlayedPanel = recentlyPlayedController.createPanel();
+                        VBox.setVgrow(recentlyPlayedPanel, Priority.ALWAYS);
+                        recentlyPlayedPanel.setMaxHeight(Double.MAX_VALUE);
+                    right.getChildren().addAll(recentlyPlayedPanel);
+     HBox.setHgrow(center, Priority.ALWAYS);
+     root.getChildren().addAll(center, right);
+     return root;
+    }
+
 }

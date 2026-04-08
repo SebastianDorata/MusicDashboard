@@ -8,7 +8,7 @@ import com.sebastiandorata.musicdashboard.presentation.Analytics.*;
 import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.*;
 import com.sebastiandorata.musicdashboard.presentation.Dashboard.PlaybackPanelController;
 import com.sebastiandorata.musicdashboard.presentation.helpers.PlayerConfig;
-import com.sebastiandorata.musicdashboard.presentation.helpers.SidebarBuilder;
+import com.sebastiandorata.musicdashboard.presentation.shared.SidebarBuilder;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import com.sebastiandorata.musicdashboard.service.handlers.*;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
@@ -21,10 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -78,6 +75,7 @@ public class AnalyticsController {
     private String currentView = "history";
     private BorderPane content;
 
+
     @PostConstruct
     public void register() {
         MainController.registerAnalytics(this);
@@ -90,10 +88,12 @@ public class AnalyticsController {
         try {
             scene.getStylesheets().add(getClass().getResource("/css/globalStyle.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/buttons.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/wrapped.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/css/musicPlayer.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/analytics.css").toExternalForm());
             scene.getStylesheets().add(getClass().getResource("/css/reports.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/wrapped.css").toExternalForm());
+
         } catch (Exception e) {
             System.out.println("CSS not found: " + e.getMessage());
         }
@@ -101,19 +101,24 @@ public class AnalyticsController {
         MainController.switchViews(scene);
     }
 
-    private Scene createScene() {
-        mainPane = new StackPane();
-        content = new BorderPane();
-        content.getStyleClass().add("dark-page-bg");
-        mainPane.getChildren().add(content);
 
-        content.setLeft(createLeftMenu());
-        content.setCenter(createCenterArea());
-        content.setBottom(createBottomPlayer());
+
+
+
+
+    private Scene createScene() {
+        BorderPane root = new BorderPane();
+        root.getStyleClass().add("dark-page-bg");
+
+        root.setLeft(createLeftMenu());
+        root.setCenter(createCenterArea());
+        root.setBottom(createBottomPlayer());
 
         showListeningHistory();
+        StackPane mainPane = new StackPane(root);
 
-        return new Scene(mainPane, APP_WIDTH, AppUtils.APP_HEIGHT);
+        Scene scene = new Scene(mainPane, APP_WIDTH, AppUtils.APP_HEIGHT);
+        return scene;
     }
 
     private VBox createLeftMenu() {
@@ -134,7 +139,7 @@ public class AnalyticsController {
         yearBox.setPadding(new Insets(8, 0, 4, 0));
 
         return SidebarBuilder.build(
-                List.of("panels", "sidebarAnalytics"),
+                List.of("panels", "sidebar"),
                 "My Reports",
                 true,
                 entries,

@@ -1,6 +1,6 @@
 package com.sebastiandorata.musicdashboard.controller;
 
-import com.sebastiandorata.musicdashboard.presentation.helpers.SidebarBuilder;
+import com.sebastiandorata.musicdashboard.presentation.shared.SidebarBuilder;
 import com.sebastiandorata.musicdashboard.presentation.playlist.PlaylistViewBuilder;
 import com.sebastiandorata.musicdashboard.entity.Playlist;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;

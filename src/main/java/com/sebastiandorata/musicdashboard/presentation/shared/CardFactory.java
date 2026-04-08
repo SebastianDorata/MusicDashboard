@@ -19,6 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,10 +46,11 @@ public class CardFactory extends UIComponent {
      * MusicPlayerService listener. Holds no UI state.
      */
     private ChangeListener<Song> songChangeListener;
+    private static final double SCALE = Screen.getPrimary().getVisualBounds().getHeight() / 1080.0;
 
 
     public HBox createStatCards(Consumer<Album> onAlbumClicked, Consumer<Song>  onSongPlayed) {
-        HBox cards = new HBox(15);
+        HBox cards = new HBox(12);
 
         // Local labels so the closure always targets live nodes
         Label playbackValueLabel   = new Label("0");
@@ -115,39 +117,48 @@ public class CardFactory extends UIComponent {
     private VBox createCombinedPlaybackAvgCard(Label playbackValueLabel, Label playbackUnitLabel,
                                                Label avgSessionValueLabel,
                                                Label avgSessionUnitLabel) {
-        VBox card = new VBox(6);
-        card.setMaxWidth(Double.MAX_VALUE);
-        card.setMaxHeight(Double.MAX_VALUE);
-        card.setFillWidth(true);
-        card.getStyleClass().addAll("dashboard-stat-card", "wt-smmd-bld", "panels");
+        VBox card = new VBox(16);
+        card.getStyleClass().addAll("dashboard-stat-card", "wt-smmd-bld","panels");
+        Label playbackTitle = new Label("Playback Duration Today");
 
-        Label playbackTitle = new Label("Playback Today");
-        playbackTitle.getStyleClass().addAll("txt-white-sm-bld", "dashboard-stat-title");
-        playbackTitle.setWrapText(true);
+        playbackTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title","dashboard-stat-name ");
 
-        playbackValueLabel.getStyleClass().add("txt-white-sm-bld");
-        playbackUnitLabel.getStyleClass().add("txt-white-sm");
 
-        HBox playbackSection = new HBox(4, playbackValueLabel, playbackUnitLabel);
-        playbackSection.setAlignment(Pos.CENTER_LEFT);
-
+        card.getChildren().add(playbackTitle);
         Region separator = new Region();
-        separator.setPrefHeight(6);
+        separator.setPrefHeight(3);
+        card.getChildren().addAll(separator);
 
-        Label avgTitle = new Label("Avg Session");
+        playbackValueLabel.getStyleClass().add("txt-white-bld-thirty");
+        playbackUnitLabel.getStyleClass().add("dashboard-stat-unit");
+
+
+        HBox dayLabel = new HBox(6, playbackValueLabel, playbackUnitLabel);
+        dayLabel.getStyleClass().add("dashboard-stat-day");
+
+        card.getChildren().add(dayLabel);
+
+
+
+
+
+        Label avgTitle = new Label("Average Listening Period");
         avgTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
-        avgTitle.setWrapText(true);
 
         Label avgPrefix = new Label("Avg");
         avgPrefix.getStyleClass().add("txt-white-sm");
 
-        avgSessionValueLabel.getStyleClass().add("txt-white-sm-bld");
-        avgSessionUnitLabel.getStyleClass().add("txt-white-sm");
+        avgSessionValueLabel.getStyleClass().add("txt-white-bld-thirty");
+        avgSessionUnitLabel.getStyleClass().add("dashboard-stat-unit");
 
-        HBox avgValueRow = new HBox(4, avgPrefix, avgSessionValueLabel, avgSessionUnitLabel);
+        HBox avgValueRow = new HBox(6, avgPrefix, avgSessionValueLabel, avgSessionUnitLabel);
         avgValueRow.setAlignment(Pos.CENTER_LEFT);
 
-        card.getChildren().addAll(playbackTitle, playbackSection, separator, avgTitle, avgValueRow);
+        VBox avgSection = new VBox(4, avgTitle, avgValueRow);
+        avgSection .setAlignment(Pos.CENTER);
+        VBox.setVgrow(avgSection , Priority.ALWAYS);
+
+        card.getChildren().addAll(avgSection);
         return card;
     }
 
@@ -171,6 +182,8 @@ public class CardFactory extends UIComponent {
         card.getChildren().addAll(title, valueContainer);
         return card;
     }
+
+    //User Library—————————————————————————————
     public static VBox createAlbumCard(Album album, MusicPlayerService musicPlayerService) {
         VBox card = new VBox(10);
         card.setPrefWidth(160);
@@ -209,6 +222,7 @@ public class CardFactory extends UIComponent {
         });
         return card;
     }
+
 
     public static VBox createSongCard(Song song, MusicPlayerService musicPlayerService) {
         VBox card = new VBox(10);

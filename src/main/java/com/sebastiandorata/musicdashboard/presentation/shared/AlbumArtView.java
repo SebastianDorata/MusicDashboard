@@ -110,4 +110,4 @@ public class AlbumArtView extends StackPane {
 // Label artPlaceholder) constructed externally. This version takes a
 // MusicPlayerService and wires its own listener, removing the construction
 // and wiring responsibility from the caller. PlaybackPanelController only
-// needs to call new AlbumArtView(musicPlayerService) and add it to the layout.
+// needs to call new AlbumArtView(musicPlayerService) and add it to the layout. call new AlbumArtView(musicPlayerService) and add it to the layout.

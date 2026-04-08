@@ -48,7 +48,7 @@ public class JavaFxApplication extends Application {
             }
         });
 
-        AuthenticationController authController = applicationContext.getBean(AuthenticationController.class);
+        AuthenticationController authController = applicationContext.getBean( AuthenticationController.class);
         authController.show();
     }
 

@@ -1,8 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   ANALYTICS PAGE
-   Styles specific to the Analytics controller and its components.
-   Combo-box, buttons, text → see buttons.css / globalStyle.css
-   ═══════════════════════════════════════════════════════════════ */
 
 /* ─── Row labels ────────────────────────────────────────────── */
 /* Referenced by RowConfig, consumed by AnalyticsRowFactory */

@@ -18,6 +18,14 @@ import java.util.List;
  * date first listened. Participates in many-to-many relationships with
  * {@link Artist artists} and {@link Genre genres}, and a many-to-one
  * relationship with its {@link Album}.</p>
+ *
+ * <p><b><u>References:</u></b></p>
+ *<ul>
+ *  <li><a href="https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api">
+ *      FetchType EAGER in Java Persistence API </a> used to resolve the error of "'org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role".</li>
+ *  </ul>
+ *
+ *
  */
 @Setter
 @Getter
@@ -76,8 +84,8 @@ public class Song {
     private Album album;
 
 
-    //https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api
-    @ManyToMany(fetch = FetchType.EAGER)// to resolve the error of 'org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role"
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "song_artists",
             joinColumns = @JoinColumn(name = "song_id"),

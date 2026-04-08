@@ -1,5 +1,6 @@
 package com.sebastiandorata.musicdashboard.presentation.helpers;
 
+import javafx.stage.Screen;
 import lombok.Getter;
 
 /**
@@ -27,55 +28,55 @@ public class PlayerConfig {
     private final double fontSizeMultiplier;
     private final double iconSizeMultiplier;
     private final double spacingMultiplier;
+    private final double baseUnit;
 
     public PlayerConfig(PlayerSize size) {
         this.size = size;
+        double screenH = Screen.getPrimary().getVisualBounds().getHeight();
+        this.baseUnit = screenH / 1080.0; // 1.0 on a 1080p screen
 
         switch (size) {
             case LARGE -> {
                 this.fontSizeMultiplier = 1.0;
                 this.iconSizeMultiplier = 1.0;
-                this.spacingMultiplier = 1.0;
+                this.spacingMultiplier  = 1.0;
             }
             case SMALL -> {
                 this.fontSizeMultiplier = 0.6;
                 this.iconSizeMultiplier = 0.6;
-                this.spacingMultiplier = 0.5;
+                this.spacingMultiplier  = 0.5;
             }
             default -> {
                 this.fontSizeMultiplier = 1.0;
                 this.iconSizeMultiplier = 1.0;
-                this.spacingMultiplier = 1.0;
+                this.spacingMultiplier  = 1.0;
             }
         }
     }
 
 
-    public int getTitleFontSize() {
-        return (int) (30 * fontSizeMultiplier);
-    }
 
-    public int getArtistFontSize() {
-        return (int) (14 * fontSizeMultiplier);
+    public int getTitleFontSize()    {
+        return (int) (30  * fontSizeMultiplier * baseUnit);
     }
-
-    public int getTimeFontSize() {
-        return (int) (12 * fontSizeMultiplier);
+    public int getArtistFontSize()   {
+        return (int) (14  * fontSizeMultiplier * baseUnit);
     }
-
-    public int getPlayPauseIconSize() {
-        return (int) (24 * iconSizeMultiplier);
+    public int getTimeFontSize()     {
+        return (int) (16  * fontSizeMultiplier * baseUnit);
     }
-
-    public int getNavIconSize() {
-        return (int) (20 * iconSizeMultiplier);
+    public int getPlayPauseIconSize(){
+        return (int) (22  * iconSizeMultiplier * baseUnit);
     }
-
-    public double getControlSpacing() {
-        return 12 * spacingMultiplier;
+    public int getNavIconSize()      {
+        return (int) (20  * iconSizeMultiplier * baseUnit);
     }
-
+    public double getControlSpacing(){
+        return        10  * spacingMultiplier  * baseUnit;
+    }
     public double getInfoSectionSpacing() {
-        return 6 * spacingMultiplier;
-    }
+        return    6  * spacingMultiplier  * baseUnit;  }
+
+
 }
+

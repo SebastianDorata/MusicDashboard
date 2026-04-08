@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.presentation.helpers;
+package com.sebastiandorata.musicdashboard.presentation.shared;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -67,7 +67,7 @@ public class SidebarBuilder {
                              Runnable        backAction) {
 
         VBox sidebar = new VBox(8);
-        sidebar.setPadding(new Insets(20, 12, 20, 12));
+        sidebar.setPadding(new Insets(20, 12, 5, 12));
         sidebar.getStyleClass().addAll(styleClasses);
         sidebar.setMinWidth(220);
         sidebar.setPrefWidth(250);

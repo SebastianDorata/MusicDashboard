@@ -14,11 +14,11 @@ import javafx.scene.image.ImageView;
  */
 public class IconFactory {
 
-/**
-* @param iconName the name of the icon file without the {@code .png} extension
-* @param size     the width and height in pixels to apply to the image view
-* @return a configured {@link ImageView}, or an empty one if the icon could not be loaded
-*/
+    /**
+     * @param iconName the name of the icon file without the {@code .png} extension
+     * @param size     the width and height in pixels to apply to the image view
+     * @return a configured {@link ImageView}, or an empty one if the icon could not be loaded
+     */
     public static ImageView createIcon(String iconName, int size) {
         try {
             String path = "/icons/" + iconName + ".png";

@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Screen;
 
 import java.time.LocalDateTime;
 
@@ -21,9 +22,25 @@ import java.time.LocalDateTime;
  * </ul>
  */
 public class AppUtils {
+    public static final double APP_WIDTH  = Screen.getPrimary().getVisualBounds().getWidth();
+    public static final double APP_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+    public static final double SCALE      = APP_HEIGHT / 1080.0;
 
-    public static final double APP_WIDTH  = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
-    public static final double APP_HEIGHT = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
+
+    public static double scale(double value) {
+        return value * SCALE;
+    }
+
+    /**
+     * Returns a right-panel preferred width scaled to the screen.
+     * Replaces the raw  APP_WIDTH * 0.25  calls scattered across controllers.
+     * Clamped so it never becomes unreasonably wide on an ultrawide monitor.
+     */
+    public static double rightPanelPrefWidth() {
+        double raw = APP_WIDTH * 0.20;
+        return Math.clamp(raw, 240, 380);
+    }
+
 
     public static String formatRelativeTime(LocalDateTime time) {
         if (time == null) return "";
@@ -77,8 +94,8 @@ public class AppUtils {
 
     public static ImageView buildAlbumArt(int size) {
         ImageView iv = new ImageView();
-        iv.setFitWidth(size);
-        iv.setFitHeight(size);
+        iv.setFitWidth(scale(size));
+        iv.setFitHeight(scale(size));
         iv.setPreserveRatio(true);
         return iv;
     }

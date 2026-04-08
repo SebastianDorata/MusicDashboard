@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -36,6 +37,11 @@ public class PlaybackPanelController extends UIComponent {
     @Lazy
     @Autowired
     private MusicPlayerService musicPlayerService;
+
+    @Override
+    public List<String> getStylesheets() {
+        return List.of("musicPlayer.css");
+    }
 
     /**
      * Tracks whether playback is currently active.
@@ -134,11 +140,7 @@ public class PlaybackPanelController extends UIComponent {
      */
     private Label buildSongTitleLabel() {
         Label songTitle = new Label("No song playing");
-        songTitle.getStyleClass().addAll("txt-white-bld-thirty","txt-Scale" + config.getTitleFontSize(),"empty-msg");
-        songTitle.setMaxHeight(Double.MAX_VALUE);
-        if (config.getSize() == PlayerConfig.PlayerSize.SMALL) {
-            songTitle.setMaxWidth(Double.MAX_VALUE);
-        }
+        songTitle.getStyleClass().addAll("Song-Name", "txt-Scale" + config.getTitleFontSize(), "empty-msg");
         return songTitle;
     }
 
@@ -150,7 +152,7 @@ public class PlaybackPanelController extends UIComponent {
      */
     private Label buildArtistNameLabel() {
         Label artistName = new Label("—");
-        artistName.getStyleClass().addAll("txt-white-md-bld","txt-Scale" + config.getArtistFontSize());
+        artistName.getStyleClass().addAll("Artist-Name", "txt-Scale" + config.getArtistFontSize());
         return artistName;
     }
 
@@ -177,6 +179,7 @@ public class PlaybackPanelController extends UIComponent {
         Slider slider = new Slider(0, 100, 0);
         slider.getStyleClass().add("now-playing-slider");
 
+
         Label currentTime = new Label("0:00");
         Label remainingTime = new Label("-0:00");
         currentTime.setStyle("-fx-text-fill: #999999; -fx-font-size: " + config.getTimeFontSize() + "px;");
@@ -185,9 +188,13 @@ public class PlaybackPanelController extends UIComponent {
         Region timeSpacer = new Region();
         HBox.setHgrow(timeSpacer, Priority.ALWAYS);
         HBox timeRow = new HBox(5, currentTime, timeSpacer, remainingTime);
-        timeRow.getStyleClass().add("time-row");
+        timeRow.getStyleClass().addAll("cntr-spc-sm","time-row");
 
-        infoSection.getChildren().addAll(slider, timeRow);
+        VBox timeBox = new VBox(5, slider, timeRow);
+        timeBox.setAlignment(Pos.CENTER);
+        timeBox.getStyleClass().add("time-Box");
+
+        infoSection.getChildren().add(timeBox);
 
         return new ProgressSection(slider, currentTime, remainingTime);
     }
@@ -349,7 +356,7 @@ public class PlaybackPanelController extends UIComponent {
      */
     private HBox createPlayerControls() {
         HBox controls = new HBox(config.getControlSpacing());
-        controls.getStyleClass().add("cntr-spc-sm");
+        controls.getStyleClass().addAll("cntr-spc-sm","player-controls");
         controls.setAlignment(Pos.CENTER);
         controls.setMaxHeight(Double.MAX_VALUE);
 
@@ -403,14 +410,14 @@ public class PlaybackPanelController extends UIComponent {
     }
 
     /**
-         * Immutable data holder grouping the progress slider and its associated time labels.
-         *
-         * <p>Used to pass large-mode UI components between helper methods without
-         * requiring additional fields on the controller or long parameter lists.
-         * The {@code timeRow} container is intentionally excluded as no method
-         * requires access to it after construction.
-         */
-        private record ProgressSection(Slider slider, Label currentTime, Label remainingTime) {
+     * Immutable data holder grouping the progress slider and its associated time labels.
+     *
+     * <p>Used to pass large-mode UI components between helper methods without
+     * requiring additional fields on the controller or long parameter lists.
+     * The {@code timeRow} container is intentionally excluded as no method
+     * requires access to it after construction.
+     */
+    private record ProgressSection(Slider slider, Label currentTime, Label remainingTime) {
         /**
          * @param slider        the playback progress slider
          * @param currentTime   the label showing elapsed playback time
@@ -418,5 +425,5 @@ public class PlaybackPanelController extends UIComponent {
          */
         private ProgressSection {
         }
-        }
+    }
 }

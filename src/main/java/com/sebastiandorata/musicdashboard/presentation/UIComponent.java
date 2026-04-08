@@ -1,9 +1,11 @@
 package com.sebastiandorata.musicdashboard.presentation;
 
+import com.sebastiandorata.musicdashboard.presentation.shared.StyledView;
 import com.sebastiandorata.musicdashboard.service.UserSessionService;
 import com.sebastiandorata.musicdashboard.service.handlers.DataLoadingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -17,7 +19,7 @@ import java.util.function.Supplier;
  * boilerplate. Error logging is centralized through
  * {@link com.sebastiandorata.musicdashboard.utils.AppUtils#logError(String, String, Exception)}.</p>
  */
-public abstract class UIComponent {
+public abstract class UIComponent implements StyledView {
 
     @Autowired
     protected DataLoadingService dataLoadingService;
@@ -35,5 +37,10 @@ public abstract class UIComponent {
         return userSessionService.getCurrentUserId();
     }
 
+
+    @Override
+    public List<String> getStylesheets() {
+        return List.of(); // Default.
+    }
 
 }
