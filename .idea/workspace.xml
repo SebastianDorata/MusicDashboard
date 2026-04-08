@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0abc2471-a32a-4a88-93c5-638d818285d4" name="Changes" comment="Update to include reference">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/allclasses-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/allpackages-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/JavaFxApplication.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/MusicDashboardApplication.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/class-use/JavaFxApplication.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/class-use/MusicDashboardApplication.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/AnalyticsController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/AuthenticationController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/SecurityConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/class-use/AuthenticationController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/class-use/SecurityConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/Authentication/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/DashboardController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/ImportController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/MainController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/MyLibraryController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/PlaylistController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/class-use/AnalyticsController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/class-use/DashboardController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/class-use/ImportController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/class-use/MainController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/class-use/MyLibraryController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/class-use/PlaylistController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/controller/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/AllTimeStatsData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/ChartData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/HistoryRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/MonthlyReportData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/StatCardsData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/StatSnapshot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/TopAlbumRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/TopArtistRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/TopSongRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/WeeklyReportData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/AllTimeStatsData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/ChartData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/HistoryRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/MonthlyReportData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/StatCardsData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/StatSnapshot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/TopAlbumRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/TopArtistRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/TopSongRowData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/class-use/WeeklyReportData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/dto/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/Album.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/Artist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/Favourite.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/Genre.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/MonthlyReport.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/PlaybackHistory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/Playlist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/Song.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/SyncQueueEntry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/User.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/WeeklyReport.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/YearEndReport.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/Album.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/Artist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/Favourite.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/Genre.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/MonthlyReport.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/PlaybackHistory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/Playlist.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/Song.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/SyncQueueEntry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/User.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/WeeklyReport.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/class-use/YearEndReport.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/entity/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsPaginatedModal.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsRowFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsSectionBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/ModalListController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/ReportDisplayController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/WeeklyReportCalendarController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/YearWrappedViewController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/AnalyticsPaginatedModal.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/AnalyticsRowFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/AnalyticsSectionBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/ModalListController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/ReportDisplayController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/WeeklyReportCalendarController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/class-use/YearWrappedViewController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/ListeningHistoryViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/MonthlyReportViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/StatCardsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopAlbumsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopArtistsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopSongsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/WeeklyReportViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.WrappedData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/ListeningHistoryViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/MonthlyReportViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/StatCardsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/TopAlbumsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/TopArtistsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/TopSongsViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/WeeklyReportViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/YearEndReportViewModel.WrappedData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/class-use/YearEndReportViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/ArtistDiscographyNavigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/PlaybackPanelController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/RecentlyPlayedController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/TopArtistsController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/class-use/PlaybackPanelController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/class-use/RecentlyPlayedController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/class-use/TopArtistsController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/UIComponent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/class-use/ArtistDiscographyNavigation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/class-use/UIComponent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/ChartViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/DashboardGraphController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/DashboardLineChartBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/SmoothLineChart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/class-use/ChartViewModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/class-use/DashboardGraphController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/class-use/DashboardLineChartBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/class-use/SmoothLineChart.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/graph/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/EmptyStateConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.PlayerSize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/RowConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/class-use/EmptyStateConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/class-use/PlayerConfig.PlayerSize.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/class-use/PlayerConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/class-use/RowConfig.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/helpers/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumCardListCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumListCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumSongCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlphabetBar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/ArtistViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/FavouritesViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryHandler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongEditDialog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongHandler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/AlbumCardListCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/AlbumListCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/AlbumSongCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/AlbumViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/AlphabetBar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/ArtistViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/FavouritesViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/LibraryHandler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/SongCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/SongEditDialog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/SongHandler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/class-use/SongViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistDialogHandler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/class-use/PlaylistDialogHandler.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/class-use/PlaylistViewBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/playlist/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/AlbumArtView.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/CardFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.NavEntry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/StyledView.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/class-use/AlbumArtView.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/class-use/CardFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/class-use/SidebarBuilder.NavEntry.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/class-use/SidebarBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/class-use/StyledView.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/presentation/shared/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/AlbumRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/ArtistRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/FavouriteRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/GenreRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/MonthlyReportRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/PlaybackHistoryRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/PlaylistRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/SongRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/SyncQueueRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/UserRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/WeeklyReportRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/YearEndReportRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/AlbumRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/ArtistRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/FavouriteRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/GenreRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/MonthlyReportRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/PlaybackHistoryRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/PlaylistRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/SongRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/SyncQueueRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/UserRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/WeeklyReportRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/class-use/YearEndReportRepository.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/repository/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/AuthenticationService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/FavouriteService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/GenreFilterService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/ImportService.TriConsumer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/ImportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/LibraryService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/LoginAttemptService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/MonthlyReportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/MusicPlayerService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/PlaybackTrackingService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/PlaylistService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/SongImportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/UserSessionService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/AuthenticationService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/FavouriteService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/GenreFilterService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/ImportService.TriConsumer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/ImportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/LibraryService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/LoginAttemptService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/MonthlyReportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/MusicPlayerService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/PlaybackTrackingService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/PlaylistService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/SongImportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/class-use/UserSessionService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/AnalyticsCacheService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.ArtistTimeData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/DailyListeningStatsService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/DataLoadingService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/GenericModalLoader.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/ListeningHistoryService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/ListeningPaginationService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/WeeklyReportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/YearEndReportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/AnalyticsCacheService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/ArtistListeningTimeService.ArtistTimeData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/ArtistListeningTimeService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/DailyListeningStatsService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/DataLoadingService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/GenericModalLoader.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/ListeningHistoryService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/ListeningPaginationService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/WeeklyReportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/class-use/YearEndReportService.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/handlers/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/service/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/AppUtils.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/DoublyLinkedList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/IconFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/PlaybackConstants.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/SortStrategy.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/class-use/AppUtils.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/class-use/DoublyLinkedList.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/class-use/IconFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/class-use/PlaybackConstants.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/class-use/SortStrategy.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/com/sebastiandorata/musicdashboard/utils/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/constant-values.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/element-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/help-doc.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-10.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-11.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-12.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-13.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-14.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-15.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-16.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-17.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-18.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-19.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-20.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-21.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-22.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-7.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-8.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index-files/index-9.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/ADDITIONAL_LICENSE_INFO" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/ASSEMBLY_EXCEPTION" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/dejavufonts.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/jquery.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/legal/jqueryUI.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/member-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/module-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/overview-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/overview-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/package-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/copy.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans-BoldOblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans-BoldOblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans-Oblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans-Oblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSans.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono-BoldOblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono-BoldOblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono-Oblique.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono-Oblique.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSansMono.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif-Bold.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif-Bold.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif-BoldItalic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif-BoldItalic.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif-Italic.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif-Italic.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/DejaVuLGCSerif.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/fonts/dejavu.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/glass.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/jquery-ui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/left.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/link.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/right.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/resource-files/x.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-files/jquery-3.7.1.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-files/jquery-ui.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-files/script.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-files/search-page.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/script-files/search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/search.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/tag-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc/type-search-index.js" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Enum" />
+        <option value="Dockerfile" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="gh-pages" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SebastianDorata&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/SebastianDorata/MusicDashboard.git&quot;,
+    &quot;accountId&quot;: &quot;d0597bbe-56ed-455e-ae1a-b8b7cb0a25db&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="3ASnkRKSjDg3ERbjahXiiG4hTiD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.JavaFxApplication.executor": "Run",
+    "Application.fxDashboardUI.executor": "Debug",
+    "OverrideImplement.generate.javadoc": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.MusicDashboardApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "gh-pages",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "editor.preferences.import"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/main/resources/icons" />
+      <recent name="$PROJECT_DIR$/src/main/resources/css" />
+      <recent name="$PROJECT_DIR$/Diagrams" />
+      <recent name="$PROJECT_DIR$/src/main/resources/fxml" />
+    </key>
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="com.sebastiandorata.musicdashboard.dto" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.sebastiandorata.musicdashboard.presentation.shared" />
+      <recent name="com.sebastiandorata.musicdashboard.presentation" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.MusicDashboardApplication">
+    <configuration name="JavaFxApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.sebastiandorata.musicdashboard.JavaFxApplication" />
+      <module name="MusicDashboard" />
+      <option name="VM_PARAMETERS" value="--module-path $PATH_TO_FX$ --add-modules javafx.controls,javafx.fxml --module-path $PATH_TO_FX$ --add-modules javafx.controls,javafx.fxml --enable-native-access=javafx.graphics" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sebastiandorata.musicdashboard.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MusicDashboardApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="DB_PASSWORD" value="fxjsl459322749335sd1994" />
+      </envs>
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="MusicDashboard" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sebastiandorata.musicdashboard.MusicDashboardApplication" />
+      <option name="VM_PARAMETERS" value="--module-path $PATH_TO_FX$ --add-modules javafx.controls,javafx.fxml,javafx.media --add-opens javafx.base/com.sun.javafx=ALL-UNNAMED --add-exports javafx.base/com.sun.javafx=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --enable-native-access=javafx.graphics,javafx.media" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sebastiandorata.musicdashboard.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MusicDashboardApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="MusicDashboard" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.sebastiandorata.musicdashboard.main.MusicDashboardApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.sebastiandorata.musicdashboard.main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.JavaFxApplication" />
+      <item itemvalue="Spring Boot.MusicDashboardApplication" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.32098.37" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0abc2471-a32a-4a88-93c5-638d818285d4" name="Changes" comment="" />
+      <created>1772594982373</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772594982373</updated>
+    </task>
+    <task id="LOCAL-00001" summary="setup">
+      <option name="closed" value="true" />
+      <created>1772759173661</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1772759173661</updated>
+    </task>
+    <task id="LOCAL-00002" summary="setup">
+      <option name="closed" value="true" />
+      <created>1772780605144</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1772780605144</updated>
+    </task>
+    <task id="LOCAL-00003" summary="DbConnection">
+      <option name="closed" value="true" />
+      <created>1772829807184</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1772829807184</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Import song files">
+      <option name="closed" value="true" />
+      <created>1773007659914</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1773007659914</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Dash ideas V1">
+      <option name="closed" value="true" />
+      <created>1773079726378</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1773079726378</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Center VBox">
+      <option name="closed" value="true" />
+      <created>1773093453834</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1773093453834</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Dashboard layout V1.&#10;Containers built">
+      <option name="closed" value="true" />
+      <created>1773112434554</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1773112434554</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Fixed circle dependency.&#10;Added Icons for player bar.&#10;Created card factory class.&#10;Changed db retrieval to eager.&#10;Added recently played menu. &#10;Styled ImportController.">
+      <option name="closed" value="true" />
+      <created>1773297203006</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1773297203006</updated>
+    </task>
+    <task id="LOCAL-00009" summary="File organization">
+      <option name="closed" value="true" />
+      <created>1773298060902</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1773298060902</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added classes to Follow SRP.">
+      <option name="closed" value="true" />
+      <created>1774408343711</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774408343711</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Dashboard graph">
+      <option name="closed" value="true" />
+      <created>1774497265152</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774497265152</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Dashboard v5">
+      <option name="closed" value="true" />
+      <created>1774752690161</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1774752690161</updated>
+    </task>
+    <task id="LOCAL-00013" summary="fix: wrap getOrGenerateYearReport in SERIALIZABLE transaction to prevent TOCTOU race condition on (user_id, year) unique constraint; catch DataIntegrityViolationException as fallback;">
+      <option name="closed" value="true" />
+      <created>1774845810510</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1774845810510</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Entity classes and Repository interfaces created for weekly and monthly reports. Doubly Linked List data structure class created for pagination.">
+      <option name="closed" value="true" />
+      <created>1774895082157</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1774895082157</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Created service classes to generates/retrieves summaries. SRP&#10;Created ListeningHistoryService to manage listening history with DoublyLinkedList pagination.SRP&#10;Created generic pagination service ListeningPaginationService&lt;T&gt; to wrap results in DoublyLinkedList&lt;T&gt;.OCP&#10;Created view models to load reports with async callback and to wrap pagination data. LSP">
+      <option name="closed" value="true" />
+      <created>1774906412429</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1774906412429</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Pre cleaned final">
+      <option name="closed" value="true" />
+      <created>1775018702732</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1775018702732</updated>
+    </task>
+    <task id="LOCAL-00017" summary="artwork srp">
+      <option name="closed" value="true" />
+      <created>1775021567254</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1775021567254</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Progress slider final">
+      <option name="closed" value="true" />
+      <created>1775064902314</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1775064902315</updated>
+    </task>
+    <task id="LOCAL-00019" summary="stable Apr1, 10PM">
+      <option name="closed" value="true" />
+      <created>1775095211989</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1775095211989</updated>
+    </task>
+    <task id="LOCAL-00020" summary="90% working">
+      <option name="closed" value="true" />
+      <created>1775095817695</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1775095817695</updated>
+    </task>
+    <task id="LOCAL-00021" summary="95% working">
+      <option name="closed" value="true" />
+      <created>1775097166130</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1775097166130</updated>
+    </task>
+    <task id="LOCAL-00022" summary="97% working">
+      <option name="closed" value="true" />
+      <created>1775169483953</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1775169483953</updated>
+    </task>
+    <task id="LOCAL-00023" summary="97.9% working">
+      <option name="closed" value="true" />
+      <created>1775169758961</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1775169758961</updated>
+    </task>
+    <task id="LOCAL-00024" summary="98% working">
+      <option name="closed" value="true" />
+      <created>1775198952432</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1775198952432</updated>
+    </task>
+    <task id="LOCAL-00025" summary="98.1% working">
+      <option name="closed" value="true" />
+      <created>1775241266567</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1775241266567</updated>
+    </task>
+    <task id="LOCAL-00026" summary="100%">
+      <option name="closed" value="true" />
+      <created>1775286614138</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1775286614138</updated>
+    </task>
+    <task id="LOCAL-00027" summary="v1.0.0 - first stable release">
+      <option name="closed" value="true" />
+      <created>1775406488433</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1775406488433</updated>
+    </task>
+    <task id="LOCAL-00028" summary="v1.0.1 - Album.artists was never populated during import, so album_artists stayed empty&#10;         Code fix: Store resolved artists in a variable, add them to album.getArtists(), and save the album on the owning side">
+      <option name="closed" value="true" />
+      <created>1775496855181</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1775496855182</updated>
+    </task>
+    <task id="LOCAL-00029" summary="migration query to populate album_artists from the existing song_artists data.">
+      <option name="closed" value="true" />
+      <created>1775497389455</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1775497389455</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Randomized values">
+      <option name="closed" value="true" />
+      <created>1775497427921</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1775497427921</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Bug fix: Completed songs now have boolean value true">
+      <option name="closed" value="true" />
+      <created>1775501524755</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1775501524755</updated>
+    </task>
+    <task id="LOCAL-00032" summary="v1.0.2: Readme and updates for responsive design">
+      <option name="closed" value="true" />
+      <created>1775531095738</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1775531095738</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Corrections">
+      <option name="closed" value="true" />
+      <created>1775531805903</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1775531805903</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Corrections">
+      <option name="closed" value="true" />
+      <created>1775531880003</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1775531880003</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Corrections">
+      <option name="closed" value="true" />
+      <created>1775532174616</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1775532174616</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Corrections">
+      <option name="closed" value="true" />
+      <created>1775532337793</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1775532337793</updated>
+    </task>
+    <task id="LOCAL-00037" summary="v1.0.3: Improvements to responsive Design">
+      <option name="closed" value="true" />
+      <created>1775640335677</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1775640335677</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Update to include reference">
+      <option name="closed" value="true" />
+      <created>1775641787803</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1775641787803</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.springframework:spring-core" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.security:spring-security-core" />
+    <option featureType="dependencySupport" implementationName="java:jakarta.persistence:jakarta.persistence-api" />
+    <option featureType="dependencySupport" implementationName="java:org.openjfx:javafx-base" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.plist" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.data:spring-data-commons" />
+    <option featureType="dependencySupport" implementationName="java:org.springframework.boot:spring-boot" />
+    <option featureType="dependencySupport" implementationName="java:org.projectlombok:lombok" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="4fba2a21-f932-4d72-948e-726215078416" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/gh-pages" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="HEAD" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="4fba2a21-f932-4d72-948e-726215078416">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/gh-pages" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Dashboard v5" />
+    <MESSAGE value="fix: wrap getOrGenerateYearReport in SERIALIZABLE transaction to prevent TOCTOU race condition on (user_id, year) unique constraint; catch DataIntegrityViolationException as fallback;" />
+    <MESSAGE value="Entity classes and Repository interfaces created for weekly and monthly reports. Doubly Linked List data structure class created for pagination." />
+    <MESSAGE value="Created service classes to generates/retrieves summaries. SRP&#10;Created ListeningHistoryService to manage listening history with DoublyLinkedList pagination.SRP&#10;Created generic pagination service ListeningPaginationService&lt;T&gt; to wrap results in DoublyLinkedList&lt;T&gt;.OCP&#10;Created view models to load reports with async callback and to wrap pagination data. LSP" />
+    <MESSAGE value="Pre cleaned final" />
+    <MESSAGE value="artwork srp" />
+    <MESSAGE value="Progress slider final" />
+    <MESSAGE value="stable Apr1, 10PM" />
+    <MESSAGE value="90% working" />
+    <MESSAGE value="95% working" />
+    <MESSAGE value="97% working" />
+    <MESSAGE value="97.9% working" />
+    <MESSAGE value="98% working" />
+    <MESSAGE value="98.1% working" />
+    <MESSAGE value="100%" />
+    <MESSAGE value="v1.0.0 - first stable release" />
+    <MESSAGE value="v1.0.1 - Album.artists was never populated during import, so album_artists stayed empty&#10;         Code fix: Store resolved artists in a variable, add them to album.getArtists(), and save the album on the owning side" />
+    <MESSAGE value="migration query to populate album_artists from the existing song_artists data." />
+    <MESSAGE value="Randomized values" />
+    <MESSAGE value="Bug fix: Completed songs now have boolean value true" />
+    <MESSAGE value="v1.0.2: Readme and updates for responsive design" />
+    <MESSAGE value="Corrections" />
+    <MESSAGE value="v1.0.3: Improvements to responsive Design" />
+    <MESSAGE value="Add .DS_Store to gitignore" />
+    <MESSAGE value="Update to include reference" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update to include reference" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
