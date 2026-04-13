@@ -1,5 +1,10 @@
 # Changelog
 
+### Fixed
+- Album cards now correctly separate left-click (drill into album) and
+  right-click (open edit context menu). Previously, right-clicking would
+  trigger both actions simultaneously.
+
 ### Performance
 - Switched Song, Album, Artist, Playlist relationships from
   FetchType.EAGER to FetchType.LAZY to eliminate N+1 query
