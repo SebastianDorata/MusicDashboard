@@ -5,12 +5,12 @@ import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.repository.AlbumRepository;
 import com.sebastiandorata.musicdashboard.repository.ArtistRepository;
+import com.sebastiandorata.musicdashboard.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 /**
  * Thin facade for song, album, and artist retrieval.
@@ -25,6 +25,7 @@ public class LibraryService {
 
     @Autowired private AlbumRepository albumRepository;
     @Autowired private ArtistRepository artistRepository;
+    @Autowired private SongRepository songRepository;
     @Autowired private SongImportService songService;
 
     // In-memory cache. Songs only change on import
@@ -65,15 +66,31 @@ public class LibraryService {
 
     @Transactional(readOnly = true)
     public List<Album> resolveAlbumsForArtist(Artist artist) {
-        // getAlbums() now returns Set<Album>
-        if (artist.getAlbums() != null && !artist.getAlbums().isEmpty()) {
-            return new ArrayList<>(artist.getAlbums());
-        }
-        if (artist.getSongs() == null) return List.of();
-        return artist.getSongs().stream()
+        // Re-attach via ID. Never trust the detached entity's lazy collections
+        Artist managed = artistRepository.findByIdWithAlbums(artist.getArtistId())
+                .orElse(artist);
+
+        Set<Album> direct = managed.getAlbums();
+
+        // Pick up albums linked only through songs (existing fallback)
+        Set<Album> viaSongs = songRepository.findByIdWithDetails(artist.getArtistId())
+                .stream()
                 .map(Song::getAlbum)
-                .filter(album -> album != null)
-                .distinct()
-                .collect(Collectors.toList());
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        Set<Album> all = new LinkedHashSet<>(direct);
+        all.addAll(viaSongs);
+        return new ArrayList<>(all);
+    }
+
+
+
+
+    @Transactional(readOnly = true)
+    public Album getAlbumWithFullDetails(Long albumId) {
+        return albumRepository.findByIdWithSongsAndArtists(albumId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Album not found: " + albumId));
     }
 }

@@ -3,6 +3,7 @@ package com.sebastiandorata.musicdashboard.repository;
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,4 +25,10 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
             "LEFT JOIN FETCH s.genres " +
             "LEFT JOIN FETCH a.albums")
     List<Artist> findAllWithSongs();
+
+
+    @Query("SELECT a FROM Artist a " +
+            "LEFT JOIN FETCH a.albums " +
+            "WHERE a.artistId = :id")
+    Optional<Artist> findByIdWithAlbums(@Param("id") Long id);
 }

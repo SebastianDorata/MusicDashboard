@@ -55,10 +55,7 @@
     -fx-border-color: transparent transparent rgba(76, 175, 80, 0.3) transparent;
     -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.1), 8, 0.1, 0, 0);
 }
-.album-song-row:selected {
-    -fx-background-color: rgba(29, 185, 84, 0.18);
-    -fx-border-color: transparent transparent rgba(76, 175, 80, 0.5) transparent;
-}
+
 .album-song-track {
     -fx-text-fill: #7eb8f7;
     -fx-font-size: 13px;
@@ -140,11 +137,7 @@
     -fx-padding: 0;
     -fx-border-color: transparent;
 }
-.album-list-view .list-cell:selected,
-.album-list-view .list-cell:focused {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-}
+
 
 /* ─── Album list row ────────────────────────────────────────── */
 .album-list-row {
@@ -175,35 +168,50 @@
     -fx-font-size: 12px;
 }
 
-/* ─── Album grid card ───────────────────────────────────────── */
-.album-grid-card {
-    -fx-background-color: linear-gradient(to bottom, #1e2a1e, #161a16);
-    -fx-border-color: rgba(76, 175, 80, 0.2);
+
+/*
+ * Applied by CardFactory.createAlbumCard() and createSongCard().
+ * All grid views (Albums tab, Favourites, Artist detail) use this
+ * class so every card looks identical. Sizing lives here, not in Java.
+ * .album-grid-card is kept as an alias for any legacy call sites.
+ */
+.library-card {
     -fx-border-width: 1;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
     -fx-padding: 12;
+    -fx-pref-width: 170px;
+    -fx-min-width: 140px;
+    -fx-max-width: 220px;
+    -fx-pref-height: 240px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.1, 0, 2);
 }
-.album-grid-card:hover {
+.library-card:hover {
     -fx-border-color: #1DB954;
     -fx-background-color: linear-gradient(to bottom, #243024, #1a211a);
     -fx-effect: dropshadow(gaussian, rgba(29, 185, 84, 0.3), 16, 0.2, 0, 0);
 }
-.album-grid-title {
+.library-card-art {
+    -fx-fit-width: 140px;
+    -fx-fit-height: 140px;
+}
+.library-card-title {
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
     -fx-wrap-text: true;
+    -fx-max-width: 146px;
 }
-.album-grid-artist {
-    -fx-text-fill: #1DB954;
-    -fx-font-size: 12px;
-}
-.album-grid-meta {
+.library-card-subtitle {
     -fx-text-fill: #b3b3b3;
-    -fx-font-size: 11px;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+    -fx-max-width: 146px;
+}
+
+/* Alias — do not add new styles here */
+.album-grid-card {
 }
 
 /* ─── Tile pane (grid container) ────────────────────────────── */
@@ -347,9 +355,6 @@
     -fx-background-color: rgba(255, 255, 255, 0.05);
 }
 
-.song-list-view .list-cell:selected {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
-}
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }

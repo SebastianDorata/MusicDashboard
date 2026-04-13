@@ -9,7 +9,6 @@ import com.sebastiandorata.musicdashboard.presentation.UIComponent;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -185,38 +184,28 @@ public class CardFactory extends UIComponent {
         return card;
     }
 
-    //User Library—————————————————————————————
+    // ── User Library grid cards ───────────────────────────────────
+    // Both methods apply the shared ".library-card" style class so every grid
+    // view (Albums tab, Favourites, Artist detail) looks identical.
+    // Sizing and hover effects live entirely in library.css under .library-card;
+    // call sites must NOT add extra size overrides on top of the returned VBox.
+
     public static VBox createAlbumCard(Album album, MusicPlayerService musicPlayerService) {
-        VBox card = new VBox(10);
-        card.setPrefWidth(160);
-        card.setPrefHeight(220);
-        card.setPadding(new Insets(15));
-        card.setAlignment(Pos.TOP_CENTER);
-        card.getStyleClass().add("wt-smmd-bld");
-        card.setCursor(Cursor.HAND);
+        VBox card = buildBaseCard();
 
-        ImageView albumArt = new ImageView();
-        albumArt.setFitWidth(130);
-        albumArt.setFitHeight(130);
-        albumArt.setPreserveRatio(true);
-
+        ImageView art = buildCardArt();
         if (album.getAlbumArtPath() != null) {
-            try {
-                albumArt.setImage(new Image("file:" + album.getAlbumArtPath(), true));
-            } catch (Exception ignored) {}
+            try { art.setImage(new Image("file:" + album.getAlbumArtPath(), true)); }
+            catch (Exception ignored) {}
         }
 
-        Label title = new Label(album.getTitle());
-        title.getStyleClass().add("txt-white-sm-bld");
-        title.setWrapText(true);
-        title.setMaxWidth(130);
+        Label title = buildCardTitle(album.getTitle());
 
         String year = album.getReleaseYear() != null
-                ? String.valueOf(album.getReleaseYear()) : "Unknown";
-        Label yearLabel = new Label(year);
-        yearLabel.getStyleClass().add("txt-grey-sm");
+                ? String.valueOf(album.getReleaseYear()) : "—";
+        Label subtitle = buildCardSubtitle(year);
 
-        card.getChildren().addAll(albumArt, title, yearLabel);
+        card.getChildren().addAll(art, title, subtitle);
         card.setOnMouseClicked(e -> {
             if (album.getSongs() != null && !album.getSongs().isEmpty()) {
                 musicPlayerService.playSong(album.getSongs().stream().findFirst().orElse(null));
@@ -225,45 +214,56 @@ public class CardFactory extends UIComponent {
         return card;
     }
 
-
     public static VBox createSongCard(Song song, MusicPlayerService musicPlayerService) {
-        VBox card = new VBox(10);
-        card.setPrefWidth(160);
-        card.setPrefHeight(220);
-        card.setPadding(new Insets(15));
-        card.setAlignment(Pos.TOP_CENTER);
-        card.setCursor(Cursor.HAND);
+        VBox card = buildBaseCard();
 
-        ImageView albumArt = new ImageView();
-        albumArt.setFitWidth(130);
-        albumArt.setFitHeight(130);
-        albumArt.setPreserveRatio(true);
-
+        ImageView art = buildCardArt();
         if (song.getAlbum() != null && song.getAlbum().getAlbumArtPath() != null) {
-            try {
-                albumArt.setImage(new Image("file:" + song.getAlbum().getAlbumArtPath(), true));
-            } catch (Exception ignored) {}
+            try { art.setImage(new Image("file:" + song.getAlbum().getAlbumArtPath(), true)); }
+            catch (Exception ignored) {}
         }
 
-        Label title = new Label(song.getTitle());
-        title.getStyleClass().add("txt-white-sm-bld");
-        title.setWrapText(true);
-        title.setMaxWidth(130);
+        Label title = buildCardTitle(song.getTitle());
 
         String artistName = (song.getArtists() != null && !song.getArtists().isEmpty())
-                ? song.getArtists().stream().findFirst()
-    .map(Artist::getName).orElse("Unknown Artist") : "Unknown Artist";
-        Label artist = new Label(artistName);
-        artist.getStyleClass().add("wt-smmd-bld");
-        artist.setWrapText(true);
-        artist.setMaxWidth(130);
+                ? song.getArtists().stream().findFirst().map(Artist::getName).orElse("Unknown Artist")
+                : "Unknown Artist";
+        Label subtitle = buildCardSubtitle(artistName);
 
-        card.getChildren().addAll(albumArt, title, artist);
+        card.getChildren().addAll(art, title, subtitle);
         card.setOnMouseClicked(e -> musicPlayerService.playSong(song));
         return card;
     }
 
-    // Label click wiring
+
+    private static VBox buildBaseCard() {
+        VBox card = new VBox(8);
+        card.getStyleClass().add("library-card");
+        card.setAlignment(Pos.TOP_CENTER);
+        card.setCursor(Cursor.HAND);
+        return card;
+    }
+
+    private static ImageView buildCardArt() {
+        ImageView iv = new ImageView();
+        iv.getStyleClass().add("library-card-art");
+        iv.setPreserveRatio(true);
+        return iv;
+    }
+
+    private static Label buildCardTitle(String text) {
+        Label lbl = new Label(text != null ? text : "—");
+        lbl.getStyleClass().add("library-card-title");
+        lbl.setWrapText(true);
+        return lbl;
+    }
+
+    private static Label buildCardSubtitle(String text) {
+        Label lbl = new Label(text != null ? text : "—");
+        lbl.getStyleClass().add("library-card-subtitle");
+        lbl.setWrapText(true);
+        return lbl;
+    }
 
     /**
      * <p>Sets text and wires single/double-click behaviour on a stat label.
@@ -315,24 +315,3 @@ public class CardFactory extends UIComponent {
         if (target != null) onAlbumNavigate.accept(target);
     }
 }
-
-// =============================================================================
-// Bug fix notes
-//
-// BUG A: Cards do not update after re-navigating to Dashboard.
-//   Instance-field labels were overwritten on each createStatCards() call, but
-//   the old MusicPlayerService listener still pointed at the first set of
-//   detached nodes.
-//   Fix: all labels are now local variables captured by the
-//   refresh closure so each call gets its own independent set.
-//
-// BUG B: Listener accumulation.
-//   Each call added a new listener without removing the previous one.
-//   Fix: songChangeListener is the only surviving instance field and is
-//   deregistered before each new registration.
-//
-// BUG C: Stale click handlers on refresh.
-//   setupLabel() now clears the old handler before setting the new one, so a
-//   PauseTransition from a previous refresh can never fire on the new entity.
-//
-// =============================================================================
