@@ -2,6 +2,7 @@ package com.sebastiandorata.musicdashboard.controller;
 
 import com.sebastiandorata.musicdashboard.entity.Album;
 import com.sebastiandorata.musicdashboard.entity.Artist;
+import com.sebastiandorata.musicdashboard.entity.Genre;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.presentation.libraryViews.*;
 import com.sebastiandorata.musicdashboard.presentation.ArtistDiscographyNavigation;
@@ -128,7 +129,28 @@ public class MyLibraryController {
 
         // Artist drill-in uses the centralized navigation service
         albumDetailBuilder = new AlbumViewBuilder(ctx, this::backFromAlbum, artist -> artistNavigation.navigateToArtist(artist));
-        albumViewHelper    = new AlbumViewHelper(musicPlayerService, this::drillIntoAlbum);
+
+
+        albumViewHelper    = new AlbumViewHelper(musicPlayerService, this::drillIntoAlbum, (album, result) -> {
+            album.setTitle(result.title());
+            album.setReleaseYear(result.releaseYear());
+            albumRepository.save(album);
+
+            // Apply genre to all songs if provided
+            if (result.genre() != null) {
+                Genre genre = genreRepository.findByName(result.genre())
+                        .orElseGet(() -> { Genre g = new Genre(); g.setName(result.genre()); return genreRepository.save(g); });
+                for (Song song : album.getSongs()) {
+                    song.getGenres().clear();
+                    song.getGenres().add(genre);
+                    songRepository.save(song);
+                }
+            }
+
+            libraryService.invalidateCache();
+            loadContent(); // refresh the view
+        });
+
         artistViewBuilder  = new ArtistViewBuilder(ctx, this::drillIntoAlbum, libraryService);
         favouritesBuilder  = new FavouritesViewBuilder(ctx);
     }

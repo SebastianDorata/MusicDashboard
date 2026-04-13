@@ -87,7 +87,7 @@ public class AlbumCardListCell extends ListCell<Album> {
         infoLbl.getStyleClass().add("txt-grey-md");
 
         if (album.getAlbumArtPath() != null) {
-            try { art.setImage(new Image("file:" + album.getAlbumArtPath(), true)); }
+            try { art.setImage(new Image(AppUtils.toImageUri(album.getAlbumArtPath()), true)); }
             catch (Exception ignored) {}
         }
 

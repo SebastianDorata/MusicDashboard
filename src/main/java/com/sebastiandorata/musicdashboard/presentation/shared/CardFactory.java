@@ -7,6 +7,7 @@ import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.StatCardsViewModel;
 import com.sebastiandorata.musicdashboard.presentation.UIComponent;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import javafx.animation.PauseTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Pos;
@@ -139,10 +140,6 @@ public class CardFactory extends UIComponent {
 
         card.getChildren().add(dayLabel);
 
-
-
-
-
         Label avgTitle = new Label("Average Listening Period");
         avgTitle.getStyleClass().addAll("wt-smmd-bld", "dashboard-stat-title");
 
@@ -195,7 +192,7 @@ public class CardFactory extends UIComponent {
 
         ImageView art = buildCardArt();
         if (album.getAlbumArtPath() != null) {
-            try { art.setImage(new Image("file:" + album.getAlbumArtPath(), true)); }
+            try { art.setImage(new Image(AppUtils.toImageUri(album.getAlbumArtPath()), true)); }
             catch (Exception ignored) {}
         }
 
@@ -219,7 +216,7 @@ public class CardFactory extends UIComponent {
 
         ImageView art = buildCardArt();
         if (song.getAlbum() != null && song.getAlbum().getAlbumArtPath() != null) {
-            try { art.setImage(new Image("file:" + song.getAlbum().getAlbumArtPath(), true)); }
+            try { art.setImage(new Image(AppUtils.toImageUri(song.getAlbum().getAlbumArtPath()), true)); }
             catch (Exception ignored) {}
         }
 

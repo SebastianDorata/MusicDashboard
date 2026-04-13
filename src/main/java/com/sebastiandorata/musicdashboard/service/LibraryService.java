@@ -85,8 +85,6 @@ public class LibraryService {
     }
 
 
-
-
     @Transactional(readOnly = true)
     public Album getAlbumWithFullDetails(Long albumId) {
         return albumRepository.findByIdWithSongsAndArtists(albumId)

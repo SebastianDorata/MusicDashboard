@@ -83,13 +83,13 @@ public class AlbumArtView extends StackPane {
 
         if (artPath != null && !artPath.isEmpty()) {
             try {
-                // Use File URI so paths with spaces are handled correctly
-                Image image = new Image(new File(artPath).toURI().toString(),
-                        /*background load=*/ true);
+                String uri = new File(artPath).toURI().toURL().toString();
+                Image image = new Image(uri, true);
                 albumArt.setImage(image);
                 albumArt.setVisible(true);
                 artPlaceholder.setVisible(false);
             } catch (Exception e) {
+                System.out.println("Failed to load art: " + e.getMessage());
                 showPlaceholder();
             }
         } else {
@@ -97,17 +97,10 @@ public class AlbumArtView extends StackPane {
         }
     }
 
+
     private void showPlaceholder() {
         albumArt.setImage(null);
         albumArt.setVisible(false);
         artPlaceholder.setVisible(true);
     }
 }
-// =============================================================================
-// Migration notes
-//
-// The old AlbumArtView was a plain data-holder (ImageView albumArt,
-// Label artPlaceholder) constructed externally. This version takes a
-// MusicPlayerService and wires its own listener, removing the construction
-// and wiring responsibility from the caller. PlaybackPanelController only
-// needs to call new AlbumArtView(musicPlayerService) and add it to the layout. call new AlbumArtView(musicPlayerService) and add it to the layout.

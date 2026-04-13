@@ -2,6 +2,7 @@ package com.sebastiandorata.musicdashboard;
 
 import com.sebastiandorata.musicdashboard.controller.Authentication.AuthenticationController;
 import com.sebastiandorata.musicdashboard.controller.MainController;
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -32,7 +33,10 @@ public class JavaFxApplication extends Application {
         }
 
         stage.setTitle("Music Dashboard");
-        stage.setMaximized(true);
+        stage.setMaximized(false);
+        stage.setWidth(AppUtils.APP_WIDTH);
+        stage.setHeight(AppUtils.APP_HEIGHT);
+        stage.centerOnScreen();
         MainController.setMainStage(stage);
 
         stage.sceneProperty().addListener((obs, oldScene, newScene) -> {

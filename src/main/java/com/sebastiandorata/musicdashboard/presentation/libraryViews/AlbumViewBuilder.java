@@ -3,6 +3,7 @@ package com.sebastiandorata.musicdashboard.presentation.libraryViews;
 import com.sebastiandorata.musicdashboard.entity.Album;
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -82,7 +83,6 @@ public class AlbumViewBuilder {
         back.getStyleClass().addAll("nav-btn-back","txt-white-md-bld");
         back.setOnAction(e -> onBack.run());
 
-
         row.getChildren().add(back);
         return row;
     }
@@ -98,7 +98,7 @@ public class AlbumViewBuilder {
 
         if (album.getAlbumArtPath() != null) {
             try {
-                artwork.setImage(new Image("file:" + album.getAlbumArtPath(), true));
+                artwork.setImage(new Image(AppUtils.toImageUri(album.getAlbumArtPath()), true));
             } catch (Exception ignored) {}
         }
 
@@ -184,5 +184,4 @@ public class AlbumViewBuilder {
 
         return list;
     }
-
 }

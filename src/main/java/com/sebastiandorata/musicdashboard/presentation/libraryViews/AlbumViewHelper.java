@@ -8,9 +8,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -21,26 +23,38 @@ import java.util.function.Consumer;
  * parameters so it has no Spring dependency and is instantiated
  * directly by the controller.</p>
  *
+ * <p>Right-clicking any album card or list row opens a context menu
+ * with an "Edit Album" option. The edit dialog allows updating the
+ * album title, release year, and genre (genre is applied across all
+ * songs in the album). The {@code onAlbumEdit} callback is responsible
+ * for persisting the changes.</p>
+ *
  * <p>SRP: Only responsible for building album display nodes.</p>
  */
 public class AlbumViewHelper {
 
     private final MusicPlayerService musicPlayerService;
     private final Consumer<Album>    onAlbumSelected;
+    private final BiConsumer<Album, AlbumEditDialog.Result> onAlbumEdit;
 
     /**
      * @param musicPlayerService used by album cards to play the first song
      * @param onAlbumSelected    callback invoked when an album is clicked
+     * @param onAlbumEdit        callback invoked when the user saves album edits;
+     *                           receives the album and the dialog result
      */
     public AlbumViewHelper(MusicPlayerService musicPlayerService,
-                           Consumer<Album> onAlbumSelected) {
+                           Consumer<Album> onAlbumSelected,
+                           BiConsumer<Album, AlbumEditDialog.Result> onAlbumEdit) {
         this.musicPlayerService = musicPlayerService;
         this.onAlbumSelected    = onAlbumSelected;
+        this.onAlbumEdit        = onAlbumEdit;
     }
 
     /**
      * Builds a grouped, scrollable album list with an alphabet bar.
      * Albums are grouped by first letter with divider labels.
+     * Right-clicking a row opens the album edit dialog.
      *
      * @param albums the albums to display
      * @param sort   the sort strategy to apply
@@ -77,7 +91,8 @@ public class AlbumViewHelper {
 
             for (Album album : entry.getValue()) {
                 HBox row = AlbumCardListCell.buildRow(album);
-                row.setOnMouseClicked(e -> onAlbumSelected.accept(album));
+                attachClickHandler(row, album);// right click to edit album
+                attachEditContextMenu(row, album);
                 content.getChildren().add(row);
             }
         }
@@ -100,9 +115,10 @@ public class AlbumViewHelper {
      * Builds a virtualized row-based album grid.
      * Albums are grouped into rows of COLUMNS cards each.
      * Only visible rows are rendered at any time.
+     * Right-clicking a card opens the album edit dialog.
      *
-     * @param albums  the albums to display
-     * @param sort    the sort strategy to apply
+     * @param albums the albums to display
+     * @param sort   the sort strategy to apply
      * @return a ScrollPane containing the virtualized grid
      */
     public ScrollPane buildGridView(List<Album> albums, SortStrategy sort) {
@@ -138,7 +154,8 @@ public class AlbumViewHelper {
 
                 for (Album album : row) {
                     VBox card = CardFactory.createAlbumCard(album, musicPlayerService);
-                    card.setOnMouseClicked(e -> onAlbumSelected.accept(album));
+                    attachClickHandler(card, album); //right click to edit album
+                    attachEditContextMenu(card, album);
                     HBox.setHgrow(card, Priority.ALWAYS);
                     rowBox.getChildren().add(card);
                 }
@@ -152,5 +169,35 @@ public class AlbumViewHelper {
         scroll.setStyle("-fx-background-color: transparent; " + "-fx-background: transparent;");
         gridView.setStyle("-fx-background-color: transparent;");
         return scroll;
+    }
+
+    /**
+     * Attaches a right-click context menu to the given node that opens
+     * the {@link AlbumEditDialog} for the specified album.
+     *
+     * @param node  the UI node to attach the context menu to
+     * @param album the album associated with this node
+     */
+    private void attachEditContextMenu(Node node, Album album) {
+        ContextMenu menu = new ContextMenu();
+
+        MenuItem editItem = new MenuItem("✏  Edit Album");
+        editItem.setOnAction(e ->
+                AlbumEditDialog.show(album).ifPresent(result -> onAlbumEdit.accept(album, result))
+        );
+
+        menu.getItems().add(editItem);
+
+        node.setOnContextMenuRequested(e ->
+                menu.show(node, e.getScreenX(), e.getScreenY())
+        );
+    }
+
+    private void attachClickHandler(Node node, Album album) {
+        node.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                onAlbumSelected.accept(album);
+            }
+        });
     }
 }

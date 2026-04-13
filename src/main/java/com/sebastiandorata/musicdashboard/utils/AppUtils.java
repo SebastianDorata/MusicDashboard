@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 /**
@@ -22,8 +23,8 @@ import java.time.LocalDateTime;
  * </ul>
  */
 public class AppUtils {
-    public static final double APP_WIDTH  = Screen.getPrimary().getVisualBounds().getWidth();
-    public static final double APP_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight();
+    public static final double APP_WIDTH  = Screen.getPrimary().getVisualBounds().getWidth() * 0.85;
+    public static final double APP_HEIGHT = Screen.getPrimary().getVisualBounds().getHeight() * 0.85;
     public static final double SCALE      = APP_HEIGHT / 1080.0;
 
 
@@ -106,5 +107,20 @@ public class AppUtils {
         if (exception != null) exception.printStackTrace();
     }
 
-
+    /**
+     * Converts a raw file path to a properly encoded URI string safe for
+     * use with JavaFX {@link javafx.scene.image.Image}.
+     * Handles special characters such as {@code #} that would otherwise
+     * break URI parsing.
+     *
+     * @param filePath the absolute file path to convert
+     * @return a URI string with special characters encoded
+     */
+    public static String toImageUri(String filePath) {
+        try {
+            return new File(filePath).toURI().toURL().toString();
+        } catch (Exception e) {
+            return "file:" + filePath; // fallback
+        }
+    }
 }
