@@ -1,0 +1,108 @@
+/* ═══════════════════════════════════════════════════════════════
+    css Notes:
+
+   JavaFX does not support css media queries, so screen-size branching
+   is handled in Java (AppUtils breakpoint helpers).
+   • Use -fx-pref-width / -fx-pref-height in % values via em / viewport.
+     JavaFX css is limited, use Priority/grow in Java for that.
+   • Provide sensible min/max heights that look right at all densities.
+   • Use -fx-font-size: 1em or relative values so text scales with the
+     system font size rather than being hard-wired to px.
+/* ═══════════════════════════════════════════════════════════════
+
+/* Shared panel base ─────────────────────────────────────── */
+.panels {
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 20, 0.2, 0, 0);
+    -fx-border-color: rgb(76, 175, 80, 0.5);
+
+}
+
+/* Stat cards ────────────────────────────────────────────── */
+.dashboard-stat-card {/*Individual */
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-width: 2;
+    -fx-padding: 0.5em;
+    -fx-min-width: 10em;
+    -fx-max-width: Infinity;
+    -fx-alignment: center;
+}
+.dashboard-stat-card:hover {
+    -fx-background-color: #1f4d66;
+    -fx-border-color: rgba(31, 119, 180, 0.6);
+    -fx-effect: dropshadow(gaussian, rgba(79, 172, 254, 0.2), 12, 0, 0, 4);
+}
+.dashboard-stat-title {
+    -fx-wrap-text: true;
+    -fx-alignment: center;
+}
+.dashboard-stat-unit {
+    -fx-text-fill: #7eb8f7;
+    -fx-font-size: 1.3em;
+    -fx-font-weight: normal;
+}
+.dashboard-stat-name {
+    -fx-wrap-text: true;
+}
+.dashboard-stat-day{
+    /*-fx-border-color:red;*/
+    -fx-alignment: center;
+}
+
+/* Top Artists panel ─────────────────────────────────────── */
+.top-artists-panel {
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-spacing: 8;
+    -fx-padding: 16;
+}
+.artist-row {
+    -fx-padding: 2.3em;
+    -fx-border-color: transparent transparent rgba(255, 255, 255, 0.06) transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.artist-time {
+    -fx-text-fill: #7eb8f7;
+    -fx-font-size: 1.5em;
+    -fx-min-width: 65;
+    -fx-alignment: center-right;
+}
+
+/* Recently Played panel ─────────────────────────────────── */
+.recently-played-panel {
+    -fx-background-radius: 20;
+    -fx-border-width: 1;
+    -fx-border-radius: 14;
+    -fx-padding: 0.8em;
+}
+.play-history-row {
+    -fx-alignment: center-left;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+.play-history-row:hover {
+    -fx-background-color: rgba(79, 172, 254, 0.08);
+    -fx-background-radius: 8;
+}
+.play-history-song {
+    -fx-text-overrun: ellipsis;
+    -fx-max-width: Infinity;
+    -fx-font-size: 1.7em;
+    -fx-font-weight: normal;
+    -fx-text-fill: white;
+}
+
+.HomepageTopMenu{
+    /*-fx-border-color:red;*/
+
+    -fx-spacing: 0.5em;
+}
+.HomepageBottomMenu{
+  /*  -fx-border-color:red;*/
+}
+.HomepageTopHalf{ /* Player and cards*/
+    /*-fx-border-color:orange;*/
+
+
+}

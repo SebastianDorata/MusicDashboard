@@ -1,0 +1,378 @@
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS & INTERACTIVE CONTROLS
+   Single source of truth for all button and combo-box styles.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Primary action button (green) ────────────────────────── */
+.green-btn {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-color: #1DB954;
+    -fx-padding: 8 16;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+}
+.green-btn:hover {
+    -fx-background-color: #1ed760;
+}
+.green-btn:pressed {
+    -fx-background-color: #1aa34a;
+}
+
+/* ─── Destructive button (red) ──────────────────────────────── */
+.btn-red {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+}
+.btn-red:hover {
+    -fx-background-color: #e74c3c;
+}
+
+/* ─── Return / Go Back button ───────────────────────────────── */
+/* Used in: ModalListController.createHeader() */
+.return-btn {
+    -fx-background-color: transparent;
+    -fx-font-size: 13px;
+    -fx-border-color: #1DB954;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1;
+    -fx-pref-height: 40;
+    -fx-text-fill: #ff4444;
+    -fx-cursor: hand;
+}
+
+/* ─── Left sidebar navigation button ───────────────────────── */
+/* Used in: DashboardController.createLeftButton() */
+.Left-Btn {
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+    -fx-pref-width: 200;
+    -fx-pref-height: 40;
+    -fx-padding: 0 0 0 15;
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+    -fx-cursor: hand;
+}
+.Left-Btn:hover {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+/* ─── Tab buttons ───────────────────────────────────────────── */
+.tab-BtnA {
+    -fx-background-color: #1DB954;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+    -fx-cursor: hand;
+}
+.tab-BtnB {
+    -fx-background-color: #2c2c2c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+    -fx-cursor: hand;
+}
+.tab-BtnB:hover {
+    -fx-background-color: #3c3c3c;
+}
+
+
+
+/* ─── Toggle button ─────────────────────────────────────────── */
+.toggle-button {
+    -fx-text-fill: #1DB954;
+    -fx-font-size: 12px;
+    -fx-padding: 6 12;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+.toggle-button:selected {
+    -fx-underline:true;
+    -fx-text-fill: white;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #3c3c3c;
+}
+
+/* ─── State helpers ─────────────────────────────────────────── */
+
+/* ─── Login page buttons ────────────────────────────────────── */
+.login-btn-primary {
+    -fx-background-color: #1DB954;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 11 0 11 0;
+    -fx-pref-height: 44;
+    -fx-max-width: Infinity;
+    -fx-cursor: hand;
+}
+.login-btn-primary:hover {
+    -fx-background-color: #1ed760;
+}
+.login-btn-primary:pressed {
+    -fx-background-color: #1aa34a;
+}
+.login-btn-secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1DB954;
+    -fx-font-size: 13px;
+    -fx-border-color: #1DB954;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 9 0 9 0;
+    -fx-pref-height: 40;
+    -fx-max-width: Infinity;
+    -fx-cursor: hand;
+}
+.login-btn-secondary:hover {
+    -fx-background-color: rgba(29, 185, 84, 0.12);
+}
+.view-All{
+    -fx-background-color: transparent;
+    -fx-text-fill: #1DB954;
+    -fx-font-size: 13px;
+    -fx-border-color: #1DB954;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 9 0 9 0;
+    -fx-pref-height: 40;
+    -fx-cursor: hand;
+}
+
+
+
+/* ─── Month selector buttons (Analytics) ───────────────────── */
+.month-btn {
+    -fx-background-color: #3a6f78;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 8px 5px;
+    -fx-border-radius: 4;
+    -fx-cursor: hand;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.month-btn:hover {
+    -fx-background-color: #4a9fb8;
+}
+
+/* ─── Calendar navigation buttons ──────────────────────────── */
+.calendar-nav-btn {
+    -fx-background-color: #1e90ff;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 4;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+}
+.calendar-nav-btn:hover {
+    -fx-background-color: #4fa3ff;
+}
+
+/* ─── Music player buttons ──────────────────────────────────── */
+.player-btn-primary {
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-text-fill: rgb(76, 175, 80);
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-min-width: 44;
+    -fx-min-height: 44;
+    -fx-max-width: 44;
+    -fx-max-height: 44;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 10, 0.2, 0, 2);
+}
+.player-btn-primary:hover {
+    -fx-background-color: rgb(76, 175, 80);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.7), 16, 0.3, 0, 3);
+}
+.player-btn-secondary {
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-text-fill: rgb(76, 175, 80);
+    -fx-font-size: 16px;
+    -fx-border-width: 2;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+.player-btn-secondary:hover {
+    -fx-background-color: rgb(76, 175, 80);
+    -fx-text-fill: white;
+}
+.player-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: rgb(76, 175, 80);
+    -fx-text-fill: rgb(76, 175, 80);
+    -fx-font-size: 16px;
+    -fx-background-radius: 50;
+    -fx-min-width: 38;
+    -fx-min-height: 38;
+    -fx-max-width: 38;
+    -fx-max-height: 38;
+    -fx-border-radius: 50;
+    -fx-border-width: 2;
+}
+.player-btn:hover {
+    -fx-background-color: rgb(76, 175, 80);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.5), 10, 0, 0, 0);
+}
+.player-btn-primary .image-view {
+    -fx-effect: dropshadow(gaussian, rgba(10, 22, 40, 0.3), 2, 0, 0, 1);
+}
+.player-btn .image-view {
+    -fx-blend-mode: screen;
+}
+
+/* ─── Song row menu button ──────────────────────────────────── */
+.song-row-menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #888888;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-padding: 0 8 0 8;
+    -fx-border-color: transparent;
+}
+.song-row-menu-btn:hover {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+
+/* ─── Combo box ─────────────────────────────────────────────── */
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-font-size: 13px;
+    -fx-border-color: #1DB954;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1;
+    -fx-pref-height: 40;
+    -fx-max-width: Infinity;
+    -fx-cursor: hand;
+}
+.combo-box .cell,
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 9 0 9 9;
+}
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+.combo-box .arrow {
+    -fx-background-color: white;
+}
+.combo-box:focused {
+    -fx-border-color: #1ed760;
+    -fx-border-width: 2;
+}
+.combo-box-popup .list-view {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #1DB954;
+    -fx-border-width: 1;
+}
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 8 12;
+}
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #1DB954;
+    -fx-text-fill: white;
+}
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #158a3e;
+    -fx-text-fill: white;
+}
+
+/* ── Nav buttons ────────────────────────────────────── */
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: White;
+    -fx-spacing: 20;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.2), 20, 0.2, 0, 0);
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 12 10 12;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-cursor: hand;
+    -fx-pref-height: 42;
+}
+
+.nav-btn:hover {
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    -fx-text-fill: white;
+    -fx-border-color: #1DB954;
+    -fx-cursor: hand;
+}
+/* Active nav item in analytics sidebar */
+.nav-btn-active {
+    -fx-background-color: rgba(29, 185, 84, 0.15);
+    -fx-border-color: #1DB954;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+}
+
+.nav-btn-active:hover {
+    -fx-background-color: rgba(29, 185, 84, 0.25);
+}
+
+/* Dashboard back button at the bottom of the sidebar */
+.nav-btn-back {
+    -fx-background-color: transparent;
+    -fx-border-color: #1DB954;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 20, 0.2, 0, 0);
+    -fx-underline: true;
+    -fx-border-radius: 15;
+    -fx-border-width: 1;
+    -fx-padding: 10 12 10 12;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+
+}
+
+.nav-btn-back:hover {
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+}
+/* Pagination control button */
+.btn-blue {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1e90ff;
+    -fx-font-size: 13px;
+    -fx-border-color: #1e90ff;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 9 0 9 0;
+    -fx-pref-height: 40;
+    -fx-cursor: hand;
+}
+.btn-blue:hover {
+    -fx-background-color: rgba(30, 144, 255, 0.12);
+}
+.btn-blue:pressed {
+    -fx-background-color: rgba(30, 144, 255, 0.25);
+}

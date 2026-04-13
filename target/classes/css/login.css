@@ -1,0 +1,85 @@
+.main-background {/*Used*/
+    -fx-background-color: #121212;
+}
+
+.header {/*Used*/
+    -fx-text-fill: #1DB954;
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+    -fx-padding: 60 0 8 0;
+}
+
+.login-subtitle {/*Used*/
+    -fx-text-fill: #b3b3b3;
+    -fx-font-size: 15px;
+    -fx-padding: 0 0 36 0;
+}
+
+.login-card {/*Used*/
+    -fx-background-color: #1a1a2e;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(29, 185, 84, 0.18);
+    -fx-border-width: 1;
+    -fx-padding: 44 48 40 48;
+    -fx-pref-width: 440;
+    -fx-max-width: 440;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 24, 0, 0, 6);
+}
+
+.login-card-title {/*Used*/
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+
+.username-Field,/*Used*/
+.password-Field,
+.email-Field {
+    -fx-background-color: #252540;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #383860;
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #666688;
+    -fx-font-size: 14px;
+    -fx-padding: 10 14 10 14;
+    -fx-pref-height: 42;
+    -fx-max-width: Infinity;
+}
+
+.username-Field:focused,
+.password-Field:focused,
+.email-Field:focused {
+    -fx-border-color: #1DB954;
+    -fx-background-color: #2a2a4a;
+}
+
+
+
+.login-divider-label {
+    -fx-text-fill: #555577;
+    -fx-font-size: 12px;
+    -fx-padding: 4 12 4 12;
+}
+
+.login-divider-line {
+    -fx-background-color: #2e2e4e;
+    -fx-pref-height: 1;
+    -fx-max-height: 1;
+}
+
+.login-error-label {
+    -fx-text-fill: #ff6b6b;
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 0 2;
+}
+
+.login-success-label {
+    -fx-text-fill: #1DB954;
+    -fx-font-size: 12px;
+    -fx-padding: 0 0 0 2;
+}
