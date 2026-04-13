@@ -132,7 +132,7 @@ public class PlaylistService {
     /**
      * Returns playlist songs as a List for UI compatibility.
      * Converts from Set to List here so the rest of the UI
-     * code that expects List<Song> does not need to change.
+     * code that expects {@code List<Song>} does not need to change.
      */
     public List<Song> getPlaylistSongs(Long playlistId) {
         Playlist playlist = getPlaylistById(playlistId)

@@ -27,7 +27,7 @@ public class ArtistDiscographyNavigation {
     }
 
     /**
-     * Use this when a Consumer<Artist> is required as a parameter.
+     * Use this when a {@code Consumer<Artist>} is required as a parameter.
      * For direct calls prefer navigateToArtist() instead.
      */
     public Consumer<Artist> getArtistDrillInCallback() {
