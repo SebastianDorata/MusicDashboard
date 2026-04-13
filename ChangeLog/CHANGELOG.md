@@ -14,3 +14,8 @@
   album_artists for faster JOIN FETCH execution
 - Fixed PlaybackTrackingService.getRecentlyPlayed() to limit
   results to 50 rows instead of loading full history
+
+### Refactored artist navigation into a centralized ArtistDiscographyNavigation hub
+- All cross-page artist drill-in calls (Dashboard Top Artists panel, Playback Panel now-playing bar) now route through this single Spring bean via a Consumer<Artist> callback, removing direct dependencies on MyLibraryController from Dashboard components. 
+- Fixed a LazyInitializationException by re-fetching artists within a @Transactional context using a JOIN FETCH query before accessing lazy-loaded album collections. 
+- Used @Lazy injection to resolve a circular Spring dependency between ArtistDiscographyNavigation and MyLibraryController.

@@ -56,7 +56,8 @@ public class SongHandler {
 
         MenuItem toggleFav = buildFavouriteMenuItem(song);
 
-        menu.getItems().addAll(addToPlaylist, toggleFav);
+        MenuItem editSong = buildEditMenuItem(song);
+        menu.getItems().addAll(addToPlaylist, toggleFav, editSong);
         menu.show(anchor, Side.BOTTOM, 0, 0);
     }
 
@@ -147,5 +148,20 @@ public class SongHandler {
                 AppUtils.showError("Could not add song to playlist: " + ex.getMessage());
             }
         });
+    }
+
+    /**
+     * Builds the Edit menu item.
+     * Delegates to {@link SongEditDialog} via {@link LibraryHandler#editDialog}.
+     * If no dialog was supplied (read-only context), the item is disabled.
+     */
+    private MenuItem buildEditMenuItem(Song song) {
+        MenuItem item = new MenuItem("✎  Edit Song");
+        if (ctx.editDialog() != null) {
+            item.setOnAction(e -> ctx.editDialog().show(song, () -> {}));
+        } else {
+            item.setDisable(true);
+        }
+        return item;
     }
 }

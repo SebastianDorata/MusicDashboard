@@ -9,32 +9,28 @@ import org.springframework.stereotype.Component;
 import java.util.function.Consumer;
 
 /**
- * Centralized service for artist navigation across the application.
-
- * <p>Responsibility: Provide a consistent callback for drilling into an artist's discography.</p>
- * <p>Decouples controllers from the specific navigation implementation.</p>
-
- *  <p><b><u>Usage:</u></b></p>
- *   <p>private ArtistNavigationService artistNavigation;
- *   <p>topArtistsController.createPanel(artistNavigation.getArtistDrillInCallback());
+ * Centralized navigation hub for the application.
+ *
+ * Single source for all cross-page navigation callbacks.
+ * Inject this bean wherever a navigation callback is needed instead
+ * of wiring MyLibraryController directly at the call site.
  */
 @Component
 public class ArtistDiscographyNavigation {
 
     @Lazy @Autowired
-    private MyLibraryController myLibraryController;// Lazy prevents circular dependencies during Spring initialization
+    private MyLibraryController myLibraryController;
+
+    public void navigateToArtist(Artist artist) {
+        if (artist == null) return;
+        myLibraryController.showWithArtist(artist);
+    }
 
     /**
-     * Returns the reusable callback for artist drill-in navigation.
-     *
-     * When an artist is clicked anywhere in the app, this callback:
-     * <ol>
-     *     <li>Navigates to My Library</li>
-     *     <li>Drills into that artist's discography view</li>
-     * </ol>
-     * @return {@code Consumer<Artist>} callback ready to pass to UI components
+     * Use this when a Consumer<Artist> is required as a parameter.
+     * For direct calls prefer navigateToArtist() instead.
      */
     public Consumer<Artist> getArtistDrillInCallback() {
-        return artist -> myLibraryController.showWithArtist(artist);
+        return this::navigateToArtist;
     }
 }

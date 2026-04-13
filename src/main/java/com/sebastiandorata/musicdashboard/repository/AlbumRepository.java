@@ -33,9 +33,10 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     // Fetches one album with songs and artists
     // Used when drilling into an album detail view
     @Query("SELECT DISTINCT a FROM Album a " +
+            "LEFT JOIN FETCH a.artists " +
             "LEFT JOIN FETCH a.songs s " +
             "LEFT JOIN FETCH s.artists " +
-            "LEFT JOIN FETCH a.artists " +
+            "LEFT JOIN FETCH s.genres " +
             "WHERE a.albumId = :id")
     Optional<Album> findByIdWithSongsAndArtists(@Param("id") Long id);
 }

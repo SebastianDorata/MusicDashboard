@@ -55,8 +55,7 @@ public class TopArtistsController extends UIComponent {
     public VBox createPanel(Consumer<Artist> onArtistClicked) {
         VBox topArtist = new VBox(0);
 
-        // Responsive fix: clamped width helper
-        topArtist.setPrefWidth(AppUtils.rightPanelPrefWidth());
+        topArtist.setPrefWidth(AppUtils.rightPanelPrefWidth()); // Responsive fix: clamped width helper
 
         // Do NOT write setMaxHeight or VBox.setVgrow(Priority.ALWAYS/SOMETIMES) again.
         // The TopArtists panel is intentionally fixed-height (content-sized: title + exactly 5 rows).
