@@ -28,9 +28,9 @@ import java.util.concurrent.Executors;
 @Service
 public class ImportService {
 
-    @Lazy
-    @Autowired
-    private SongImportService songService;
+    @Lazy @Autowired private SongImportService songService;
+    @Lazy @Autowired private LibraryService libraryService;
+
     private final ExecutorService importExecutor = Executors.newSingleThreadExecutor();
 
     /**
@@ -38,18 +38,16 @@ public class ImportService {
      * @param onProgress callback invoked per file with (currentIndex, total, fileName)
      * @param onComplete callback invoked once with (imported, skipped, failed) counts
     */
-    public void startImport(List<File> files, TriConsumer<Integer, Integer, String> onProgress, TriConsumer<Integer, Integer, Integer> onComplete) {
+    public void startImport(List<File> files,
+                            TriConsumer<Integer, Integer, String> onProgress,
+                            TriConsumer<Integer, Integer, Integer> onComplete) {
         int total = files.size();
-
         importExecutor.submit(() -> {
             int imported = 0, skipped = 0, failed = 0;
-
             for (int i = 0; i < files.size(); i++) {
                 File file = files.get(i);
                 final int current = i + 1;
-
                 onProgress.accept(current, total, file.getName());
-
                 try {
                     songService.importSong(file);
                     imported++;
@@ -57,10 +55,12 @@ public class ImportService {
                     skipped++;
                 } catch (Exception e) {
                     failed++;
-                    System.err.println("Failed to import: " + file.getName() + " — " + e.getMessage());
+                    System.err.println("Failed to import: " + file.getName()
+                            + " — " + e.getMessage());
                 }
             }
-
+            // Invalidate so library reloads fresh data after import
+            libraryService.invalidateCache();
             onComplete.accept(imported, skipped, failed);
         });
     }

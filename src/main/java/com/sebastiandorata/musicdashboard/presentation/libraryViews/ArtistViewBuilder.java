@@ -62,7 +62,7 @@ public class ArtistViewBuilder {
      * @return a {@link VBox} containing the grouped artist list, intended to be
      *         placed inside the page's single outer scroll pane
      */
-    public VBox buildArtistList(List<Artist> artists, Consumer<Artist> onArtistSelected) {
+    public BorderPane buildArtistList(List<Artist> artists, Consumer<Artist> onArtistSelected) {
         List<Artist> sorted = artists.stream()
                 .sorted((a, b) -> a.getName().compareToIgnoreCase(b.getName()))
                 .collect(Collectors.toList());
@@ -76,17 +76,30 @@ public class ArtistViewBuilder {
 
         VBox content = new VBox(0);
         content.setFillWidth(true);
+        Map<String, Node> anchors = new LinkedHashMap<>();
 
         for (Map.Entry<String, List<Artist>> entry : grouped.entrySet()) {
-            content.getChildren().add(buildAlphaDivider(entry.getKey()));
+            HBox divider = buildAlphaDivider(entry.getKey());
+            anchors.put(entry.getKey(), divider);
+            content.getChildren().add(divider);
             for (Artist artist : entry.getValue()) {
                 content.getChildren().add(buildArtistRow(artist, onArtistSelected));
             }
         }
 
-        VBox.setVgrow(content, Priority.ALWAYS);
-        return content;
+        ScrollPane scrollPane = new ScrollPane(content);
+        scrollPane.setFitToWidth(true);
+        VBox.setVgrow(scrollPane, Priority.ALWAYS);
+
+        AlphabetBar alphabetBar = new AlphabetBar(scrollPane, anchors);
+
+        BorderPane layout = new BorderPane();
+        layout.setCenter(scrollPane);
+        layout.setRight(alphabetBar);
+        VBox.setVgrow(layout, Priority.ALWAYS);
+        return layout;
     }
+
 
     private HBox buildAlphaDivider(String letter) {
         HBox divider = new HBox(10);

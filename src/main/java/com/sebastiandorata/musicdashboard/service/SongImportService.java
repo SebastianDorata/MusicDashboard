@@ -20,9 +20,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 /**
  * Reads audio metadata from MP3 and M4A files and persists them to the database.
  *
@@ -127,7 +126,7 @@ public class SongImportService {
 
         // Artists
         String artistName = getTagValue(tag, FieldKey.ARTIST, "Unknown Artist");
-        List<Artist> artists = resolveArtists(artistName);
+        Set<Artist> artists = resolveArtists(artistName);
         song.setArtists(artists);
         for (Artist artist : artists) {
             if (!album.getArtists().contains(artist)) {
@@ -155,27 +154,34 @@ public class SongImportService {
         }
     }
 
-    private List<Artist> resolveArtists(String raw) {
-        List<Artist> list = new ArrayList<>();
+    private Set<Artist> resolveArtists(String raw) {
+        Set<Artist> set = new HashSet<>();
         for (String name : raw.split("[,;&]")) {
             String t = name.trim();
-            list.add(artistRepository.findByName(t).orElseGet(() -> {
-                Artist a = new Artist(); a.setName(t); return artistRepository.save(a);
+            if (t.isBlank()) continue;
+            set.add(artistRepository.findByName(t).orElseGet(() -> {
+                Artist a = new Artist();
+                a.setName(t);
+                return artistRepository.save(a);
             }));
         }
-        return list;
+        return set;
     }
 
-    private List<Genre> resolveGenres(String raw) {
-        List<Genre> list = new ArrayList<>();
+    private Set<Genre> resolveGenres(String raw) {
+        Set<Genre> set = new HashSet<>();
         for (String name : raw.split("[,;]")) {
             String t = name.trim();
-            list.add(genreRepository.findByName(t).orElseGet(() -> {
-                Genre g = new Genre(); g.setName(t); return genreRepository.save(g);
+            if (t.isBlank()) continue;
+            set.add(genreRepository.findByName(t).orElseGet(() -> {
+                Genre g = new Genre();
+                g.setName(t);
+                return genreRepository.save(g);
             }));
         }
-        return list;
+        return set;
     }
+
     private String extractAndSaveAlbumArt(AudioFile audioFile, String songFilePath) {
         try {
             Tag tag = audioFile.getTag();
@@ -240,7 +246,7 @@ public class SongImportService {
 
 
     public List<Song> getAllSongs() {
-        return songRepository.findAll();
+        return songRepository.findAllWithArtistsAndGenres();
     }
 
 

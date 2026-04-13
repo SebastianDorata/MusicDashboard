@@ -1,6 +1,6 @@
 package com.sebastiandorata.musicdashboard.controller;
 
-
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.dto.HistoryRowData;
 import com.sebastiandorata.musicdashboard.dto.TopAlbumRowData;
 import com.sebastiandorata.musicdashboard.dto.TopSongRowData;
@@ -338,7 +338,8 @@ public class AnalyticsController {
                 h -> new HistoryRowData(
                         h.getSong() != null ? h.getSong().getTitle() : "Unknown",
                         h.getSong() != null && !h.getSong().getArtists().isEmpty()
-                                ? h.getSong().getArtists().get(0).getName()
+                                ? h.getSong().getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist")
                                 : "Unknown",
                         AppUtils.formatRelativeTime(h.getPlayedAt()),
                         h.getDurationPlayedSeconds() != null ? h.getDurationPlayedSeconds() : 0,
@@ -363,7 +364,8 @@ public class AnalyticsController {
                 song -> new TopSongRowData(
                         song.getTitle(),
                         song.getArtists() != null && !song.getArtists().isEmpty()
-                                ? song.getArtists().get(0).getName()
+                                ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist")
                                 : "Unknown",
                         song.getDuration() != null ? song.getDuration() : 0,
                         song

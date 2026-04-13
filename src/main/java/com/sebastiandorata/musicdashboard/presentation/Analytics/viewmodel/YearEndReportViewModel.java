@@ -110,7 +110,8 @@ public class YearEndReportViewModel {
         String topSongArtist = (report.getTopSong()  != null
                 && report.getTopSong().getArtists()  != null
                 && !report.getTopSong().getArtists().isEmpty())
-                ? report.getTopSong().getArtists().get(0).getName() : "—";
+                ? report.getTopSong().getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist") : "—";
         String topArtist     = report.getTopArtist() != null ? report.getTopArtist().getName()  : "—";
         String topAlbum      = report.getTopAlbum()  != null ? report.getTopAlbum().getTitle()  : "—";
         String topGenre      = report.getTopGenre()  != null ? report.getTopGenre().getName()   : "—";

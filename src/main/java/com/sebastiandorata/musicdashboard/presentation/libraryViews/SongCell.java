@@ -1,5 +1,7 @@
 package com.sebastiandorata.musicdashboard.presentation.libraryViews;
 
+
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.service.FavouriteService;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
@@ -126,6 +128,7 @@ public class SongCell extends ListCell<Song> {
 
     }
 
+
     @Override
     protected void updateItem(Song song, boolean empty) {
         super.updateItem(song, empty);
@@ -137,8 +140,10 @@ public class SongCell extends ListCell<Song> {
         titleLabel.setText(song.getTitle() != null ? song.getTitle() : "Unknown Title");
 
         String artistName = (song.getArtists() != null && !song.getArtists().isEmpty()
-                && song.getArtists().get(0).getName() != null)
-                ? song.getArtists().get(0).getName()
+                && song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist") != null)
+                ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist")
                 : "Unknown Artist";
         artistLabel.setText(artistName);
 

@@ -77,11 +77,7 @@ public class MonthlyReportService {
                 .orElseThrow(() -> new IllegalStateException("User not found: id=" + userId));
 
         List<PlaybackHistory> monthHistory = playbackHistoryRepository
-                .findByUserIdOrderByPlayedAtDesc(userId)
-                .stream()
-                .filter(h -> h.getPlayedAt().getYear() == year)
-                .filter(h -> h.getPlayedAt().getMonthValue() == month)
-                .collect(Collectors.toList());
+                .findByUserIdAndYearAndMonth(userId, year, month);
 
         MonthlyReport report = new MonthlyReport();
         report.setUser(user);

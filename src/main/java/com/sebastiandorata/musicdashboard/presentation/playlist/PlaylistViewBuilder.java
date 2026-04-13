@@ -1,6 +1,7 @@
 package com.sebastiandorata.musicdashboard.presentation.playlist;
 
 import com.sebastiandorata.musicdashboard.controller.PlaylistController;
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.presentation.helpers.RowConfig;
 import com.sebastiandorata.musicdashboard.entity.Playlist;
 import com.sebastiandorata.musicdashboard.entity.Song;
@@ -349,7 +350,8 @@ public class PlaylistViewBuilder {
         titleLbl.getStyleClass().add(cfg.getPrimaryLabelStyleClass());
 
         String artistName = (song.getArtists() != null && !song.getArtists().isEmpty())
-                ? song.getArtists().get(0).getName() : "Unknown Artist";
+                ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist") : "Unknown Artist";
         Label artistLbl = new Label(artistName);
         artistLbl.getStyleClass().add(cfg.getSecondaryLabelStyleClass());
 
@@ -417,7 +419,8 @@ public class PlaylistViewBuilder {
         titleLbl.setMaxWidth(130);
 
         String artistName = (song.getArtists() != null && !song.getArtists().isEmpty())
-                ? song.getArtists().get(0).getName() : "Unknown Artist";
+                ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist") : "Unknown Artist";
         Label artistLbl = new Label(artistName);
         artistLbl.getStyleClass().add("txt-grey-sm");
         artistLbl.setMaxWidth(130);

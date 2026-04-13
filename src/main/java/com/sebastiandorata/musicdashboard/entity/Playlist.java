@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * JPA entity representing a user-created playlist.
@@ -44,13 +46,13 @@ public class Playlist {
     @Column(name = "is_public")
     private Boolean isPublic = false;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "playlist_songs",
             joinColumns = @JoinColumn(name = "playlist_id"),
             inverseJoinColumns = @JoinColumn(name = "song_id")
     )
-    private List<Song> songs;
+    private Set<Song> songs = new HashSet<>();
 
     public Playlist() {
         this.createdAt = LocalDateTime.now();

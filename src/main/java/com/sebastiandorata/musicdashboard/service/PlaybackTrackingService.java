@@ -1,6 +1,7 @@
 package com.sebastiandorata.musicdashboard.service;
 
 import com.sebastiandorata.musicdashboard.entity.PlaybackHistory;
+import org.springframework.data.domain.PageRequest;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.entity.User;
 import com.sebastiandorata.musicdashboard.repository.PlaybackHistoryRepository;
@@ -8,6 +9,7 @@ import com.sebastiandorata.musicdashboard.repository.SongRepository;
 import com.sebastiandorata.musicdashboard.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -69,7 +71,10 @@ public class PlaybackTrackingService {
      * Space Complexity: O(n)
      */
     public List<PlaybackHistory> getRecentlyPlayed(Long userId) {
-        return playbackHistoryRepository.findByUserIdOrderByPlayedAtDesc(userId);
+        List<Long> ids = playbackHistoryRepository.findRecentIdsByUserId(
+                userId, PageRequest.of(0, 50));
+        if (ids.isEmpty()) return List.of();
+        return playbackHistoryRepository.findByIdsWithSongs(ids);
     }
 
     public void updateCurrentPlayDuration(Integer durationPlayedSeconds, boolean completed) {

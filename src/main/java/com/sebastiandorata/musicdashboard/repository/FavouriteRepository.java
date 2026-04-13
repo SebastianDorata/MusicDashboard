@@ -4,6 +4,8 @@ import com.sebastiandorata.musicdashboard.entity.Favourite;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +29,11 @@ public interface FavouriteRepository extends JpaRepository<Favourite, Long> {
 
     // Find a specific favourite record
     Optional<Favourite> findByUserAndSongId(User user, Song song);
+
+    @Query("SELECT f FROM Favourite f " +
+            "LEFT JOIN FETCH f.songId s " +
+            "LEFT JOIN FETCH s.artists " +
+            "LEFT JOIN FETCH s.genres " +
+            "WHERE f.user = :user")
+    List<Favourite> findByUserWithSongs(@Param("user") User user);
 }

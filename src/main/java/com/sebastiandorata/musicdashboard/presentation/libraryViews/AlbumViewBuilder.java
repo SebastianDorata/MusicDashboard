@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -133,8 +134,9 @@ public class AlbumViewBuilder {
     }
 
     private List<Artist> resolveArtists(Album album) {
-        List<Artist> artists = album.getArtists();
-        if (artists != null && !artists.isEmpty()) return artists;
+        if (album.getArtists() != null && !album.getArtists().isEmpty()) {
+            return new ArrayList<>(album.getArtists());
+        }
 
         if (album.getSongs() == null) return List.of();
 

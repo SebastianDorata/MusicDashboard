@@ -1,6 +1,8 @@
 package com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel;
 
 import com.sebastiandorata.musicdashboard.dto.TopSongRowData;
+
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.service.handlers.DataLoadingService;
 import com.sebastiandorata.musicdashboard.service.handlers.ListeningPaginationService;
@@ -40,7 +42,8 @@ public class TopSongsViewModel {
         return songs.getWindow(offset, limit).stream()
                 .map(song -> new TopSongRowData(
                         song.getTitle(),
-                        !song.getArtists().isEmpty() ? song.getArtists().get(0).getName() : "Unknown",
+                        !song.getArtists().isEmpty() ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist") : "Unknown",
                         song.getDuration(),
                         song
                 ))

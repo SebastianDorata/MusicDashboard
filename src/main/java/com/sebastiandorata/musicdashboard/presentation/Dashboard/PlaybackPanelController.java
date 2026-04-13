@@ -1,9 +1,10 @@
 package com.sebastiandorata.musicdashboard.presentation.Dashboard;
 
-import com.sebastiandorata.musicdashboard.presentation.helpers.PlayerConfig;
-import com.sebastiandorata.musicdashboard.presentation.UIComponent;
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
+import com.sebastiandorata.musicdashboard.presentation.helpers.PlayerConfig;
+import com.sebastiandorata.musicdashboard.presentation.UIComponent;
+
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import com.sebastiandorata.musicdashboard.presentation.shared.AlbumArtView;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
@@ -326,7 +327,7 @@ public class PlaybackPanelController extends UIComponent {
         songTitle.setText(song.getTitle());
 
         Artist firstArtist = (song.getArtists() != null && !song.getArtists().isEmpty())
-                ? song.getArtists().get(0)
+                ? song.getArtists().stream().findFirst().orElse(null)
                 : null;
 
         artistName.setText(firstArtist != null ? firstArtist.getName() : "Unknown Artist");

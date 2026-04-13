@@ -1,5 +1,6 @@
 package com.sebastiandorata.musicdashboard.presentation.libraryViews;
 
+
 import com.sebastiandorata.musicdashboard.entity.Album;
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Genre;
@@ -15,7 +16,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -181,7 +182,7 @@ public class SongEditDialog {
                 }
 
                 if (!newArtists.isBlank()) {
-                    List<Artist> artists = Arrays.stream(newArtists.split(","))
+                    Set<Artist> artists = Arrays.stream(newArtists.split(","))
                             .map(String::trim).filter(s -> !s.isBlank())
                             .map(name -> artistRepository.findByName(name)
                                     .orElseGet(() -> {
@@ -189,12 +190,12 @@ public class SongEditDialog {
                                         a.setName(name);
                                         return artistRepository.save(a);
                                     }))
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toSet());
                     song.setArtists(artists);
                 }
 
                 if (!newGenres.isBlank()) {
-                    List<Genre> genres = Arrays.stream(newGenres.split(","))
+                    Set<Genre> genres = Arrays.stream(newGenres.split(","))
                             .map(String::trim).filter(s -> !s.isBlank())
                             .map(name -> genreRepository.findByName(name)
                                     .orElseGet(() -> {
@@ -202,7 +203,7 @@ public class SongEditDialog {
                                         g.setName(name);
                                         return genreRepository.save(g);
                                     }))
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toSet());
                     song.setGenres(genres);
                 }
 

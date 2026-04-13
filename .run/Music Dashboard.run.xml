@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Music Dashboard" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="MusicDashboard" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.sebastiandorata.musicdashboard.MusicDashboardApplication" />
+    <option name="VM_PARAMETERS" value="--module-path $PATH_TO_FX$ --add-modules javafx.controls,javafx.fxml,javafx.media --enable-native-access=javafx.graphics,javafx.media --enable-native-access=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED --add-opens javafx.base/com.sun.javafx=ALL-UNNAMED" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

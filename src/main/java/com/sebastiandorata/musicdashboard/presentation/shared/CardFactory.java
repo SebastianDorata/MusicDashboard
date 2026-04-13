@@ -1,6 +1,8 @@
 package com.sebastiandorata.musicdashboard.presentation.shared;
 
+
 import com.sebastiandorata.musicdashboard.entity.Album;
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.StatCardsViewModel;
 import com.sebastiandorata.musicdashboard.presentation.UIComponent;
@@ -217,7 +219,7 @@ public class CardFactory extends UIComponent {
         card.getChildren().addAll(albumArt, title, yearLabel);
         card.setOnMouseClicked(e -> {
             if (album.getSongs() != null && !album.getSongs().isEmpty()) {
-                musicPlayerService.playSong(album.getSongs().get(0));
+                musicPlayerService.playSong(album.getSongs().stream().findFirst().orElse(null));
             }
         });
         return card;
@@ -249,7 +251,8 @@ public class CardFactory extends UIComponent {
         title.setMaxWidth(130);
 
         String artistName = (song.getArtists() != null && !song.getArtists().isEmpty())
-                ? song.getArtists().get(0).getName() : "Unknown Artist";
+                ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist") : "Unknown Artist";
         Label artist = new Label(artistName);
         artist.getStyleClass().add("wt-smmd-bld");
         artist.setWrapText(true);

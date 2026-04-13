@@ -4,11 +4,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,7 +69,36 @@ public class AlphabetBar extends VBox {
             getChildren().add(lbl);
         }
     }
+    public AlphabetBar(ListView<Object> listView,
+                       List<Object> flatItems,
+                       Map<String, Object> anchors) {
+        setAlignment(Pos.TOP_CENTER);
+        setSpacing(0);
+        setPadding(new Insets(8, 6, 8, 6));
+        getStyleClass().add("alphabet-bar");
 
+        for (char c : LETTERS.toCharArray()) {
+            String letter = String.valueOf(c);
+            Label lbl = new Label(letter);
+            lbl.setMaxHeight(Double.MAX_VALUE);
+            lbl.setAlignment(Pos.CENTER);
+            VBox.setVgrow(lbl, Priority.ALWAYS);
+
+            if (anchors.containsKey(letter)) {
+                lbl.getStyleClass().add("alphabet-letter-active");
+                lbl.setOnMouseClicked(e -> {
+                    // Find the index of this letter divider in the flat list
+                    int idx = flatItems.indexOf(letter);
+                    if (idx >= 0) {
+                        listView.scrollTo(idx);
+                    }
+                });
+            } else {
+                lbl.getStyleClass().add("alphabet-letter-inactive");
+            }
+            getChildren().add(lbl);
+        }
+    }
     /**
      * Scrolls {@code scrollPane} so that {@code target} appears at the top of
      * the visible area.

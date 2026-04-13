@@ -5,7 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * JPA entity representing a music artist.
@@ -33,11 +35,11 @@ public class Artist {
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
 
-    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
-    private List<Song> songs;
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
+    private Set<Song> songs = new HashSet<>();
 
-    @ManyToMany(mappedBy = "artists", fetch = FetchType.EAGER)
-    private List<Album> albums;
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
+    private Set<Album> albums = new HashSet<>();
 
     @Override
     public String toString() {

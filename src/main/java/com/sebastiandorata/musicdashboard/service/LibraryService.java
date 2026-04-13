@@ -7,7 +7,9 @@ import com.sebastiandorata.musicdashboard.repository.AlbumRepository;
 import com.sebastiandorata.musicdashboard.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 /**
@@ -21,22 +23,53 @@ import java.util.stream.Collectors;
 @Service
 public class LibraryService {
 
-    @Autowired
-    private AlbumRepository albumRepository;
-    @Autowired
-    private ArtistRepository artistRepository;
-    @Autowired
-    private SongImportService      songService;
+    @Autowired private AlbumRepository albumRepository;
+    @Autowired private ArtistRepository artistRepository;
+    @Autowired private SongImportService songService;
 
-    public List<Song>   getAllSongs()    { return songService.getAllSongs(); }
-    public List<Album>  getAllAlbums()   { return albumRepository.findAll(); }
-    public List<Artist> getAllArtists()  { return artistRepository.findAll(); }
+    // In-memory cache. Songs only change on import
+    private List<Song>   songCache   = null;
+    private List<Album>  albumCache  = null;
+    private List<Artist> artistCache = null;
 
+    @Transactional(readOnly = true)
+    public List<Song> getAllSongs() {
+        if (songCache == null) {
+            songCache = songService.getAllSongs();
+        }
+        return songCache;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Album> getAllAlbums() {
+        if (albumCache == null) {
+            albumCache = albumRepository.findAllWithArtists();
+        }
+        return albumCache;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Artist> getAllArtists() {
+        if (artistCache == null) {
+            artistCache = artistRepository.findAllWithSongs();
+        }
+        return artistCache;
+    }
+
+    // Call this after any import so the next library open re-fetches
+    public void invalidateCache() {
+        songCache   = null;
+        albumCache  = null;
+        artistCache = null;
+    }
+
+    @Transactional(readOnly = true)
     public List<Album> resolveAlbumsForArtist(Artist artist) {
-        List<Album> albums = artist.getAlbums();
-        if (albums != null && !albums.isEmpty()) return albums;
+        // getAlbums() now returns Set<Album>
+        if (artist.getAlbums() != null && !artist.getAlbums().isEmpty()) {
+            return new ArrayList<>(artist.getAlbums());
+        }
         if (artist.getSongs() == null) return List.of();
-
         return artist.getSongs().stream()
                 .map(Song::getAlbum)
                 .filter(album -> album != null)

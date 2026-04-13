@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -156,8 +157,21 @@ public class MyLibraryController {
         sceneRoot = new BorderPane();
         sceneRoot.getStyleClass().add("dark-page-bg");
         sceneRoot.setTop(createTopBar());
-        outerScrollPane = createContentArea();
-        sceneRoot.setCenter(outerScrollPane);
+
+        // Build contentArea without loading content yet
+        contentArea = new VBox(20);
+        contentArea.setPadding(new Insets(20));
+        contentArea.setFillWidth(true);
+
+        outerScrollPane = new ScrollPane(contentArea);
+        outerScrollPane.setFitToWidth(true);
+        outerScrollPane.setFitToHeight(false);
+        VBox.setVgrow(outerScrollPane, Priority.ALWAYS);
+        BorderPane.setAlignment(outerScrollPane, Pos.TOP_LEFT);
+
+        sceneRoot.setCenter(outerScrollPane); // wire up BEFORE loadContent
+        loadContent();                        // now sceneRoot is fully ready
+
         return new Scene(sceneRoot, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
@@ -318,18 +332,7 @@ public class MyLibraryController {
     }
 
     private ScrollPane createContentArea() {
-        contentArea = new VBox(20);
-        contentArea.setPadding(new Insets(20));
-        contentArea.setFillWidth(true);
-
-        loadContent();
-
-        ScrollPane scroll = new ScrollPane(contentArea);
-        scroll.setFitToWidth(true);
-        scroll.setFitToHeight(false);
-        VBox.setVgrow(scroll, Priority.ALWAYS);
-        BorderPane.setAlignment(scroll, Pos.TOP_LEFT);
-        return scroll;
+        return outerScrollPane;
     }
 
     private Button tabButton(String text, String view) {
@@ -433,6 +436,7 @@ public class MyLibraryController {
     private void loadContent() {
         contentArea.getChildren().clear();
         sceneRoot.setCenter(outerScrollPane); // Reset default; list views override this
+        System.out.println("Center reset to outerScrollPane: " + (sceneRoot.getCenter() == outerScrollPane));
 
         if (currentAlbum != null) {
             contentArea.getChildren().add(albumDetailBuilder.build(currentAlbum));
@@ -488,16 +492,29 @@ public class MyLibraryController {
             VBox.setVgrow(listWithBar, Priority.ALWAYS);
             sceneRoot.setCenter(wrapper);
         } else {
-            contentArea.getChildren().addAll(header, buildAlbumsGridView(albums, currentSort));
+            ScrollPane gridScroll = buildAlbumsGridView(albums, currentSort);
+            VBox wrapper = new VBox(0, header, gridScroll);
+            wrapper.setFillWidth(true);
+            wrapper.getStyleClass().add("main-bkColour");
+            VBox.setVgrow(gridScroll, Priority.ALWAYS); // lets the scroll pane fill remaining height
+            sceneRoot.setCenter(wrapper); // bypass outerScrollPane entirely, same as list mode
         }
     }
 
     private void loadArtistsView() {
         List<Artist> artists = libraryService.getAllArtists();
+
         Label header = new Label("Artists (" + artists.size() + ")");
-        header.getStyleClass().add("txt-white-md-bld");
-        contentArea.getChildren().add(header);
-        contentArea.getChildren().add(artistViewBuilder.buildArtistList(artists, this::drillIntoArtist));
+        header.getStyleClass().add("view-header");
+        header.setPadding(new Insets(20, 20, 4, 20));
+
+        BorderPane listWithBar = artistViewBuilder.buildArtistList(artists, this::drillIntoArtist);
+        VBox wrapper = new VBox(0, header, listWithBar);
+        wrapper.setFillWidth(true);
+        wrapper.getStyleClass().add("main-bkColour");
+        VBox.setVgrow(listWithBar, Priority.ALWAYS);
+        sceneRoot.setCenter(wrapper);
+
         gridToggle.setVisible(false);
     }
 
@@ -558,25 +575,69 @@ public class MyLibraryController {
         return layout;
     }
 
-    private TilePane buildAlbumsGridView(List<Album> albums, SortStrategy sort) {
+    private ScrollPane buildAlbumsGridView(List<Album> albums, SortStrategy sort) {
         List<Album> sorted = albums.stream()
                 .sorted(sort.getAlbumComparator())
                 .toList();
 
-        TilePane grid = new TilePane();
-        grid.getStyleClass().add("tile-pane");
-        grid.setPrefColumns(4);
-        grid.setPrefTileWidth(200);
-        grid.setPrefTileHeight(220);
+        final int COLUMNS = 8;
 
-        for (Album album : sorted) {
-            VBox card = CardFactory.createAlbumCard(album, musicPlayerService);
-            card.getStyleClass().add("album-grid-card");
-            card.setOnMouseClicked(e -> drillIntoAlbum(album));
-            grid.getChildren().add(card);
+        List<List<Album>> rows = new ArrayList<>();
+        for (int i = 0; i < sorted.size(); i += COLUMNS) {
+            rows.add(sorted.subList(i, Math.min(i + COLUMNS, sorted.size())));
         }
-        return grid;
+
+        ListView<List<Album>> gridView = new ListView<>();
+        gridView.getStyleClass().add("tile-pane");
+        gridView.setFixedCellSize(276);
+        gridView.getItems().addAll(rows);
+
+        gridView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(List<Album> row, boolean empty) {
+                super.updateItem(row, empty);
+                if (empty || row == null) {
+                    setGraphic(null);
+                    return;
+                }
+                HBox rowBox = new HBox(20);
+                rowBox.setPadding(new Insets(8, 8, 8, 8));
+                rowBox.setMaxWidth(Double.MAX_VALUE);
+                rowBox.setAlignment(Pos.CENTER);
+                for (Album album : row) {
+                    VBox card = CardFactory.createAlbumCard(album, ctx.musicPlayerService());
+                    card.getStyleClass().add("album-grid-card");
+                    card.setPrefWidth(200);
+                    card.setMinWidth(160);
+                    card.setMaxWidth(260);
+                    card.setPrefHeight(300);
+
+                    card.getChildren().stream()
+                            .filter(n -> n instanceof ImageView)
+                            .map(n -> (ImageView) n)
+                            .findFirst()
+                            .ifPresent(iv -> {
+                                iv.setFitHeight(180);
+                                iv.setPreserveRatio(true);
+                                iv.fitWidthProperty().bind(card.widthProperty().subtract(30));
+                            });
+
+                    card.setOnMouseClicked(e -> drillIntoAlbum(album));
+                    HBox.setHgrow(card, Priority.ALWAYS);
+                    rowBox.getChildren().add(card);
+                }
+                setGraphic(rowBox);
+            }
+        });
+
+        ScrollPane scroll = new ScrollPane(gridView);
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
+        scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+        gridView.setStyle("-fx-background-color: transparent;");
+        return scroll;
     }
+
 
     private void updateToggleStyles() {
         listToggle.getStyleClass().removeAll("nav-btn", "nav-btn-active");

@@ -87,14 +87,14 @@ public class FavouriteService {
 
     public List<Song> getUserFavourites() {
         User user = getCurrentUser();
-        return favouriteRepository.findByUser(user).stream()
+        return favouriteRepository.findByUserWithSongs(user).stream()
                 .map(Favourite::getSongId)
                 .collect(Collectors.toList());
     }
 
     public List<Song> getUserFavouritesSortedByDate() {
         User user = getCurrentUser();
-        return favouriteRepository.findByUser(user).stream()
+        return favouriteRepository.findByUserWithSongs(user).stream()
                 .sorted((a, b) -> b.getFavouritedAt().compareTo(a.getFavouritedAt()))
                 .map(Favourite::getSongId)
                 .collect(Collectors.toList());

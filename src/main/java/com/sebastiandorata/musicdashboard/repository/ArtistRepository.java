@@ -2,8 +2,10 @@ package com.sebastiandorata.musicdashboard.repository;
 
 import com.sebastiandorata.musicdashboard.entity.Artist;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -16,4 +18,10 @@ import java.util.Optional;
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
     Optional<Artist> findByName(String name);
+
+    @Query("SELECT DISTINCT a FROM Artist a " +
+            "LEFT JOIN FETCH a.songs s " +
+            "LEFT JOIN FETCH s.genres " +
+            "LEFT JOIN FETCH a.albums")
+    List<Artist> findAllWithSongs();
 }

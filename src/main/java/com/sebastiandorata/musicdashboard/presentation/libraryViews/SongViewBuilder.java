@@ -5,6 +5,8 @@ import com.sebastiandorata.musicdashboard.presentation.shared.CardFactory;
 import com.sebastiandorata.musicdashboard.utils.SortStrategy;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
@@ -88,73 +90,97 @@ public class SongViewBuilder {
     public BorderPane buildListView(List<Song> songs, SortStrategy sort) {
         List<Song> sorted = sortSongs(songs, sort);
 
-        VBox content = new VBox(0);
-        content.setFillWidth(true);
-        content.getStyleClass().add("main-bkColour");
-
-        // Group songs by their first letter (non-alpha titles go under '#')
+        // Group into sections for the alphabet dividers
         Map<String, List<Song>> grouped = new LinkedHashMap<>();
         for (Song song : sorted) {
             String key = firstLetterKey(song.getTitle());
             grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(song);
         }
-        Map<String, Node> anchors = new LinkedHashMap<>();
+
+        // Build a flat list with divider markers interleaved
+        // Use a record to distinguish dividers from songs
+        List<Object> flatItems = new ArrayList<>();
+        Map<String, Object> anchors = new LinkedHashMap<>();
 
         for (Map.Entry<String, List<Song>> entry : grouped.entrySet()) {
             String letter = entry.getKey();
-
-            // Section divider label
-            Label divider = new Label(letter);
-            divider.getStyleClass().add("alpha-divider");
-            divider.setMaxWidth(Double.MAX_VALUE);
-            content.getChildren().add(divider);
-            anchors.put(letter, divider);
-
-            // Song rows under this letter
-            for (Song song : entry.getValue()) {
-                SongCell cell = new SongCell(
-                        sorted,
-                        ctx.musicPlayerService(),
-                        ctx.playlistService(),
-                        ctx.favouriteService(),
-                        ctx.onSongMenu(),
-                        false   // suppress album art for scroll performance
-                );
-                cell.updateItem(song, false);
-                Node row = cell.getGraphic();
-                if (row == null) continue;
-
-                row.setOnMouseClicked(e -> {
-                    if (e.getButton() == MouseButton.SECONDARY) {
-                        // Right-click, open edit dialog
-                        if (editDialog != null) editDialog.show(song, () -> {});
-                        e.consume();
-                        return;
-                    }
-                    if (e.getClickCount() == 1 && e.getButton() == MouseButton.PRIMARY) {
-                        // Double left-click, play song and set queue
-                        ctx.musicPlayerService().setQueue(sorted);
-                        ctx.musicPlayerService().playSong(song);
-                    }
-                    // Single left-click, nno action
-                });
-
-                content.getChildren().add(row);
-            }
+            flatItems.add(letter);          // String = divider
+            anchors.put(letter, letter);
+            flatItems.addAll(entry.getValue()); // Song = row
         }
-        ScrollPane scrollPane = new ScrollPane(content);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(false);
-        scrollPane.getStyleClass().add("scroll-pane");
 
-        VBox.setVgrow(scrollPane, Priority.ALWAYS);
-        AlphabetBar alphabetBar = new AlphabetBar(scrollPane, anchors);
+        // Single virtualized ListView for all 4700 songs + dividers
+        ListView<Object> listView = new ListView<>();
+        listView.getItems().addAll(flatItems);
+        listView.getStyleClass().add("song-list-view");
+        listView.setFixedCellSize(52); // Set fixed height so JavaFX
+        // doesn't measure every cell
+
+        listView.setCellFactory(lv -> new ListCell<Object>() {
+            private final SongCell songCell = new SongCell(
+                    sorted,
+                    ctx.musicPlayerService(),
+                    ctx.playlistService(),
+                    ctx.favouriteService(),
+                    ctx.onSongMenu(),
+                    false
+            );
+
+            @Override
+            protected void updateItem(Object item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                    setStyle("");
+                    return;
+                }
+
+                if (item instanceof String letter) {
+                    // Render as alphabet divider
+                    setGraphic(null);
+                    setText(letter);
+                    getStyleClass().setAll("alpha-divider");
+                    setMouseTransparent(false);
+                    setOnMouseClicked(null);
+                } else if (item instanceof Song song) {
+                    // Render as song row using the reusable SongCell
+                    setText(null);
+                    getStyleClass().setAll("song-list-cell");
+                    songCell.updateItem(song, false);
+                    Node row = songCell.getGraphic();
+                    setGraphic(row);
+
+                    if (row != null) {
+                        setOnMouseClicked(e -> {
+                            if (e.getButton() == MouseButton.SECONDARY) {
+                                if (editDialog != null) editDialog.show(song, () -> {});
+                                e.consume();
+                                return;
+                            }
+                            if (e.getClickCount() == 2
+                                    && e.getButton() == MouseButton.PRIMARY) {
+                                ctx.musicPlayerService().setQueue(sorted);
+                                ctx.musicPlayerService().playSong(song);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        VBox.setVgrow(listView, Priority.ALWAYS);
+
+        // Build alphabet bar using the letter keys as anchors
+        // AlphabetBar needs Node anchors — map letters to their
+        // index in the ListView so clicking scrolls to that position
+        Map<String, Node> alphabetAnchors = new LinkedHashMap<>();
+        AlphabetBar alphabetBar = new AlphabetBar(listView, flatItems, anchors);
 
         BorderPane layout = new BorderPane();
-        layout.setCenter(scrollPane);
+        layout.setCenter(listView);
         layout.setRight(alphabetBar);
         VBox.setVgrow(layout, Priority.ALWAYS);
-
         return layout;
     }
 

@@ -1,6 +1,7 @@
 package com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel;
 
 import com.sebastiandorata.musicdashboard.dto.HistoryRowData;
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.entity.PlaybackHistory;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.service.handlers.DataLoadingService;
@@ -66,7 +67,8 @@ public class ListeningHistoryViewModel {
                     return new HistoryRowData(
                             song != null ? song.getTitle() : "Unknown",
                             song != null && !song.getArtists().isEmpty()
-                                    ? song.getArtists().get(0).getName()
+                                    ? song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist")
                                     : "Unknown",
                             AppUtils.formatRelativeTime(h.getPlayedAt()),
                             h.getDurationPlayedSeconds() != null ? h.getDurationPlayedSeconds() : 0,

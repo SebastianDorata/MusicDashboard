@@ -1,5 +1,6 @@
 package com.sebastiandorata.musicdashboard.presentation.Analytics;
 
+import com.sebastiandorata.musicdashboard.entity.Artist;
 import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.YearEndReportViewModel;
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
@@ -456,7 +457,8 @@ public class YearWrappedViewController {
 
     private String firstArtist(Song song) {
         if (song.getArtists() != null && !song.getArtists().isEmpty()) {
-            return song.getArtists().get(0).getName();
+            return song.getArtists().stream().findFirst()
+    .map(Artist::getName).orElse("Unknown Artist");
         }
         return "Unknown Artist";
     }

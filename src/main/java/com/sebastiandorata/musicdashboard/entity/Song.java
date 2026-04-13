@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * JPA entity representing a music track.
@@ -22,7 +24,7 @@ import java.util.List;
  * <p><b><u>References:</u></b></p>
  *<ul>
  *  <li><a href="https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api">
- *      FetchType EAGER in Java Persistence API </a> used to resolve the error of "'org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role".</li>
+ *      FetchType in Java Persistence API </a> </li>
  *  </ul>
  *
  *
@@ -85,30 +87,37 @@ public class Song {
 
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_artists",
             joinColumns = @JoinColumn(name = "song_id"),
-            inverseJoinColumns = @JoinColumn(name = "artist_id")
-            )
-    private List<Artist> artists; //Every artist is fetched from the database at the time the song is fetched.
+            inverseJoinColumns = @JoinColumn(name = "artist_id"),
+            indexes = {
+                    @Index(name = "idx_song_artists_song_id", columnList = "song_id"),
+                    @Index(name = "idx_song_artists_artist_id", columnList = "artist_id")
+            }
+    )
+    private Set<Artist> artists = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "song_genres",
             joinColumns = @JoinColumn(name = "song_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
+            inverseJoinColumns = @JoinColumn(name = "genre_id"),
+            indexes = {
+                    @Index(name = "idx_song_genres_song_id", columnList = "song_id"),
+                    @Index(name = "idx_song_genres_genre_id", columnList = "genre_id")
+            }
     )
-    private List<Genre> genres;
+    private Set<Genre> genres = new HashSet<>();
 
 
     @Override
     public String toString() {
         String artistName = "Unknown Artist";
         if (artists != null && !artists.isEmpty()) {
-            artistName = artists.get(0).getName();
+            artistName = artists.iterator().next().getName();
         }
-
         return title + " - " + artistName;
     }
 }

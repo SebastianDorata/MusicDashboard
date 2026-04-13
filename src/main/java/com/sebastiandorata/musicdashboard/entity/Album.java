@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -39,16 +41,20 @@ public class Album {
     @Column(name = "album_art_path", length = 500)
     private String albumArtPath;
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
-    private List<Song> songs;
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    private Set<Song> songs = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "album_artists",
             joinColumns = @JoinColumn(name = "album_id"),
-            inverseJoinColumns = @JoinColumn(name = "artist_id")
+            inverseJoinColumns = @JoinColumn(name = "artist_id"),
+            indexes = {
+                    @Index(name = "idx_album_artists_album_id", columnList = "album_id"),
+                    @Index(name = "idx_album_artists_artist_id", columnList = "artist_id")
+            }
     )
-    private List<Artist> artists = new ArrayList<>();
+    private Set<Artist> artists = new HashSet<>();
 
     @Override
     public String toString() {

@@ -332,3 +332,32 @@
     -fx-border-width: 0 0 1 0;
     -fx-effect: dropshadow(gaussian, rgba(29, 185, 84, 0.3), 6, 0.2, 0, 0);
 }
+
+.song-list-view {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.song-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.song-list-view .list-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+.song-list-view .list-cell:selected {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.tile-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.tile-pane .list-cell {
+    -fx-background-color: transparent;
+}
