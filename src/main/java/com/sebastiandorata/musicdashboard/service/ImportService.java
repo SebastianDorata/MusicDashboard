@@ -57,9 +57,9 @@ public class ImportService {
                     failed++;
                     System.err.println("Failed to import: " + file.getName()
                             + " — " + e.getMessage());
+                    e.printStackTrace(); // <-- added
                 }
             }
-            // Invalidate so library reloads fresh data after import
             libraryService.invalidateCache();
             onComplete.accept(imported, skipped, failed);
         });
@@ -99,4 +99,5 @@ public class ImportService {
     public interface TriConsumer<A, B, C> {
         void accept(A a, B b, C c);
     }
+
 }

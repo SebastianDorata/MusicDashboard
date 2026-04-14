@@ -15,6 +15,7 @@ import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.images.Artwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -62,7 +63,7 @@ public class SongImportService {
         return filename;
     }
 
-
+    @Transactional
     public Song importSong(File file) throws Exception {
         Optional<Song> existingSong = songRepository.findByFilePath(file.getAbsolutePath());
         if (existingSong.isPresent()) {
