@@ -1,0 +1,1082 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{tabularx}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=blue,
+    pdfborder={0 0 0}
+}
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small MusicDashboard --- BCNF Normalization}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Section formatting
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+\titleformat{\subsubsection}{\normalsize\itshape}{}{0em}{}
+
+% Custom commands
+\newcommand{\fd}[1]{\textbf{(FD#1)}}
+\newcommand{\attr}[1]{\texttt{#1}}
+\newcommand{\rel}[1]{\textit{#1}}
+\newcommand{\closure}[1]{\{#1\}^{+}}
+\newcommand{\bcnfcheck}{$\checkmark$}
+
+% Table column types
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+
+%% ─── TITLE PAGE ──────────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\LARGE\bfseries Database Normalization to BCNF\par}
+\vspace{0.5cm}
+{\Large MusicDashboard Application Schema\par}
+\vspace{2cm}
+{\large Sebastian Dorata\par}
+\vspace{0.3cm}
+\vspace{1.5cm}
+\begin{tabular}{ll}
+    \textbf{Subject:}  & Database Design \& Normalization \\[4pt]
+    \textbf{Method:}   & Boyce--Codd Normal Form (BCNF) \\[4pt]
+    \textbf{Date:}     & February 10, 2026 \\
+\end{tabular}
+\vspace{1.5cm}
+
+\hrule
+\vspace{0.4cm}
+{\small All functional dependencies derived from entity source code.\\
+Attribute closure computed via the standard Armstrong Axioms.}
+\vspace{0.4cm}
+\hrule
+\end{titlepage}
+
+%% ─── TABLE OF CONTENTS ───────────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+%% ─── SECTION 1 ───────────────────────────────────────────────────────────────
+\section{Background and Methodology}
+
+\subsection{The Source Schema}
+
+The MusicDashboard application uses a Spring Boot / JPA back-end with the following
+nine core entity tables:
+
+\vspace{0.5em}
+\begin{tabular}{@{}L{4cm}L{9cm}@{}}
+    \toprule
+    \textbf{Entity} & \textbf{Purpose} \\
+    \midrule
+    Users           & Application accounts \\
+    Songs           & Audio tracks with metadata \\
+    Albums          & Album records with artwork \\
+    Artists         & Music artists \\
+    Genres          & Genre taxonomy \\
+    PlaybackHistory & Per-play event log \\
+    Playlists       & User-created playlists \\
+    Favourites      & User song bookmarks \\
+    WeeklyReports   & Pre-computed weekly stats \\
+    \bottomrule
+\end{tabular}
+\vspace{0.5em}
+
+Three additional tables arise purely from many-to-many join tables in JPA
+(\attr{song\_artists}, \attr{song\_genres}, \attr{album\_artists}, \attr{playlist\_songs})
+and contain only foreign-key pairs; they are already in BCNF by construction and are
+addressed briefly in Section~\ref{sec:join_tables}.
+
+\subsection{Normal Form Definitions}
+
+\subsubsection{Functional Dependency (FD)}
+A functional dependency $X \to Y$ holds in relation $R$ if and only if for every pair of
+tuples $t_1, t_2 \in R$:
+\[
+    t_1[X] = t_2[X] \implies t_1[Y] = t_2[Y]
+\]
+That is, the value of $X$ uniquely determines the value of $Y$.
+
+\subsubsection{Attribute Closure $X^+$}
+The closure of attribute set $X$ under a set of FDs $F$ is the largest set $X^+$ such
+that $X \to X^+$ is derivable from $F$ using Armstrong's Axioms (Reflexivity,
+Augmentation, Transitivity).
+
+\subsubsection{Superkey and Candidate Key}
+$X$ is a superkey of $R$ iff $X^+$ contains all attributes of $R$.  A candidate key is
+a minimal superkey.
+
+\subsubsection{Boyce--Codd Normal Form (BCNF)}
+Relation $R$ is in BCNF with respect to a set of FDs $F$ if and only if for every
+non-trivial FD $X \to Y$ that holds in $R$:
+\begin{center}
+    \textit{$X$ is a superkey of $R$}
+\end{center}
+Equivalently, the only functional dependencies allowed are those where the left-hand
+side contains a candidate key.
+
+\subsection{Decomposition Algorithm}
+
+Given a relation $R$ with FD set $F$ that violates BCNF due to $X \to Y$ (where $X$ is
+not a superkey):
+
+\begin{enumerate}[noitemsep]
+    \item Compute $X^+$ using $F$.
+    \item Decompose $R$ into:
+    \begin{itemize}[noitemsep]
+        \item $R_1 = X^+$ \quad (contains the violating FD)
+        \item $R_2 = X \cup (R \setminus X^+)$ \quad (remainder with $X$ as join key)
+    \end{itemize}
+    \item Project $F$ onto $R_1$ and $R_2$, then repeat for each sub-relation.
+\end{enumerate}
+
+This process is lossless-join by construction (the shared attribute set $X$ is a key of
+$R_1$), though it may not always preserve every FD.
+
+\newpage
+%% ─── SECTION 2 ───────────────────────────────────────────────────────────────
+\section{Universal Relation and Denormalized Schema}
+
+We begin by merging all entity tables into a single Universal Relation $U$ to make every
+functional dependency explicit before decomposing.
+
+\[
+U = \Big\{
+\underbrace{\attr{user\_id},\ \attr{email},\ \attr{username},\ \attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login}}_{\text{user attrs}},
+\]
+\[
+\underbrace{\attr{song\_id},\ \attr{song\_title},\ \attr{file\_path},\ \attr{duration},\ \attr{file\_format},\ \attr{bit\_rate},\ \attr{listen\_count},\ \attr{track\_num}}_{\text{song attrs}},
+\]
+\[
+\underbrace{\attr{album\_id},\ \attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path}}_{\text{album attrs}},\quad
+\underbrace{\attr{artist\_id},\ \attr{artist\_name},\ \attr{bio}}_{\text{artist attrs}},
+\]
+\[
+\underbrace{\attr{genre\_id},\ \attr{genre\_name}}_{\text{genre attrs}},\quad
+\underbrace{\attr{playback\_id},\ \attr{played\_at},\ \attr{duration\_played},\ \attr{completed},\ \attr{source}}_{\text{playback attrs}},
+\]
+\[
+\underbrace{\attr{playlist\_id},\ \attr{playlist\_name},\ \attr{description},\ \attr{is\_public},\ \attr{playlist\_created\_at}}_{\text{playlist attrs}},
+\]
+\[
+\
+\begin{aligned}
+&\underbrace{\attr{favourite\_id},\ \attr{favourited\_at}}_{\text{favourite attrs}},\\
+&\underbrace{\attr{report\_id},\ \attr{report\_year},\ \attr{week\_of\_year},\ \attr{total\_songs\_played},\ \attr{total\_minutes}}_{\text{report attrs}}
+\end{aligned}
+
+
+The total attribute count of $U$ is \textbf{38}. A single tuple in $U$ represents: a user
+who played a song (from an album, by an artist, of a genre), which was logged in the
+playback history, favourited, added to a playlist, and summarised in a weekly report.
+This produces enormous redundancy, which the normalization process below eliminates.
+
+\newpage
+%% ─── SECTION 3 ───────────────────────────────────────────────────────────────
+\section{Attribute Closure Computations}
+
+We compute $X^+$ for every candidate key and every left-hand side appearing in $F$, to
+confirm superkey status and detect BCNF violations in $U$.
+
+\subsection{Closure of \texttt{user\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{9cm}p{2.8cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{user\_id}\}$ &
+        FD1\\
+    Apply FD1 &
+        \makecell[tl]{$+\;\{\attr{email},\ \attr{username},\ \attr{password\_hash},$
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$}&
+        \\
+    Fixed point &
+        \makecell[tl]{$\{\attr{user\_id},\ \attr{email},\ \attr{username},$
+        $\quad\attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login}\}$}&
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Closure of \texttt{email}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{9cm}p{2.8cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{email}\}$ &
+        FD2\\
+    Apply FD2 &
+        $+\;\{\attr{user\_id},\ \attr{username},\ \attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login}\}$ &
+        \\
+    Fixed point &
+        all \rel{Users} attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\attr{email}) = $ all \rel{Users} attributes. $\Rightarrow$ Alternate candidate key of \rel{Users}.
+
+\subsection{Closure of \texttt{song\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{9cm}p{2.8cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{song\_id}\}$ &
+        FD4\\
+    Apply FD4 &
+        $+\;\{\attr{song\_title},\ \attr{file\_path},\ \attr{duration},\ \attr{file\_format},\ \attr{bit\_rate},\ \attr{listen\_count},\ \attr{track\_num}\}$ &
+        \\
+    Apply FD6 &
+        $+\;\{\attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path}\}$ &
+        FD6 \\
+    Fixed point &
+        all \rel{Songs} and \rel{Albums} attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\attr{song\_id}) = $ all \rel{Songs} attributes plus all \rel{Albums} attributes.
+
+$\Rightarrow$ Superkey of \rel{Songs}. Candidate key: $\{\attr{song\_id}\}$. Also derives album attributes transitively via $\attr{album\_id}$.
+
+\subsection{Closure of \texttt{album\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{9cm}p{2.8cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{album\_id}\}$ &
+        FD6\\
+    Apply FD6 &
+        $+\;\{\attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path}\}$ &
+        \\
+    Fixed point &
+        $\{\attr{album\_id},\ \attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path}\}$ &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\attr{album\_id}) = $ all \rel{Albums} attributes. $\Rightarrow$ Candidate key of \rel{Albums}.
+
+\subsection{Closure of \texttt{artist\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{9cm}p{2.8cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{artist\_id}\}$ &
+        FD8\\
+    Apply FD8 &
+        $+\;\{\attr{artist\_name},\ \attr{bio}\}$ &
+        \\
+    Fixed point &
+        $\{\attr{artist\_id},\ \attr{artist\_name},\ \attr{bio}\}$ &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\attr{artist\_id}) = $ all \rel{Artists} attributes. $\Rightarrow$ Candidate key of \rel{Artists}.
+
+\subsection{Closure of \texttt{playback\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{playback\_id}\}$ &
+        FD12 \\
+    Apply FD12 &
+        \makecell[tl]{$+\;\{\attr{user\_id},\ \attr{song\_id},\ \attr{played\_at},$\\
+        $\quad\attr{duration\_played},\ \attr{completed},\ \attr{source}\}$} &
+        \\
+    Apply FD1 &
+        \makecell[tl]{$+\;\{\attr{email},\ \attr{username},\ \attr{password\_hash},$\\
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        FD1 \\
+    Apply FD4 &
+        \makecell[tl]{$+\;\{\attr{song\_title},\ \attr{file\_path},\ \attr{duration},$\\
+        $\quad\attr{file\_format},\ \attr{bit\_rate},\ \attr{listen\_count},$\\
+        $\quad\attr{track\_num},\ \attr{album\_id}\}$} &
+        FD4 \\
+    Apply FD6 &
+        \makecell[tl]{$+\;\{\attr{album\_title},\ \attr{release\_year},$\\
+        $\quad\attr{album\_art\_path}\}$} &
+        FD6 \\
+    Fixed point &
+        all reachable attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\attr{playback\_id})$ covers all attributes reachable from a playback event.
+
+$\Rightarrow$ Candidate key of \rel{PlaybackHistory}.
+
+\textit{The transitive reach is large---confirming that the Universal Relation violates BCNF badly.}
+
+\subsection{Closure of \texttt{\{user\_id, report\_year, week\_of\_year\}}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}$ &
+        \\
+    Apply FD17 &
+        \makecell[tl]{$+\;\{\attr{report\_id},\ \attr{total\_songs\_played},$\\
+        $\quad\attr{total\_minutes}\}$} &
+        FD17 \\
+    Apply FD1 &
+        \makecell[tl]{$+\;\{\attr{email},\ \attr{username},\ \attr{password\_hash},$\\
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        FD1 \\
+    Fixed point &
+        all \rel{WeeklyReports} and \rel{Users} attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}) = $ all \rel{WeeklyReports} attributes plus \rel{Users}.
+
+$\Rightarrow$ Composite candidate key of \rel{WeeklyReports}.
+
+\subsection{Closure of \texttt{\{user\_id, song\_id\}} in Favourites}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{9cm}p{2.8cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{user\_id},\ \attr{song\_id}\}$ &
+        \\
+    Apply FD15 &
+        $+\;\{\attr{favourite\_id},\ \attr{favourited\_at}\}$ &
+        FD15 \\
+    Fixed point &
+        $\{\attr{user\_id},\ \attr{song\_id},\ \attr{favourite\_id},\ \attr{favourited\_at}\}$ &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{closure}(\{\attr{user\_id},\ \attr{song\_id}\}) = $ all \rel{Favourites} attributes.
+
+$\Rightarrow$ Composite alternate candidate key of \rel{Favourites}.
+
+\newpage
+
+
+
+%% ─── SECTION 4 ───────────────────────────────────────────────────────────────
+\section{Attribute Closure Computations}
+
+We compute $X^+$ for every candidate key and every left-hand side appearing in $F$, to
+confirm superkey status and detect BCNF violations in $U$.
+
+\subsection{Closure of \texttt{user\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{user\_id}\}$ &
+        \\
+    Apply FD1 &
+        \makecell[tl]{$+\;\{\attr{email},\ \attr{username},\ \attr{password\_hash},$\\
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        FD1 \\
+    Fixed point &
+        \makecell[tl]{$\{\attr{user\_id},\ \attr{email},\ \attr{username},$\\
+        $\quad\attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\attr{user\_id}} = \{\attr{user\_id},\ \attr{email},\ \attr{username},\ \attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login}\}$
+
+$\Rightarrow$ Superkey of \rel{Users}. Candidate key: $\{\attr{user\_id}\}$.
+
+\subsection{Closure of \texttt{email}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{email}\}$ &
+        \\
+    Apply FD2 &
+        \makecell[tl]{$+\;\{\attr{user\_id},\ \attr{username},\ \attr{password\_hash},$\\
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        FD2 \\
+    Fixed point &
+        all \rel{Users} attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\attr{email}} = $ all \rel{Users} attributes. $\Rightarrow$ Alternate candidate key of \rel{Users}.
+
+\subsection{Closure of \texttt{song\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{song\_id}\}$ &
+        \\
+    Apply FD4 &
+        \makecell[tl]{$+\;\{\attr{song\_title},\ \attr{file\_path},\ \attr{duration},$\\
+        $\quad\attr{file\_format},\ \attr{bit\_rate},\ \attr{listen\_count},$\\
+        $\quad\attr{track\_num}\}$} &
+        FD4 \\
+    Apply FD6 &
+        \makecell[tl]{$+\;\{\attr{album\_title},\ \attr{release\_year},$\\
+        $\quad\attr{album\_art\_path}\}$} &
+        FD6 \\
+    Fixed point &
+        all \rel{Songs} and \rel{Albums} attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\attr{song\_id}} = $ all \rel{Songs} attributes plus all \rel{Albums} attributes.
+
+$\Rightarrow$ Superkey of \rel{Songs}. Candidate key: $\{\attr{song\_id}\}$. Also derives album attributes transitively via $\attr{album\_id}$.
+
+\subsection{Closure of \texttt{album\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{album\_id}\}$ &
+        \\
+    Apply FD6 &
+        \makecell[tl]{$+\;\{\attr{album\_title},\ \attr{release\_year},$\\
+        $\quad\attr{album\_art\_path}\}$} &
+        FD6 \\
+    Fixed point &
+        \makecell[tl]{$\{\attr{album\_id},\ \attr{album\_title},$\\
+        $\quad\attr{release\_year},\ \attr{album\_art\_path}\}$} &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\attr{album\_id}} = $ all \rel{Albums} attributes. $\Rightarrow$ Candidate key of \rel{Albums}.
+
+\subsection{Closure of \texttt{artist\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{artist\_id}\}$ &
+        \\
+    Apply FD8 &
+        \makecell[tl]{$+\;\{\attr{artist\_name},\ \attr{bio}\}$} &
+        FD8 \\
+    Fixed point &
+        \makecell[tl]{$\{\attr{artist\_id},\ \attr{artist\_name},\ \attr{bio}\}$} &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\attr{artist\_id}} = $ all \rel{Artists} attributes. $\Rightarrow$ Candidate key of \rel{Artists}.
+
+\subsection{Closure of \texttt{playback\_id}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{playback\_id}\}$ &
+        FD12\\
+    Apply FD12 &
+        \makecell[tl]{$+\;\{\attr{user\_id},\ \attr{song\_id},\ \attr{played\_at},$
+        $\quad\attr{duration\_played},\ \attr{completed},\ \attr{source}\}$}&
+        \\
+    Apply FD1 &
+        \makecell[tl]{$+\;\{\attr{email},\ \attr{username},\ \attr{password\_hash},$\\
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        FD1 \\
+    Apply FD4 &
+        \makecell[tl]{$+\;\{\attr{song\_title},\ \attr{file\_path},\ \attr{duration},$\\
+        $\quad\attr{file\_format},\ \attr{bit\_rate},\ \attr{listen\_count},$\\
+        $\quad\attr{track\_num},\ \attr{album\_id}\}$} &
+        FD4 \\
+    Apply FD6 &
+        \makecell[tl]{$+\;\{\attr{album\_title},\ \attr{release\_year,\attr album\_art\_path}\}$} &
+        FD6 \\
+    Fixed point &
+        all reachable attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\attr{playback\_id}}$ covers all attributes reachable from a playback event.
+
+$\Rightarrow$ Candidate key of \rel{PlaybackHistory}.
+\textit{The transitive reach is large---confirming that the Universal Relation violates BCNF badly.}
+
+\subsection{Closure of \texttt{\{user\_id, report\_year, week\_of\_year\}}}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}$ &
+        FD17\\
+    Apply FD17 &
+        \makecell[tl]{$+\;\{\attr{report\_id},\ \attr{total\_songs\_played},$
+        $\quad\attr{total\_minutes}\}$}&
+        \\
+    Apply FD1 &
+        \makecell[tl]{$+\;\{\attr{email},\ \attr{username},\ \attr{password\_hash},$\\
+        $\quad\attr{user\_created\_at},\ \attr{last\_login}\}$} &
+        FD1 \\
+    Fixed point &
+        all \rel{WeeklyReports} and \rel{Users} attributes &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+$\closure{\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}} = $ all \rel{WeeklyReports} attributes plus \rel{Users}.
+
+$\Rightarrow$ Composite candidate key of \rel{WeeklyReports}.
+\subsection{Closure of \texttt{\{user\_id, song\_id\}} in Favourites}
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{2.8cm}p{10cm}p{2.2cm}@{}}
+    \toprule
+    \textbf{Iteration} & \textbf{Closure so far} & \textbf{FD applied} \\
+    \midrule
+    Start &
+        $\{\attr{user\_id},\ \attr{song\_id}\}$ &
+        FD15\\
+    Apply FD15 &
+        \makecell[tl]{$+\;\{\attr{favourite\_id},\ \attr{favourited\_at}\}$} &
+        \\
+    Fixed point &
+        \makecell[tl]{$\{\attr{user\_id},\ \attr{song\_id},$\\
+        $\quad\attr{favourite\_id},\ \attr{favourited\_at}\}$} &
+        \\
+    \bottomrule
+\end{tabular}
+\end{center}
+$\closure{\{\attr{user\_id},\ \attr{song\_id}\}} = $ all \rel{Favourites} attributes.
+$\Rightarrow$ Composite alternate candidate key of \rel{Favourites}.
+
+\newpage
+
+
+
+%% ─── SECTION 5 ───────────────────────────────────────────────────────────────
+\section{BCNF Violation Analysis on Universal Relation \texorpdfstring{$U$}{U}}
+
+We now identify every FD in $U$ whose left-hand side is not a superkey of $U$---these
+are the BCNF violations that drive the decomposition.
+
+\textbf{Key observation:} No single attribute (or small set) determines all 38 attributes
+of $U$, so $U$ has no finite candidate key without composing attributes from multiple
+entity groups. Every FD below therefore represents a violation in $U$.
+
+\vspace{0.5em}
+\begin{longtable}{@{}C{0.5cm}L{4.2cm}L{4.2cm}L{3.8cm}@{}}
+    \toprule
+    \textbf{\#} & \textbf{Violating FD in $U$} & \textbf{Why it violates BCNF} & \textbf{Resolution} \\
+    \midrule
+    \endhead
+    V1  & $\attr{user\_id} \to \text{all user attrs}$     & \attr{user\_id} is not a superkey of $U$   & Extract \rel{Users} \\[4pt]
+    V2  & $\attr{email} \to \text{all user attrs}$        & $\attr{email} \not\supseteq U$             & Extract \rel{Users} \\[4pt]
+    V3  & $\attr{song\_id} \to \text{all song attrs}$     & $\attr{song\_id} \not\supseteq U$          & Extract \rel{Songs} \\[4pt]
+    V4  & $\attr{file\_path} \to \text{all song attrs}$   & $\attr{file\_path} \not\supseteq U$        & Extract \rel{Songs} \\[4pt]
+    V5  & $\attr{album\_id} \to \text{all album attrs}$   & $\attr{album\_id} \not\supseteq U$         & Extract \rel{Albums} \\[4pt]
+    V6  & $\attr{album\_title} \to \text{all album attrs}$& $\attr{album\_title} \not\supseteq U$      & Extract \rel{Albums} \\[4pt]
+    V7  & $\attr{artist\_id} \to \text{all artist attrs}$ & $\attr{artist\_id} \not\supseteq U$        & Extract \rel{Artists} \\[4pt]
+    V8  & $\attr{artist\_name} \to \text{all artist attrs}$& $\attr{artist\_name} \not\supseteq U$     & Extract \rel{Artists} \\[4pt]
+    V9  & $\attr{genre\_id} \to \attr{genre\_name}$       & $\attr{genre\_id} \not\supseteq U$         & Extract \rel{Genres} \\[4pt]
+    V10 & $\attr{playback\_id} \to \text{all play attrs}$ & $\attr{playback\_id} \not\supseteq U$      & Extract \rel{PlaybackHistory} \\[4pt]
+    V11 & $\attr{playlist\_id} \to \text{all playlist attrs}$ & $\attr{playlist\_id} \not\supseteq U$ & Extract \rel{Playlists} \\[4pt]
+    V12 & $\attr{favourite\_id} \to \text{all fav attrs}$ & $\attr{favourite\_id} \not\supseteq U$     & Extract \rel{Favourites} \\[4pt]
+    V13 & $\attr{report\_id} \to \text{all report attrs}$ & $\attr{report\_id} \not\supseteq U$        & Extract \rel{WeeklyReports} \\[4pt]
+    V14 & $\attr{song\_id} \to \attr{album\_id},\ \attr{album\_title}$ & Partial transitive dep.\ in $U$ & Separate \rel{Songs}/\rel{Albums} \\
+    \bottomrule
+\end{longtable}
+
+\newpage
+%% ─── SECTION 6 ───────────────────────────────────────────────────────────────
+\section{Step-by-Step Decomposition to BCNF}
+
+\subsection{Step 1 --- Extract Users}
+
+\textbf{Violation:} $\attr{user\_id} \to \ldots$ (V1) where \attr{user\_id} is not a superkey of $U$.
+
+Compute $\closure{\attr{user\_id}}$ restricted to $U$:
+\[
+    \closure{\attr{user\_id}} = \{\attr{user\_id},\ \attr{email},\ \attr{username},\ \attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login}\}
+\]
+
+Decompose: $R_1 = \closure{\attr{user\_id}}$, \quad $R_2 = U \setminus (\closure{\attr{user\_id}} \setminus \{\attr{user\_id}\})$
+
+\medskip
+\noindent\textbf{Resulting relation:}
+\[
+    \rel{Users}(\underline{\attr{user\_id}},\ \attr{email},\ \attr{username},\ \attr{password\_hash},\ \attr{user\_created\_at},\ \attr{last\_login})
+\]
+FDs that hold: FD1, FD2, FD3 \quad Candidate keys: $\{\attr{user\_id}\}$, $\{\attr{email}\}$, $\{\attr{username}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 2 --- Extract Albums}
+
+\textbf{Violation:} $\attr{album\_id} \to \ldots$ (V5) in the remainder.
+
+\[
+    \closure{\attr{album\_id}} = \{\attr{album\_id},\ \attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path}\}
+\]
+
+\noindent\textbf{Resulting relation:}
+\[
+    \rel{Albums}(\underline{\attr{album\_id}},\ \attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path})
+\]
+FDs that hold: FD6, FD7 \quad Candidate keys: $\{\attr{album\_id}\}$, $\{\attr{album\_title}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 3 --- Extract Songs}
+
+\textbf{Violation:} $\attr{song\_id} \to \ldots$ (V3) in the remainder.
+
+\[
+    \closure{\attr{song\_id}} = \{\attr{song\_id},\ \attr{song\_title},\ \attr{file\_path},\ \attr{duration},\ \attr{file\_format},
+\]
+\[
+    \qquad \attr{bit\_rate},\ \attr{listen\_count},\ \attr{track\_num},\ \attr{album\_id}\}
+\]
+
+**Option 4: Using `align*` with `\notag`**
+```latex
+\begin{align*}
+    \closure{\attr{song\_id}} = \{ & \attr{song\_id},\ \attr{song\_title},\ \attr{file\_path},\ \attr{duration},\ \attr{file\_format},\\
+    & \attr{bit\_rate},\ \attr{listen\_count},\ \attr{track\_num},\ \attr{album\_id}\}
+\end{align*}
+
+\textit{Note: \attr{album\_id} is retained as a foreign key reference; \rel{Albums} has already been extracted.}
+
+\noindent\textbf{Resulting relation:}
+\begin{align*}
+    \rel{Songs}(&\underline{\attr{song\_id}},\ \attr{song\_title},\ \attr{file\_path},\ \attr{duration},\ \attr{file\_format},\\
+    &\ \attr{bit\_rate},\ \attr{listen\_count},\ \attr{track\_num},\ \attr{album\_id})
+\end{align*}
+FDs that hold: FD4, FD5 \quad Candidate keys: $\{\attr{song\_id}\}$, $\{\attr{file\_path}\}$ \quad BCNF: \bcnfcheck
+
+\subsubsection{Check: Was FD18 (\texttt{song\_id} $\to$ \texttt{album\_title}) eliminated?}
+
+In $U$, FD18 held because $\attr{song\_id} \xrightarrow{\text{FD4}} \attr{album\_id} \xrightarrow{\text{FD6}} \attr{album\_title}$ (transitivity).
+
+After decomposition, \attr{album\_title} no longer appears in \rel{Songs}; it lives only in \rel{Albums}. The transitive dependency is broken by the decomposition. \bcnfcheck
+
+\subsection{Step 4 --- Extract Artists}
+
+\textbf{Violation:} $\attr{artist\_id} \to \ldots$ (V7).
+\[
+    \closure{\attr{artist\_id}} = \{\attr{artist\_id},\ \attr{artist\_name},\ \attr{bio}\}
+\]
+
+\noindent\textbf{Resulting relation:}
+\[
+    \rel{Artists}(\underline{\attr{artist\_id}},\ \attr{artist\_name},\ \attr{bio})
+\]
+\newline
+FDs that hold: FD8, FD9 \quad Candidate keys: $\{\attr{artist\_id}\}$, $\{\attr{artist\_name}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 5 --- Extract Genres}
+
+\textbf{Violation:} $\attr{genre\_id} \to \attr{genre\_name}$ (V9).
+\[
+    \closure{\attr{genre\_id}} = \{\attr{genre\_id},\ \attr{genre\_name}\}
+\]
+
+\noindent\textbf{Resulting relation:}
+\[
+    \rel{Genres}(\underline{\attr{genre\_id}},\ \attr{genre\_name})
+\]
+FDs that hold: FD10, FD11 \quad Candidate keys: $\{\attr{genre\_id}\}$, $\{\attr{genre\_name}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 6 --- Extract PlaybackHistory}
+
+\textbf{Violation:} $\attr{playback\_id} \to \ldots$ (V10).
+\begin{multline*}
+    \closure{\attr{playback\_id}} = \{\attr{playback\_id},\ \attr{user\_id},\ \attr{song\_id},\ \attr{played\_at},\\
+    \quad \attr{duration\_played},\ \attr{completed},\ \attr{source}\}
+\end{multline*}
+
+\textit{\attr{user\_id} and \attr{song\_id} are retained as foreign keys.}
+
+\noindent\textbf{Resulting relation:}
+\begin{multline*}
+    \rel{PlaybackHistory}(\underline{\attr{playback\_id}},\ \attr{user\_id},\ \attr{song\_id},\ \attr{played\_at},\\
+    \quad \attr{duration\_played},\ \attr{completed},\ \attr{source})
+\end{multline*}
+FDs that hold: FD12 \quad Candidate key: $\{\attr{playback\_id}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 7 --- Extract Playlists}
+
+\textbf{Violation:} $\attr{playlist\_id} \to \ldots$ (V11).
+\begin{multline*}
+    \closure{\attr{playlist\_id}} = \{\attr{playlist\_id},\ \attr{user\_id},\ \attr{playlist\_name},\ \attr{description},\\
+    \quad \attr{is\_public},\ \attr{playlist\_created\_at}\}
+\end{multline*}
+
+\noindent\textbf{Resulting relation:}
+\begin{multline*}
+    \rel{Playlists}(\underline{\attr{playlist\_id}},\ \attr{user\_id},\ \attr{playlist\_name},\ \attr{description},\\
+    \quad \attr{is\_public},\ \attr{playlist\_created\_at})
+\end{multline*}
+FDs that hold: FD13 \quad Candidate key: $\{\attr{playlist\_id}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 8 --- Extract Favourites}
+
+\textbf{Violation:} $\attr{favourite\_id} \to \ldots$ (V12), with a composite alternate key.
+\[
+    \closure{\attr{favourite\_id}} = \{\attr{favourite\_id},\ \attr{user\_id},\ \attr{song\_id},\ \attr{favourited\_at}\}
+\]
+
+Verify alternate key:
+\[
+    \closure{\attr{user\_id},\ \attr{song\_id}} = \{\attr{user\_id},\ \attr{song\_id},\ \attr{favourite\_id},\ \attr{favourited\_at}\} \supseteq \rel{Favourites}
+\]
+
+\noindent\textbf{Resulting relation:}
+\[
+    \rel{Favourites}(\underline{\attr{favourite\_id}},\ \attr{user\_id},\ \attr{song\_id},\ \attr{favourited\_at})
+\]
+FDs that hold: FD14, FD15 \quad Candidate keys: $\{\attr{favourite\_id}\}$, $\{\attr{user\_id},\attr{song\_id}\}$ \quad BCNF: \bcnfcheck
+
+\subsection{Step 9 --- Extract WeeklyReports}
+
+\textbf{Violation:} $\attr{report\_id} \to \ldots$ (V13) with composite alternate key.
+\begin{multline*}
+    \closure{\attr{report\_id}} = \{\attr{report\_id},\ \attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year},\\
+    \quad \attr{total\_songs\_played},\ \attr{total\_minutes}\}
+\end{multline*}
+
+Verify composite alternate key: $\closure{\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}} \supseteq \rel{WeeklyReports}$ \bcnfcheck
+
+\noindent\textbf{Resulting relation:}
+\begin{multline*}
+    \rel{WeeklyReports}(\underline{\attr{report\_id}},\ \attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year},\\
+    \quad \attr{total\_songs\_played},\ \attr{total\_minutes})
+\end{multline*}
+FDs that hold: FD16, FD17 \quad Candidate keys: $\{\attr{report\_id}\}$, $\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}$ \quad BCNF: \bcnfcheck
+
+\newpage
+%% ─── SECTION 7 ───────────────────────────────────────────────────────────────
+\section{Join / Associative Tables}
+\label{sec:join_tables}
+
+The four JPA \texttt{@ManyToMany} join tables each hold exactly two foreign-key columns.
+We verify their BCNF status below.
+
+\vspace{0.5em}
+\begin{tabular}{@{}L{3.5cm}L{3.5cm}L{4.5cm}C{1.5cm}@{}}
+    \toprule
+    \textbf{Table} & \textbf{Attributes} & \textbf{FDs} & \textbf{BCNF?} \\
+    \midrule
+    \rel{SongArtists}   & \attr{song\_id}, \attr{artist\_id}   & trivial only & \bcnfcheck \\[4pt]
+    \rel{SongGenres}    & \attr{song\_id}, \attr{genre\_id}    & trivial only & \bcnfcheck \\[4pt]
+    \rel{AlbumArtists}  & \attr{album\_id}, \attr{artist\_id}  & trivial only & \bcnfcheck \\[4pt]
+    \rel{PlaylistSongs} & \attr{playlist\_id}, \attr{song\_id} & trivial only & \bcnfcheck \\
+    \bottomrule
+\end{tabular}
+\vspace{0.5em}
+
+A relation with only a composite primary key and no non-key attributes has no non-trivial
+FDs. The only FDs that hold are trivial (supersets of the key determine the key and all
+subsets). BCNF is therefore satisfied vacuously.
+
+\newpage
+%% ─── SECTION 8 ───────────────────────────────────────────────────────────────
+\section{Final BCNF Schema}
+
+\subsection{Complete Relation Listing}
+
+The final schema consists of 13 relations (9 entity tables + 4 join tables), all in BCNF.
+
+\textit{Notation: \underline{Attribute} = primary key; \textit{attribute} = foreign key; plain = non-key attribute.}
+
+\vspace{0.5em}
+\begin{longtable}{@{}p{3cm}p{10cm}@{}}
+    \toprule
+    \textbf{Relation} & \textbf{Schema \& Candidate Keys} \\
+    \midrule
+    \endhead
+    
+    \rel{Users} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{user\_id}},\ \attr{email},\ \attr{username},\ \attr{password\_hash},$ \\
+        $\quad \attr{user\_created\_at},\ \attr{last\_login})$ \\
+        \textbf{CK:} $\{\attr{user\_id}\}$, $\{\attr{email}\}$, $\{\attr{username}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{Albums} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{album\_id}},\ \attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path})$ \\
+        \textbf{CK:} $\{\attr{album\_id}\}$, $\{\attr{album\_title}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{Songs} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{song\_id}},\ \attr{song\_title},\ \attr{file\_path},\ \attr{duration},$ \\
+        $\quad \attr{file\_format},\ \attr{bit\_rate},\ \attr{listen\_count},\ \attr{track\_num},\ \textit{album\_id})$ \\
+        \textbf{CK:} $\{\attr{song\_id}\}$, $\{\attr{file\_path}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{Artists} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{artist\_id}},\ \attr{artist\_name},\ \attr{bio})$ \\
+        \textbf{CK:} $\{\attr{artist\_id}\}$, $\{\attr{artist\_name}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{Genres} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{genre\_id}},\ \attr{genre\_name})$ \\
+        \textbf{CK:} $\{\attr{genre\_id}\}$, $\{\attr{genre\_name}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{PlaybackHistory} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{playback\_id}},\ \textit{user\_id},\ \textit{song\_id},\ \attr{played\_at},$ \\
+        $\quad \attr{duration\_played},\ \attr{completed},\ \attr{source})$ \\
+        \textbf{CK:} $\{\attr{playback\_id}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{Playlists} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{playlist\_id}},\ \textit{user\_id},\ \attr{playlist\_name},\ \attr{description},$ \\
+        $\quad \attr{is\_public},\ \attr{playlist\_created\_at})$ \\
+        \textbf{CK:} $\{\attr{playlist\_id}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{Favourites} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{favourite\_id}},\ \textit{user\_id},\ \textit{song\_id},\ \attr{favourited\_at})$ \\
+        \textbf{CK:} $\{\attr{favourite\_id}\}$, $\{\attr{user\_id},\ \attr{song\_id}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{WeeklyReports} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{report\_id}},\ \textit{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year},$ \\
+        $\quad \attr{total\_songs\_played},\ \attr{total\_minutes})$ \\
+        \textbf{CK:} $\{\attr{report\_id}\}$, $\{\attr{user\_id},\ \attr{report\_year},\ \attr{week\_of\_year}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{SongArtists} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{song\_id}},\ \underline{\attr{artist\_id}})$ \\
+        \textbf{CK:} $\{\attr{song\_id},\ \attr{artist\_id}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{SongGenres} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{song\_id}},\ \underline{\attr{genre\_id}})$ \\
+        \textbf{CK:} $\{\attr{song\_id},\ \attr{genre\_id}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{AlbumArtists} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{album\_id}},\ \underline{\attr{artist\_id}})$ \\
+        \textbf{CK:} $\{\attr{album\_id},\ \attr{artist\_id}\}$
+    \end{tabular} \\[8pt]
+    
+    \rel{PlaylistSongs} & 
+    \begin{tabular}[t]{@{}l@{}}
+        $(\underline{\attr{playlist\_id}},\ \underline{\attr{song\_id}})$ \\
+        \textbf{CK:} $\{\attr{playlist\_id},\ \attr{song\_id}\}$
+    \end{tabular} \\
+    
+    \bottomrule
+\end{longtable}
+
+\subsection{BCNF Verification Summary}
+
+\vspace{0.5em}
+\begin{tabular}{@{}L{3.5cm}L{4.5cm}L{3.5cm}C{1.5cm}@{}}
+    \toprule
+    \textbf{Relation} & \textbf{Non-trivial FDs} & \textbf{All LHS are superkeys?} & \textbf{BCNF} \\
+    \midrule
+    \rel{Users}           & FD1, FD2, FD3   & Yes (\attr{user\_id}, \attr{email}, \attr{username})    & \bcnfcheck \\[4pt]
+    \rel{Albums}          & FD6, FD7         & Yes (\attr{album\_id}, \attr{album\_title})              & \bcnfcheck \\[4pt]
+    \rel{Songs}           & FD4, FD5         & Yes (\attr{song\_id}, \attr{file\_path})                 & \bcnfcheck \\[4pt]
+    \rel{Artists}         & FD8, FD9         & Yes (\attr{artist\_id}, \attr{artist\_name})             & \bcnfcheck \\[4pt]
+    \rel{Genres}          & FD10, FD11       & Yes (\attr{genre\_id}, \attr{genre\_name})               & \bcnfcheck \\[4pt]
+    \rel{PlaybackHistory} & FD12             & Yes (\attr{playback\_id})                                & \bcnfcheck \\[4pt]
+    \rel{Playlists}       & FD13             & Yes (\attr{playlist\_id})                                & \bcnfcheck \\[4pt]
+    \rel{Favourites}      & FD14, FD15       & Yes (both candidate keys)                               & \bcnfcheck \\[4pt]
+    \rel{WeeklyReports}   & FD16, FD17       & Yes (both candidate keys)                               & \bcnfcheck \\[4pt]
+    \rel{SongArtists}     & (none)           & Vacuously true                                          & \bcnfcheck \\[4pt]
+    \rel{SongGenres}      & (none)           & Vacuously true                                          & \bcnfcheck \\[4pt]
+    \rel{AlbumArtists}    & (none)           & Vacuously true                                          & \bcnfcheck \\[4pt]
+    \rel{PlaylistSongs}   & (none)           & Vacuously true                                          & \bcnfcheck \\
+    \bottomrule
+\end{tabular}
+
+\newpage
+%% ─── SECTION 9 ───────────────────────────────────────────────────────────────
+\section{Summary of Decomposition Steps}
+
+\vspace{0.5em}
+\begin{tabular}{@{}C{0.8cm}L{3.2cm}L{3.5cm}L{3cm}C{1.5cm}@{}}
+    \toprule
+    \textbf{Step} & \textbf{Violating FD} & \textbf{Closure computed} & \textbf{New relation} & \textbf{BCNF} \\
+    \midrule
+    1 & $\attr{user\_id} \to \text{user attrs}$       & $\closure{\attr{user\_id}} = \text{users}$         & \rel{Users}           & \bcnfcheck \\[4pt]
+    2 & $\attr{album\_id} \to \text{album attrs}$     & $\closure{\attr{album\_id}} = \text{albums}$       & \rel{Albums}          & \bcnfcheck \\[4pt]
+    3 & $\attr{song\_id} \to \text{song attrs}$       & $\closure{\attr{song\_id}} = \text{songs}$         & \rel{Songs}           & \bcnfcheck \\[4pt]
+    4 & $\attr{artist\_id} \to \text{artist attrs}$   & $\closure{\attr{artist\_id}} = \text{artists}$     & \rel{Artists}         & \bcnfcheck \\[4pt]
+    5 & $\attr{genre\_id} \to \attr{genre\_name}$     & $\closure{\attr{genre\_id}} = \text{genres}$       & \rel{Genres}          & \bcnfcheck \\[4pt]
+    6 & $\attr{playback\_id} \to \text{play attrs}$   & $\closure{\attr{playback\_id}} = \text{plays}$     & \rel{PlaybackHistory} & \bcnfcheck \\[4pt]
+    7 & $\attr{playlist\_id} \to \text{pl attrs}$     & $\closure{\attr{playlist\_id}} = \text{plists}$    & \rel{Playlists}       & \bcnfcheck \\[4pt]
+    8 & $\attr{favourite\_id} \to \text{fav attrs}$   & $\closure{\attr{favourite\_id}} = \text{favs}$     & \rel{Favourites}      & \bcnfcheck \\[4pt]
+    9 & $\attr{report\_id} \to \text{rpt attrs}$      & $\closure{\attr{report\_id}} = \text{reports}$     & \rel{WeeklyReports}   & \bcnfcheck \\[4pt]
+    --- & (join tables) & trivial FDs only & 4 join tables & \bcnfcheck \\
+    \bottomrule
+\end{tabular}
+
+\bigskip
+\noindent\textbf{Conclusion.} Starting from a 38-attribute Universal Relation $U$ with 20
+functional dependencies (14 base + 3 transitive + 3 composite-key FDs), 9 BCNF
+decomposition steps were applied, each justified by an explicit attribute closure
+computation. The resulting schema of 13 relations is entirely in BCNF: every non-trivial
+functional dependency in every relation has a superkey on its left-hand side. No
+redundancy of the form \textit{repeated non-key data} remains, and all four join tables
+are in BCNF vacuously.
+
+\newpage
+%% ─── SECTION 10 ──────────────────────────────────────────────────────────────
+\section{Notable Design Observations}
+
+\subsection{Relations with Multiple Candidate Keys}
+
+Five relations contain more than one candidate key, reflecting real-world uniqueness
+constraints enforced by the application:
+
+\begin{itemize}
+    \item \textbf{\rel{Users}:} $\{\attr{user\_id}\}$, $\{\attr{email}\}$, $\{\attr{username}\}$ --- three candidate keys because users log in by either email or username, both declared \texttt{UNIQUE} in the DDL.
+
+    \item \textbf{\rel{Albums}:} $\{\attr{album\_id}\}$, $\{\attr{album\_title}\}$ --- deduplication during import relies on exact title match (\texttt{AlbumRepository.findByTitle}).
+
+    \item \textbf{\rel{Songs}:} $\{\attr{song\_id}\}$, $\{\attr{file\_path}\}$ --- the import guard queries by absolute path to prevent duplicate records.
+
+    \item \textbf{\rel{Favourites}:} $\{\attr{favourite\_id}\}$, $\{\attr{user\_id},\attr{song\_id}\}$ --- the composite key enforces that a user can favourite a song at most once.
+
+    \item \textbf{\rel{WeeklyReports}:} $\{\attr{report\_id}\}$, $\{\attr{user\_id},\attr{report\_year},\attr{week\_of\_year}\}$ --- the composite key prevents duplicate reports for the same user/week.
+\end{itemize}
+
+\subsection{Transitive Dependencies Eliminated}
+
+The following transitive dependency chain was present in $U$ and is eliminated by the
+decomposition:
+\[
+    \attr{song\_id} \xrightarrow{\text{FD4}} \attr{album\_id} \xrightarrow{\text{FD6}} \{\attr{album\_title},\ \attr{release\_year},\ \attr{album\_art\_path}\}
+\]
+After decomposition, \rel{Songs} retains \attr{album\_id} as a foreign key only. The album
+attributes are exclusively in \rel{Albums}, removing the transitive dependency entirely.
+
+\subsection{FD Preservation}
+
+BCNF decomposition does not guarantee preservation of every FD. In this schema, all FDs
+are preserved because each FD is entirely contained within a single extracted
+relation---no FD spans two different result relations. This is a consequence of the clean,
+surrogate-key-based design: each entity's attributes are tightly grouped under its own
+primary key without cross-entity non-key determinants.
+
+\subsection{Lossless-Join Property}
+
+Each decomposition step produces a lossless join because the shared attribute (e.g.,
+\attr{album\_id} between \rel{Songs} and \rel{Albums}) is a key of the extracted relation.
+By the lossless-join theorem (Heath, 1971), if $R = R_1 \bowtie R_2$ and the join
+attribute set is a key of $R_1$, the decomposition is lossless. This holds for all 9
+extraction steps above.
+
+\end{document}
