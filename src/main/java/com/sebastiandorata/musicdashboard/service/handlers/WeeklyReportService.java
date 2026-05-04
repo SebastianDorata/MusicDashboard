@@ -3,7 +3,7 @@ package com.sebastiandorata.musicdashboard.service.handlers;
 import com.sebastiandorata.musicdashboard.entity.*;
 import com.sebastiandorata.musicdashboard.repository.*;
 import com.sebastiandorata.musicdashboard.service.UserSessionService;
-import com.sebastiandorata.musicdashboard.utils.PlaybackConstants;
+import com.sebastiandorata.musicdashboard.utils.PlaybackAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -14,52 +14,32 @@ import java.time.LocalDateTime;
 import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.stream.Collectors;
+
 /**
  * Generates and persists weekly listening reports for the current user.
  *
- * <p>Filters the full playback history to the requested ISO year and week,
- * then computes total songs played, total listening minutes, and the top
- * song, artist, album, and genre. Uses {@code SERIALIZABLE} transaction
- * isolation with a {@link org.springframework.dao.DataIntegrityViolationException}
- * catch to prevent duplicate reports under concurrent access.</p>
+ * <p>Aggregation logic (top song, top artist, top album, top genre, valid
+ * counts and minutes) is delegated to {@link PlaybackAggregator} rather
+ * than being duplicated here and in the monthly/yearly services.</p>
  *
  * <p>Time Complexity: O(n) where n = playback history entries for the week</p>
  */
 @Service
 public class WeeklyReportService {
 
-    @Autowired
-    private WeeklyReportRepository weeklyReportRepository;
+    @Autowired private WeeklyReportRepository weeklyReportRepository;
+    @Autowired private PlaybackHistoryRepository playbackHistoryRepository;
+    @Autowired private UserSessionService userSessionService;
+    @Autowired private UserRepository userRepository;
 
-    @Autowired
-    private PlaybackHistoryRepository playbackHistoryRepository;
-
-    @Autowired
-    private UserSessionService userSessionService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    /**
-     * Returns an existing weekly report for the current user, year, and week,
-     * or generates a new one if none exists.
-     *
-     * Uses SERIALIZABLE isolation to prevent race conditions during generation.
-     *
-     * Time Complexity: O(n) where n = playback history for the week
-     * Space Complexity: O(n) for filtering
-     */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public WeeklyReport getOrGenerateWeeklyReport(int year, int weekOfYear) {
         Long userId = userSessionService.getCurrentUserId();
-        if (userId == null) {
-            throw new IllegalStateException("No user logged in");
-        }
+        if (userId == null) throw new IllegalStateException("No user logged in");
 
-        Optional<WeeklyReport> existing = weeklyReportRepository.findByUserIdAndYearAndWeekOfYear(userId, year, weekOfYear);
-        if (existing.isPresent()) {
-            return existing.get();
-        }
+        Optional<WeeklyReport> existing =
+                weeklyReportRepository.findByUserIdAndYearAndWeekOfYear(userId, year, weekOfYear);
+        if (existing.isPresent()) return existing.get();
 
         try {
             return generateWeeklyReport(userId, year, weekOfYear);
@@ -68,8 +48,7 @@ public class WeeklyReportService {
                     .findByUserIdAndYearAndWeekOfYear(userId, year, weekOfYear)
                     .orElseThrow(() -> new RuntimeException(
                             "Weekly report missing after duplicate key conflict for userId=" + userId +
-                                    ", year=" + year + ", week=" + weekOfYear, e
-                    ));
+                                    ", year=" + year + ", week=" + weekOfYear, e));
         }
     }
 
@@ -96,67 +75,17 @@ public class WeeklyReportService {
             return weeklyReportRepository.save(report);
         }
 
-        long validSongCount = weekHistory.stream()
-                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
-                .count();
-        report.setTotalSongsPlayed((int) validSongCount);
-
-        int totalSeconds = weekHistory.stream()
-                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
-                .mapToInt(PlaybackHistory::getDurationPlayedSeconds)
-                .sum();
-        report.setTotalListeningTimeMinutes(totalSeconds / 60);
-
-        Map<Song, Long> songFrequency = weekHistory.stream()
-                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
-                .collect(Collectors.groupingBy(PlaybackHistory::getSong, Collectors.counting()));
-        if (!songFrequency.isEmpty()) {
-            report.setTopSong(songFrequency.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse(null));
-        }
-
-        Map<Artist, Long> artistFrequency = weekHistory.stream()
-                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
-                .flatMap(h -> h.getSong().getArtists().stream())
-                .collect(Collectors.groupingBy(a -> a, Collectors.counting()));
-        if (!artistFrequency.isEmpty()) {
-            report.setTopArtist(artistFrequency.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse(null));
-        }
-
-        Map<Song, Long> albumSongFrequency = weekHistory.stream()
-                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
-                .filter(h -> h.getSong().getAlbum() != null)
-                .collect(Collectors.groupingBy(PlaybackHistory::getSong, Collectors.counting()));
-        if (!albumSongFrequency.isEmpty()) {
-            report.setTopAlbum(albumSongFrequency.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse(null));
-        }
-
-        Map<Genre, Long> genreFrequency = weekHistory.stream()
-                .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
-                .flatMap(h -> h.getSong().getGenres().stream())
-                .collect(Collectors.groupingBy(g -> g, Collectors.counting()));
-        if (!genreFrequency.isEmpty()) {
-            report.setTopGenre(genreFrequency.entrySet().stream()
-                    .max(Map.Entry.comparingByValue())
-                    .map(Map.Entry::getKey)
-                    .orElse(null));
-        }
+        // All four aggregations now delegate to PlaybackAggregator
+        report.setTotalSongsPlayed(PlaybackAggregator.countValidPlays(weekHistory));
+        report.setTotalListeningTimeMinutes(PlaybackAggregator.sumValidMinutes(weekHistory));
+        report.setTopSong(PlaybackAggregator.findTopSong(weekHistory));
+        report.setTopArtist(PlaybackAggregator.findTopArtist(weekHistory));
+        report.setTopAlbum(PlaybackAggregator.findTopAlbumSong(weekHistory));
+        report.setTopGenre(PlaybackAggregator.findTopGenre(weekHistory));
 
         return weeklyReportRepository.save(report);
     }
 
-    /**
-     * Returns list of available week numbers for a given year.
-     * Time Complexity: O(n) where n = playback history
-     */
     public List<Integer> getAvailableWeeks(int year) {
         Long userId = userSessionService.getCurrentUserId();
         if (userId == null) return Collections.emptyList();

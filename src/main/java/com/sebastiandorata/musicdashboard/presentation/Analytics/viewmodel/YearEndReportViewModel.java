@@ -5,6 +5,7 @@ import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.entity.YearEndReport;
 import com.sebastiandorata.musicdashboard.service.handlers.DataLoadingService;
 import com.sebastiandorata.musicdashboard.service.handlers.YearEndReportService;
+import com.sebastiandorata.musicdashboard.utils.ArtistUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +17,19 @@ import java.util.function.Consumer;
 /**
  * ViewModel for the Year-End report view.
  *
- * Loads all data needed to render the full wrapped experience in a single
- * async call: The persisted YearEndReport summary, top-5 songs, top-5
- * artists, and the month-by-month listening breakdown.
+ * <p>Loads all data needed to render the full wrapped experience in a single
+ * async call: the persisted YearEndReport summary, top-5 songs, top-5
+ * artists, and the month-by-month listening breakdown.</p>
  *
- * <p>Time Complexity : O(n). Four queries that all share the same playback history scan inside YearEndReportService.
- * <p>Space Complexity: O(n) for the returned lists.
+ * <p>Time Complexity : O(n). Four queries that all share the same playback
+ * history scan inside YearEndReportService.
+ * Space Complexity: O(n) for the returned lists.</p>
  */
 @Service
 public class YearEndReportViewModel {
 
-    @Autowired
-    private YearEndReportService yearEndReportService;
-
-    @Autowired
-    private DataLoadingService dataLoadingService;
+    @Autowired private YearEndReportService yearEndReportService;
+    @Autowired private DataLoadingService dataLoadingService;
 
     /** All data needed to render one year's wrapped screen. */
     public static class WrappedData {
@@ -68,15 +67,11 @@ public class YearEndReportViewModel {
             this.monthlyMinutes = monthlyMinutes;
         }
 
-
         public String totalHoursFormatted() {
             double hours = totalMinutes / 60.0;
             return String.format("%.1f", hours);
         }
 
-        /** Used to show the month with the most playback hours.
-         * Busiest month name, or "—" if no data.
-         */
         public String busiestMonthName() {
             return monthlyMinutes.entrySet().stream()
                     .max(Map.Entry.comparingByValue())
@@ -87,15 +82,9 @@ public class YearEndReportViewModel {
         }
     }
 
-    /**
-     * Loads all wrapped data for {@code year} on a background thread,
-     * then calls {@code onSuccess} on the JavaFX thread.
-     */
     public void loadWrappedData(int year, Consumer<WrappedData> onSuccess) {
         dataLoadingService.loadAsync(() -> buildWrappedData(year), onSuccess);
     }
-
-
 
     private WrappedData buildWrappedData(int year) {
         YearEndReport report    = yearEndReportService.getOrGenerateYearReport(year);
@@ -103,18 +92,18 @@ public class YearEndReportViewModel {
         List<Map.Entry<Artist, Long>> topArtists = yearEndReportService.getTopArtistsForYear(year, 5);
         Map<YearMonth, Integer>       monthly    = yearEndReportService.getMonthlyListeningTime(year);
 
-        int    totalMinutes = nvl(report.getTotalListeningTimeMinutes());
-        int    totalSongs   = nvl(report.getTotalSongsPlayed());
+        int totalMinutes = nvl(report.getTotalListeningTimeMinutes());
+        int totalSongs   = nvl(report.getTotalSongsPlayed());
 
         String topSongTitle  = report.getTopSong()   != null ? report.getTopSong().getTitle()   : "—";
-        String topSongArtist = (report.getTopSong()  != null
-                && report.getTopSong().getArtists()  != null
-                && !report.getTopSong().getArtists().isEmpty())
-                ? report.getTopSong().getArtists().stream().findFirst()
-    .map(Artist::getName).orElse("Unknown Artist") : "—";
-        String topArtist     = report.getTopArtist() != null ? report.getTopArtist().getName()  : "—";
-        String topAlbum      = report.getTopAlbum()  != null ? report.getTopAlbum().getTitle()  : "—";
-        String topGenre      = report.getTopGenre()  != null ? report.getTopGenre().getName()   : "—";
+        // Replaced multi-line stream with ArtistUtils
+        String topSongArtist = ArtistUtils.getPrimaryArtistName(report.getTopSong());
+        if (report.getTopSong() == null) topSongArtist = "—";
+
+        String topArtist = report.getTopArtist() != null
+                ? ArtistUtils.getArtistName(report.getTopArtist()) : "—";
+        String topAlbum  = report.getTopAlbum()  != null ? report.getTopAlbum().getTitle()  : "—";
+        String topGenre  = report.getTopGenre()  != null ? report.getTopGenre().getName()   : "—";
 
         return new WrappedData(year,
                 totalMinutes, totalSongs,
