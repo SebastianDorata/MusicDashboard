@@ -1,0 +1,88 @@
+.now-playing-bar {/* Just the player, Not including the art*/
+    -fx-background-color: transparent, linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);   /**/
+    -fx-background-radius: 20, 18;
+    -fx-border-color:rgb(76, 175, 80, 0.4);
+    -fx-border-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 20, 0.2, 0, 0);
+}
+.now-playing-bar.is-playing {
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.75), 32, 0.35, 0, 0);
+    -fx-border-color: rgb(76, 175, 80);
+}
+.now-playing-info {/* Top of the screen to the stat cards, Not including the art*/
+    -fx-background-color: rgba(255, 255, 255, 0.025);
+}
+
+/* ─── Text for Song title and Artist ─────────────────────────────────────────────── */
+.Song-Name{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 3em;
+    -fx-wrap-text: true;
+    -fx-text-overrun: ELLIPSIS;
+    -fx-padding: 0 0 0 1em;
+}
+
+.Artist-Name{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-underline:true;
+    -fx-font-size: 1.5em;
+    -fx-wrap-text: true;
+    -fx-text-overrun: ELLIPSIS;
+    -fx-padding: 0 0 0 2em;
+}
+
+/* ─── Album art ─────────────────────────────────────────────── */
+.album-art-placeholder {/* Icon inside the Album art box*/
+    -fx-font-size: 36px;
+    -fx-text-fill: rgba(255, 255, 255, 0.3);
+}
+.album-art-container {/* The Album art box*/
+    -fx-background-color: linear-gradient(to bottom right, #1a2a4a, #0d1f3c);
+    -fx-background-radius: 20 0 0 20;
+
+}
+
+
+
+/* ─── Controls, Slider and Time ─────────────────────────────────────────────── */
+.player-controls{
+
+}
+.now-playing-slider {
+    /*-fx-max-width: 130em;*/
+    -fx-alignment: center;
+}
+.time-row {/* Just around the numbers*/
+/*-fx-border-color: red;*/
+
+}
+.time-Box{/* Around the slider and Numbers*/
+    -fx-padding: 0 5em 2em 5em;
+}
+
+
+/* ─── Controls, Slider and Time Styling ─────────────────────────────────────────────── */
+.now-playing-slider .track {
+ -fx-background-color: rgba(255, 255, 255, 0.12);
+ -fx-background-radius: 4;
+ -fx-pref-height: 4;
+}
+.now-playing-slider .track:filled {
+ -fx-background-color: linear-gradient(to right, #4facfe, #00f2fe);
+ -fx-background-radius: 4;
+}
+.now-playing-slider .thumb {
+ -fx-background-color: white;
+ -fx-background-radius: 6;
+ -fx-pref-width: 12;
+ -fx-pref-height: 12;
+ -fx-effect: dropshadow(gaussian, rgba(79, 172, 254, 0.8), 8, 0.3, 0, 0);
+}
+
+.now-playing-slider .thumb:hover {
+ -fx-background-color: #4facfe;
+ -fx-pref-width: 14;
+ -fx-pref-height: 14;
+}
