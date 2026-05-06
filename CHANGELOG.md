@@ -1,6 +1,66 @@
 # Changelog
 
-## 2026-05-01
+---
+
+## 2026-05-06 v1.0.7
+### 1. DoublyLinkedList / "View All" Pagination Bug
+
+**Goal:** Enable the "View All" modal overlays to open correctly when triggered from the analytics page.
+
+**Bug:** Two instance fields in `AnalyticsController` were never assigned in `createScene()`, causing null reference crashes.
+
+- `mainPane` (the `StackPane` passed to every modal call) stayed `null` because a local variable of the same name shadowed the instance field — the overlay had nowhere to attach and was silently dropped.
+- `content` (the `BorderPane` used by `refreshSidebar()`) also stayed `null`, causing an NPE on every navigation click.
+
+**Solution:** Two one-line fixes in `createScene()`:
+
+- `Line 110`: Changed `BorderPane root = new BorderPane()` → `content = new BorderPane()` to assign to the instance field.
+- `Line 118`: Dropped the local `StackPane` type declaration, changing `StackPane mainPane = new StackPane(root)` → `mainPane = new StackPane(content)` to assign to the instance field.
+
+The root cause of both bugs was the same pattern: declaring a new local variable with the same name as an instance field, which shadows it instead of assigning to it.
+
+### 2. Session Average Inaccuracy
+
+**Goal:** The "Average Listening Period" stat card should measure how long the user has had the app open in the current session, starting from when the app launches.
+
+**Bug:** `sessionStart` was set inside `setCurrentUser()`, which is only called after a successful login. Any time spent on the login screen was excluded from the duration, making the stat inaccurate.
+
+**Solution:** Two files changed.
+
+- `UserSessionService` — added an `appStart` field and a `recordAppStart()` method that stamps the time once on first call. A null-check guard prevents subsequent calls (e.g. from re-showing the login screen) from resetting the clock. `getSessionDurationSeconds()` now uses `appStart` as its reference point, falling back to `sessionStart` only if `recordAppStart()` was never called.
+- `JavaFxApplication` — added a single call to `recordAppStart()` at the very top of `start()`, before the stage is configured or the auth screen is shown. This is the earliest point after the Spring context exists and `UserSessionService` can be resolved as a bean.
+
+### 3. Player Controls Position
+
+**Goal:** Move the playback buttons (previous, play/pause, next) so they sit just above the duration bar rather than at the top of the info section.
+
+**Solution:** Modified `createNowPlayingInfoSection()` in `PlaybackPanelController`. Previously, `controls` was added to `infoSection` alongside `songTitle` and `artistName`, before `buildProgressSection()` inserted the spacer and slider. The spacer pushed everything above it (including the controls) to the top of the panel.
+
+The fix removes `controls` from the initial `addAll` call and instead inserts it at `size() - 1` after `buildProgressSection()` runs, placing it after the spacer but before the `timeBox` (slider + time labels) that `buildProgressSection` appends last.
+
+### 4. UI Change: Album Art Oversizing, Player Layout, and Gap Fix
+
+**Goal:** Control the playback panel and stat card heights so album artwork fills the player naturally without overflowing, and eliminate empty gaps when resizing the window.
+
+**Bug:** `albumArtView.prefWidthProperty()` was bound to `nowPlaying.heightProperty()`. Since `nowPlaying` had `setMaxHeight(Double.MAX_VALUE)`, JavaFX let it grow indefinitely, making `prefWidth` very large and crowding out the info section.
+
+**Attempts:** Capping art size helped but didn't control vertical space. Adjusting grow priorities and adding `setMaxHeight` to the player stopped it from stretching, but cards then grew unbounded.
+
+**Final Fixed Layout:** Locked both player and cards with `setPrefHeight` + `setMaxHeight` and `VBox.setVgrow(Priority.NEVER)` on both. Set `top` to `Priority.NEVER` so fixed values were respected without interference.
+
+**Gap Problem:** The `top` region was bound to 60% of scene height, but the center `VBox` had a fixed 380px player and cards at `Priority.NEVER`. Extra height became empty space. The right panel stretched because it had `Priority.ALWAYS` and `setMaxHeight(Double.MAX_VALUE)`.
+
+**Gap Fix:** Changed cards to `Priority.ALWAYS` with `setMaxHeight(Double.MAX_VALUE)` so they absorb extra height. Added `setMaxHeight(Double.MAX_VALUE)` to the center `VBox` so it doesn't cap its children. The player remained locked at 380px with `Priority.NEVER`.
+
+**Why Resizing Broke It:** `top` was set to 60% of scene height using a hardcoded multiplier, not a dynamic binding. On window resize, the value didn't update, so `top` kept its original height and the gap returned. A reactive solution would require binding `top.prefHeightProperty()` to `scene.heightProperty().multiply(0.6)`.
+
+
+
+
+
+
+---
+## 2026-05-01 v1.0.6
 ## Library Migration Tool
 
 ### What we wanted to build
@@ -103,7 +163,7 @@ The `LazyInitializationException` was fundamentally a transaction-scope problem.
 
 ---
 
-## 2026-04-14
+## 2026-04-14 v1.0.5
 
 ### Refactored
 - Extracted `ArtistUtils` utility class (`com.sebastiandorata.musicdashboard.utils`) to
@@ -151,7 +211,7 @@ The `LazyInitializationException` was fundamentally a transaction-scope problem.
 
 ---
 
-## 2026-04-12
+## 2026-04-12 
 
 ### Fixed
 - LazyInitializationException in artist navigation fixed by re-fetching artists

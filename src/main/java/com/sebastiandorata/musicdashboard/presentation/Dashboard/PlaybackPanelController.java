@@ -88,7 +88,15 @@ public class PlaybackPanelController extends UIComponent {
         nowPlaying.setMaxHeight(Double.MAX_VALUE);
 
         albumArtView = new AlbumArtView(musicPlayerService);
-        albumArtView.prefWidthProperty().bind(nowPlaying.heightProperty());
+        // Bind preferred width to the panel height so the art stays square,
+        // then cap both axes at getMaxArtSize() so the art cannot overflow
+        // into the info section on large screens where nowPlaying grows tall.
+        double maxArt = config.getMaxArtSize();
+        albumArtView.prefWidthProperty().bind(
+                nowPlaying.heightProperty().map(h -> Math.min(h.doubleValue(), maxArt))
+        );
+        albumArtView.setMaxWidth(maxArt);
+        albumArtView.setMaxHeight(maxArt);
         nowPlaying.getChildren().add(albumArtView);
 
         VBox infoSection = createNowPlayingInfoSection(onArtistClicked);
@@ -116,14 +124,16 @@ public class PlaybackPanelController extends UIComponent {
         Label artistName = buildArtistNameLabel();
         HBox controls = createPlayerControls();
 
-        infoSection.getChildren().addAll(songTitle, artistName, controls);
+        infoSection.getChildren().addAll(songTitle, artistName); // controls NOT added yet
 
         ProgressSection progressSection = null;
         if (config.getSize() == PlayerConfig.PlayerSize.LARGE) {
-            progressSection = buildProgressSection(infoSection);
+            progressSection = buildProgressSection(infoSection); // spacer + slider added
+            infoSection.getChildren().add(infoSection.getChildren().size() - 1, controls); // controls inserted above slider
         } else {
             VBox.setVgrow(controls, Priority.ALWAYS);
             controls.setAlignment(Pos.CENTER);
+            infoSection.getChildren().add(controls);
         }
 
         attachSongListener(songTitle, artistName, progressSection, onArtistClicked);

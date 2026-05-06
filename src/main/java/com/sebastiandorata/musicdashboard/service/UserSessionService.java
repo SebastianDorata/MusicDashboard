@@ -10,30 +10,32 @@ import java.time.temporal.ChronoUnit;
 /**
  * Holds the currently authenticated user for the lifetime of the application.
  *
- * <p><b><u>Session tracking: how the average is stored and retrieved</u></b></p>
+ * <p><b><u>Session tracking: how the timer works</u></b></p>
  *
  * <p><b><u>Storage:</u></b></p>
  * <ol>
- *   <li>User logs in via AuthenticationController.handleLogin().</li>
- *   <li>On success, UserSessionService.setCurrentUser(user) is called.</li>
- *   <li>setCurrentUser records sessionStart = LocalDateTime.now() in memory.
- *       No database write. The value lives only for this JVM run.</li>
+ *   <li>{@code JavaFxApplication.start()} calls {@link #recordAppStart()} once
+ *       as the very first thing after the Spring context is ready. This stamps
+ *       {@code appStart} with the true "app open" time.</li>
+ *   <li>When the user logs in, {@link #setCurrentUser(User)} stamps
+ *       {@code sessionStart} with the login time. Kept separately in case
+ *       future features need to distinguish "since launch" from "since login".</li>
  * </ol>
  *
  * <p><b><u>Retrieval:</u></b></p>
  * <ol>
- *   <li>DailyListeningStatsService.buildStatSnapshot() calls
- *       getSessionDurationSeconds().</li>
- *   <li>getSessionDurationSeconds() returns now minus sessionStart in seconds.
- *       This is the duration of the current session (open app to now).</li>
- *   <li>The value flows into StatSnapshot.todayAvgSessionSeconds, which
- *       StatCardsViewModel formats and hands to the stat card label.</li>
+ *   <li>{@code DailyListeningStatsService.buildStatSnapshot()} calls
+ *       {@link #getSessionDurationSeconds()}.</li>
+ *   <li>{@code getSessionDurationSeconds()} returns {@code now - appStart},
+ *       so the stat card reflects total time the app has been open, including
+ *       time spent on the login screen.</li>
+ *   <li>The value flows into {@code StatSnapshot.todayAvgSessionSeconds}, which
+ *       {@code StatCardsViewModel} formats and hands to the stat card label.</li>
  * </ol>
  *
  * <p><b><u>Limitations:</u></b></p>
  * <ul>
- *   <li>History is lost on restart. The average is always the current session
- *       duration, not a historical mean across multiple sessions.</li>
+ *   <li>All state is in-memory and lost on restart. Only the current run is tracked.</li>
  * </ul>
  */
 @Getter
@@ -43,18 +45,32 @@ public class UserSessionService {
     private User currentUser;
 
     /**
-     * In-memory session start time. Set when the user logs in.
-     * Never null after the first successful login within this JVM run.
+     * Recorded once in {@code JavaFxApplication.start()} — the true "app open"
+     * timestamp. {@link #getSessionDurationSeconds()} uses this so the stat card
+     * measures time from launch, not from login.
+     */
+    private LocalDateTime appStart;
+
+    /**
+     * Recorded when the user successfully logs in. Kept separately from
+     * {@code appStart} in case future features need to distinguish between
+     * "time since launch" and "time since this login".
      */
     private LocalDateTime sessionStart;
 
     /**
-     * Sets the authenticated user and records the session start time.
-     *
-     * <p>Called by {@code AuthenticationController} immediately after a
-     * successful login. {@code sessionStart} is captured here so that
-     * {@link #getSessionDurationSeconds()} can compute elapsed time from
-     * the moment the user entered the app.
+     * Records the moment the JavaFX application window first opens.
+     * Called exactly once from {@code JavaFxApplication.start()}.
+     * Subsequent calls are no-ops so a re-shown auth screen cannot reset the clock.
+     */
+    public void recordAppStart() {
+        if (appStart == null) {
+            appStart = LocalDateTime.now();
+        }
+    }
+
+    /**
+     * Sets the authenticated user and records the login time.
      *
      * @param user the authenticated user; must not be {@code null}
      */
@@ -73,22 +89,22 @@ public class UserSessionService {
     }
 
     /**
-     * Returns the number of seconds elapsed since the user logged in.
+     * Returns the number of seconds elapsed since the application launched.
      *
-     * <p>This is used as the "average session length" stat card value,
-     * in-memory only.Only one session is tracked per JVM run,
-     * the value is always the duration of the current session, not a
-     * historical average.
+     * <p>Uses {@code appStart} (set in {@code JavaFxApplication.start()}) rather
+     * than {@code sessionStart} (set at login), so the timer reflects total time
+     * the app has been open, including time spent on the login screen.
      *
-     * <p>Returns {@code 0} if {@code sessionStart} has not been set (i.e.
-     * no user has logged in during this run).
+     * <p>Falls back to {@code sessionStart} if {@link #recordAppStart()} was never
+     * called, and returns {@code 0} if neither has been set.
      *
      * Time Complexity: O(1)
      *
-     * @return elapsed seconds since login, or {@code 0} if not logged in
+     * @return elapsed seconds since app launch, or {@code 0} if unavailable
      */
     public int getSessionDurationSeconds() {
-        if (sessionStart == null) return 0;
-        return (int) ChronoUnit.SECONDS.between(sessionStart, LocalDateTime.now());
+        LocalDateTime reference = appStart != null ? appStart : sessionStart;
+        if (reference == null) return 0;
+        return (int) ChronoUnit.SECONDS.between(reference, LocalDateTime.now());
     }
 }

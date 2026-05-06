@@ -3,6 +3,8 @@ package com.sebastiandorata.musicdashboard.presentation.helpers;
 import javafx.stage.Screen;
 import lombok.Getter;
 
+import java.util.Objects;
+
 /**
  * <p>Configuration for player panel sizing.
  * Allows different pages (Dashboard, Analytics) to customize player appearance.</p>
@@ -35,26 +37,16 @@ public class PlayerConfig {
         double screenH = Screen.getPrimary().getVisualBounds().getHeight();
         this.baseUnit = screenH / 1080.0; // 1.0 on a 1080p screen
 
-        switch (size) {
-            case LARGE -> {
-                this.fontSizeMultiplier = 1.0;
-                this.iconSizeMultiplier = 1.0;
-                this.spacingMultiplier  = 1.0;
-            }
-            case SMALL -> {
-                this.fontSizeMultiplier = 0.6;
-                this.iconSizeMultiplier = 0.6;
-                this.spacingMultiplier  = 0.5;
-            }
-            default -> {
-                this.fontSizeMultiplier = 1.0;
-                this.iconSizeMultiplier = 1.0;
-                this.spacingMultiplier  = 1.0;
-            }
+        if (Objects.requireNonNull(size) == PlayerSize.SMALL) {
+            this.fontSizeMultiplier = 0.6;
+            this.iconSizeMultiplier = 0.6;
+            this.spacingMultiplier = 0.5;
+        } else {
+            this.fontSizeMultiplier = 1.0;
+            this.iconSizeMultiplier = 1.0;
+            this.spacingMultiplier = 1.0;
         }
     }
-
-
 
     public int getTitleFontSize()    {
         return (int) (30  * fontSizeMultiplier * baseUnit);
@@ -75,8 +67,22 @@ public class PlayerConfig {
         return        10  * spacingMultiplier  * baseUnit;
     }
     public double getInfoSectionSpacing() {
-        return    6  * spacingMultiplier  * baseUnit;  }
+        return         6  * spacingMultiplier  * baseUnit;
+    }
 
-
+    /**
+     * Maximum pixel size (width and height) for the album art square.
+     *
+     * <p>LARGE panels cap at 280px scaled — tall enough to fill the dashboard
+     * player row without overflowing into the info section.
+     * SMALL panels (analytics mini player) cap at 60px scaled so the art stays
+     * contained in the compact bottom bar.
+     *
+     * <p>Without this cap, {@code albumArtView.prefWidth} is bound to the
+     * unconstrained {@code nowPlaying} HBox height, which grows to fill whatever
+     * space the parent gives it, causing the art to overflow.
+     */
+    public double getMaxArtSize() {
+        return size == PlayerSize.LARGE ? 280 * baseUnit : 60 * baseUnit;
+    }
 }
-

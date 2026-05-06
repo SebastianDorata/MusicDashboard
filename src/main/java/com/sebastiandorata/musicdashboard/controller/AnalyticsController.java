@@ -107,15 +107,15 @@ public class AnalyticsController {
 
 
     private Scene createScene() {
-        BorderPane root = new BorderPane();
-        root.getStyleClass().add("dark-page-bg");
+        content = new BorderPane();
+        content.getStyleClass().add("dark-page-bg");
 
-        root.setLeft(createLeftMenu());
-        root.setCenter(createCenterArea());
-        root.setBottom(createBottomPlayer());
+        content.setLeft(createLeftMenu());
+        content.setCenter(createCenterArea());
+        content.setBottom(createBottomPlayer());
 
         showListeningHistory();
-        StackPane mainPane = new StackPane(root);
+        mainPane = new StackPane(content);
 
         Scene scene = new Scene(mainPane, APP_WIDTH, AppUtils.APP_HEIGHT);
         return scene;
@@ -339,7 +339,7 @@ public class AnalyticsController {
                         h.getSong() != null ? h.getSong().getTitle() : "Unknown",
                         h.getSong() != null && !h.getSong().getArtists().isEmpty()
                                 ? h.getSong().getArtists().stream().findFirst()
-    .map(Artist::getName).orElse("Unknown Artist")
+                                  .map(Artist::getName).orElse("Unknown Artist")
                                 : "Unknown",
                         AppUtils.formatRelativeTime(h.getPlayedAt()),
                         h.getDurationPlayedSeconds() != null ? h.getDurationPlayedSeconds() : 0,
@@ -365,7 +365,7 @@ public class AnalyticsController {
                         song.getTitle(),
                         song.getArtists() != null && !song.getArtists().isEmpty()
                                 ? song.getArtists().stream().findFirst()
-    .map(Artist::getName).orElse("Unknown Artist")
+                                  .map(Artist::getName).orElse("Unknown Artist")
                                 : "Unknown",
                         song.getDuration() != null ? song.getDuration() : 0,
                         song

@@ -86,7 +86,6 @@ public class DashboardController {
 
 
 
-
     private Scene createScene() {
         BorderPane root = new BorderPane();
         VBox left = createLeftMenu();
@@ -96,14 +95,16 @@ public class DashboardController {
         HBox top = createTopMenu();
         HBox bottom = createBottomMenu();
 
+        // top is bound to 60% of scene height; bottom fills whatever remains.
+        Scene scene = new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
+        top.prefHeightProperty().bind(scene.heightProperty().multiply(0.60));
 
         VBox.setVgrow(top, Priority.NEVER);
-        VBox.setVgrow(bottom, Priority.ALWAYS);
+        VBox.setVgrow(bottom, Priority.ALWAYS); // fills all remaining space — no gap at bottom
 
         rightHalf.getChildren().addAll(top, bottom);
         root.setCenter(rightHalf);
 
-        Scene scene = new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
         return scene;
     }
 
@@ -155,57 +156,71 @@ public class DashboardController {
     private HBox createTopMenu() {
         HBox root = new HBox();
         root.getStyleClass().add("HomepageTopMenu");
+
+        // Center: player (grows to fill) stacked above stat cards (fixed height)
         VBox center = new VBox(20);
         center.getStyleClass().add("HomepageTopHalf");
-
-
+        center.setMaxHeight(Double.MAX_VALUE);// Cap itself and preventing its children from filling it.
         center.setFillWidth(true);
-        HBox playbackPanel = playbackPanelController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback(), PlayerConfig.PlayerSize.LARGE);
+
+        HBox playbackPanel = playbackPanelController.createPanel(
+                artistDiscographyNavigation.getArtistDrillInCallback(),
+                PlayerConfig.PlayerSize.LARGE);
         playbackPanel.setMaxWidth(Double.MAX_VALUE);
-        VBox.setVgrow(playbackPanel, Priority.NEVER);
+        playbackPanel.setPrefHeight(380); // Artwork fills the player naturally
+        playbackPanel.setMaxHeight(380);  // Prevent the player from growing beyond this
+        VBox.setVgrow(playbackPanel, Priority.NEVER); // Player stays fixed; cards take remaining space
 
-
-        HBox cards = cardFactory.createStatCards(album -> myLibraryController.showWithAlbum(album), song -> musicPlayerService.playSong(song));
-        cards.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-        VBox.setVgrow(cards, Priority.ALWAYS);
+        HBox cards = cardFactory.createStatCards(
+                album -> myLibraryController.showWithAlbum(album),
+                song  -> musicPlayerService.playSong(song));
+        cards.setMaxWidth(Double.MAX_VALUE);
+        VBox.setVgrow(cards, Priority.ALWAYS); // Both player and cards are fixed; no growing needed.
+        cards.setMaxHeight(Double.MAX_VALUE); //lets the cards stretch to absorb whatever height top gains beyond the player's 380px.
 
         center.getChildren().addAll(playbackPanel, cards);
-
-        VBox topArtistsPanel = topArtistsController.createPanel(artistDiscographyNavigation.getArtistDrillInCallback());
-        topArtistsPanel.setMaxHeight(Double.MAX_VALUE);
-        VBox.setVgrow(topArtistsPanel, Priority.ALWAYS);
-
         HBox.setHgrow(center, Priority.ALWAYS);
-        root.getChildren().addAll(center, topArtistsPanel);
+
+        // Right: recently played capped to rightPanelPrefWidth so it doesn't crowd the player/stat-cards center column.
+        VBox recentlyPlayedPanel = recentlyPlayedController.createPanel();
+        recentlyPlayedPanel.setPrefWidth(AppUtils.rightPanelPrefWidth());
+        recentlyPlayedPanel.setMinWidth(AppUtils.rightPanelPrefWidth());
+        recentlyPlayedPanel.setMaxWidth(AppUtils.rightPanelPrefWidth());
+        recentlyPlayedPanel.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(recentlyPlayedPanel, Priority.ALWAYS);
+
+        root.getChildren().addAll(center, recentlyPlayedPanel);
         return root;
     }
 
     private HBox createBottomMenu() {
         HBox root = new HBox();
         root.getStyleClass().add("HomepageBottomMenu");
-            VBox center = new VBox(20);
-            center.setPadding(new Insets(5));
-            center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            center.setFillWidth(true);
-                HBox graphPanel = dashboardGraphController.createPanel();
-                    graphPanel.setMaxWidth(Double.MAX_VALUE);
-                    VBox.setVgrow(graphPanel, Priority.ALWAYS);
-                    graphPanel.setMaxHeight(Double.MAX_VALUE);
-            center.getChildren().addAll(graphPanel);
 
-                VBox right = new VBox(10);
-                    right.setPrefWidth(AppUtils.rightPanelPrefWidth());
-                    right.setMaxHeight(Double.MAX_VALUE);
-                    right.setPadding(new Insets(5));
-                    VBox.setVgrow(right, Priority.ALWAYS);
-                        VBox recentlyPlayedPanel = recentlyPlayedController.createPanel();
-                        VBox.setVgrow(recentlyPlayedPanel, Priority.ALWAYS);
-                        recentlyPlayedPanel.setMaxHeight(Double.MAX_VALUE);
-                    right.getChildren().addAll(recentlyPlayedPanel);
-     HBox.setHgrow(center, Priority.ALWAYS);
-     root.getChildren().addAll(center, right);
-     return root;
+        // Center: Graph fills whatever space the bottom section is allotted
+        VBox center = new VBox(20);
+        center.setPadding(new Insets(5));
+        center.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        center.setFillWidth(true);
+
+        HBox graphPanel = dashboardGraphController.createPanel();
+        graphPanel.setMaxWidth(Double.MAX_VALUE);
+        graphPanel.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(graphPanel, Priority.ALWAYS);
+        center.getChildren().add(graphPanel);
+        HBox.setHgrow(center, Priority.ALWAYS);
+
+        // Right: Top 5 artists matches rightPanelPrefWidth
+        VBox topArtistsPanel = topArtistsController.createPanel(
+                artistDiscographyNavigation.getArtistDrillInCallback());
+        topArtistsPanel.setPrefWidth(AppUtils.rightPanelPrefWidth());
+        topArtistsPanel.setMinWidth(AppUtils.rightPanelPrefWidth());
+        topArtistsPanel.setMaxWidth(AppUtils.rightPanelPrefWidth());
+        topArtistsPanel.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(topArtistsPanel, Priority.ALWAYS);
+
+        root.getChildren().addAll(center, topArtistsPanel);
+        return root;
     }
 
 }

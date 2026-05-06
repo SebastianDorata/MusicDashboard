@@ -2,6 +2,7 @@ package com.sebastiandorata.musicdashboard;
 
 import com.sebastiandorata.musicdashboard.controller.Authentication.AuthenticationController;
 import com.sebastiandorata.musicdashboard.controller.MainController;
+import com.sebastiandorata.musicdashboard.service.UserSessionService;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -32,6 +33,11 @@ public class JavaFxApplication extends Application {
             throw new IllegalStateException("Spring context failed to initialize in init()");
         }
 
+        // Stamp the true "app open" time before anything else runs.
+        // Must happen here rather than in setCurrentUser() so the clock starts
+        // from launch, not from the moment the user finishes logging in.
+        applicationContext.getBean(UserSessionService.class).recordAppStart();
+
         stage.setTitle("Music Dashboard");
         stage.setMaximized(false);
         stage.setWidth(AppUtils.APP_WIDTH);
@@ -52,11 +58,9 @@ public class JavaFxApplication extends Application {
             }
         });
 
-        AuthenticationController authController = applicationContext.getBean( AuthenticationController.class);
+        AuthenticationController authController = applicationContext.getBean(AuthenticationController.class);
         authController.show();
     }
-
-
 
     private void reloadCSS(javafx.scene.Scene scene) {
         java.util.List<String> sheets = new java.util.ArrayList<>(scene.getStylesheets());
