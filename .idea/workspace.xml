@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d5a33637-ea80-4492-a50a-436e21fbd2a8" name="Changes" comment="v1.0.7">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/LibraryMigrationController.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/MigrationResult.Status.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/MigrationResult.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumEditDialog.Result.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumEditDialog.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/LibraryMigrationService.TriConsumer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/LibraryMigrationService.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/ArtistUtils.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/PlaybackAggregator.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/LibraryMigrationController$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/LibraryMigrationController$2.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/LibraryMigrationController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/MigrationResult$Status.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/MigrationResult.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumEditDialog$Result.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumEditDialog.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/LibraryMigrationService$TriConsumer.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/LibraryMigrationService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/ArtistUtils.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/PlaybackAggregator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/allclasses-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/allclasses-index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/allpackages-index.html" beforeDir="false" afterPath="$PROJECT_DIR$/allpackages-index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/JavaFxApplication.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/JavaFxApplication.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/MusicDashboardApplication.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/MusicDashboardApplication.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/AnalyticsController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/AnalyticsController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/AuthenticationController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/AuthenticationController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/SecurityConfig.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/SecurityConfig.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/Authentication/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/DashboardController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/DashboardController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/ImportController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/ImportController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/MainController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/MainController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/MyLibraryController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/MyLibraryController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/PlaylistController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/PlaylistController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/controller/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/AllTimeStatsData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/AllTimeStatsData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/ChartData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/ChartData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/HistoryRowData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/HistoryRowData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/MonthlyReportData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/MonthlyReportData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/StatCardsData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/StatCardsData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/StatSnapshot.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/StatSnapshot.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/TopAlbumRowData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/TopAlbumRowData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/TopArtistRowData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/TopArtistRowData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/TopSongRowData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/TopSongRowData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/WeeklyReportData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/WeeklyReportData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/dto/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Album.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Album.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Artist.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Artist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Favourite.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Favourite.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Genre.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Genre.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/MonthlyReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/MonthlyReport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/PlaybackHistory.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/PlaybackHistory.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Playlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Playlist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Song.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/Song.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/SyncQueueEntry.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/SyncQueueEntry.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/User.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/User.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/WeeklyReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/WeeklyReport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/YearEndReport.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/YearEndReport.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/entity/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsPaginatedModal.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsPaginatedModal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsRowFactory.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsRowFactory.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsSectionBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsSectionBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/ModalListController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/ModalListController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/ReportDisplayController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/ReportDisplayController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/WeeklyReportCalendarController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/WeeklyReportCalendarController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/YearWrappedViewController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/YearWrappedViewController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/ListeningHistoryViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/ListeningHistoryViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/MonthlyReportViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/MonthlyReportViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/StatCardsViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/StatCardsViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopAlbumsViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopAlbumsViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopArtistsViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopArtistsViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopSongsViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopSongsViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/WeeklyReportViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/WeeklyReportViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.WrappedData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.WrappedData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/ArtistDiscographyNavigation.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/ArtistDiscographyNavigation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/PlaybackPanelController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/PlaybackPanelController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/RecentlyPlayedController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/RecentlyPlayedController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/TopArtistsController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/TopArtistsController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/Dashboard/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/UIComponent.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/UIComponent.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/ChartViewModel.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/ChartViewModel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/DashboardGraphController.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/DashboardGraphController.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/DashboardLineChartBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/DashboardLineChartBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/SmoothLineChart.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/SmoothLineChart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/graph/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/EmptyStateConfig.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/EmptyStateConfig.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.PlayerSize.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.PlayerSize.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/RowConfig.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/RowConfig.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/helpers/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumCardListCell.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumCardListCell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumListCell.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumListCell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumSongCell.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumSongCell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewHelper.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewHelper.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlphabetBar.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlphabetBar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/ArtistViewBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/ArtistViewBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/FavouritesViewBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/FavouritesViewBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryState.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryState.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.GenreOption.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.GenreOption.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.Result.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.Result.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongCell.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongCell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongEditDialog.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongEditDialog.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongViewBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongViewBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/libraryViews/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistDialogHandler.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistDialogHandler.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistViewBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistViewBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/playlist/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/AlbumArtView.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/AlbumArtView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/CardFactory.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/CardFactory.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.NavEntry.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.NavEntry.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/StyledView.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/StyledView.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/presentation/shared/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/AlbumRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/AlbumRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/ArtistRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/ArtistRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/FavouriteRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/FavouriteRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/GenreRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/GenreRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/MonthlyReportRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/MonthlyReportRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/PlaybackHistoryRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/PlaybackHistoryRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/PlaylistRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/PlaylistRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/SongRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/SongRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/SyncQueueRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/SyncQueueRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/UserRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/UserRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/WeeklyReportRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/WeeklyReportRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/YearEndReportRepository.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/YearEndReportRepository.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/repository/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/AuthenticationService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/AuthenticationService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/FavouriteService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/FavouriteService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/GenreFilterService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/GenreFilterService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/ImportService.TriConsumer.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/ImportService.TriConsumer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/ImportService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/ImportService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/LibraryService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/LibraryService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/LoginAttemptService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/LoginAttemptService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/MonthlyReportService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/MonthlyReportService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/MusicPlayerService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/MusicPlayerService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/PlaybackTrackingService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/PlaybackTrackingService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/PlaylistService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/PlaylistService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/SongImportService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/SongImportService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/UserSessionService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/UserSessionService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/AnalyticsCacheService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/AnalyticsCacheService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.ArtistTimeData.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.ArtistTimeData.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/DailyListeningStatsService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/DailyListeningStatsService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/DataLoadingService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/DataLoadingService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/GenericModalLoader.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/GenericModalLoader.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ListeningHistoryService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ListeningHistoryService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ListeningPaginationService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/ListeningPaginationService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/WeeklyReportService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/WeeklyReportService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/YearEndReportService.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/YearEndReportService.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/handlers/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/service/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/AppUtils.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/AppUtils.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/DoublyLinkedList.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/DoublyLinkedList.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/IconFactory.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/IconFactory.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/PlaybackConstants.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/PlaybackConstants.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/SortStrategy.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/SortStrategy.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/package-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/package-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/package-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/com/sebastiandorata/musicdashboard/utils/package-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constant-values.html" beforeDir="false" afterPath="$PROJECT_DIR$/constant-values.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/help-doc.html" beforeDir="false" afterPath="$PROJECT_DIR$/help-doc.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-1.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-10.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-10.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-11.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-11.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-12.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-12.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-13.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-13.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-14.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-14.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-15.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-15.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-16.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-16.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-17.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-17.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-18.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-18.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-19.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-19.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-2.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-2.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-20.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-20.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-21.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-21.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-22.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-22.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-3.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-3.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-4.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-4.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-5.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-5.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-6.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-6.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-7.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-7.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-8.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-8.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index-files/index-9.html" beforeDir="false" afterPath="$PROJECT_DIR$/index-files/index-9.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/member-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/member-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overview-summary.html" beforeDir="false" afterPath="$PROJECT_DIR$/overview-summary.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/overview-tree.html" beforeDir="false" afterPath="$PROJECT_DIR$/overview-tree.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tag-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/tag-search-index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/MusicDashboard-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/MusicDashboard-0.0.1-SNAPSHOT.jar.original" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/JavaFxApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/MusicDashboardApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/AnalyticsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/Authentication/AuthenticationController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/Authentication/SecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/DashboardController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/ImportController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/MainController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/MyLibraryController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/controller/PlaylistController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/AllTimeStatsData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/ChartData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/HistoryRowData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/MonthlyReportData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/StatCardsData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/StatSnapshot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/TopAlbumRowData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/TopArtistRowData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/TopSongRowData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/dto/WeeklyReportData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/Album.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/Artist.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/Favourite.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/Genre.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/MonthlyReport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/PlaybackHistory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/Playlist.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/Song.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/SyncQueueEntry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/WeeklyReport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/entity/YearEndReport.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsPaginatedModal.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsRowFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/AnalyticsSectionBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/ModalListController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/ReportDisplayController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/WeeklyReportCalendarController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/YearWrappedViewController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/ListeningHistoryViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/MonthlyReportViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/StatCardsViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopAlbumsViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopArtistsViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/TopSongsViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/WeeklyReportViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel$WrappedData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Analytics/viewmodel/YearEndReportViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/ArtistDiscographyNavigation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Dashboard/PlaybackPanelController$ProgressSection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Dashboard/PlaybackPanelController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Dashboard/RecentlyPlayedController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/Dashboard/TopArtistsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/UIComponent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/graph/ChartViewModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/graph/DashboardGraphController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/graph/DashboardLineChartBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/graph/SmoothLineChart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/helpers/EmptyStateConfig$EmptyStateConfigBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/helpers/EmptyStateConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig$PlayerSize.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/helpers/PlayerConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/helpers/RowConfig$RowConfigBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/helpers/RowConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumCardListCell.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumListCell.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumSongCell.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewHelper$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlbumViewHelper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/AlphabetBar.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/ArtistViewBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/FavouritesViewBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder$FilterControls.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder$GenreOption.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder$Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/LibraryTopBarBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongCell.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongEditDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongHandler$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongViewBuilder$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/libraryViews/SongViewBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistDialogHandler$PlaylistFormResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistDialogHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/playlist/PlaylistViewBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/shared/AlbumArtView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/shared/CardFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder$NavEntry.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/shared/SidebarBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/presentation/shared/StyledView.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/AlbumRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/ArtistRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/FavouriteRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/GenreRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/MonthlyReportRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/PlaybackHistoryRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/PlaylistRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/SongRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/SyncQueueRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/WeeklyReportRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/repository/YearEndReportRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/AuthenticationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/FavouriteService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/GenreFilterService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/ImportService$TriConsumer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/ImportService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/LibraryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/LoginAttemptService$AttemptRecord.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/LoginAttemptService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/MonthlyReportService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/MusicPlayerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/PlaybackTrackingService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/PlaylistService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/SongImportService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/UserSessionService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/AnalyticsCacheService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService$ArtistTimeData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/ArtistListeningTimeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/DailyListeningStatsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/DataLoadingService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/GenericModalLoader.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/ListeningHistoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/ListeningPaginationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/WeeklyReportService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/service/handlers/YearEndReportService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/AppUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/DoublyLinkedList$Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/DoublyLinkedList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/IconFactory.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/PlaybackConstants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/SortStrategy$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/SortStrategy$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/SortStrategy$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/SortStrategy$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/sebastiandorata/musicdashboard/utils/SortStrategy.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/analytics.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/buttons.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/dashboard.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/globalStyle.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/graph.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/library.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/login.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/musicPlayer.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/playlist.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/reports.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/css/wrapped.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/MusicDashboard.icns" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/eject.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/file-audio-regular.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/file-audio-solid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/heart-regular.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/heart-solid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/itunes-brands-solid-full.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/next.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/pause.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/play.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/prev.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/repeat-solid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/shuffle-solid.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/icons/spotify-brands-solid-full.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/type-search-index.js" beforeDir="false" afterPath="$PROJECT_DIR$/type-search-index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SebastianDorata&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/SebastianDorata/MusicDashboard.git&quot;,
+    &quot;accountId&quot;: &quot;d0597bbe-56ed-455e-ae1a-b8b7cb0a25db&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4,
+  &quot;fromUser&quot;: true
+}</component>
+  <component name="ProjectId" id="3CJtXYqKzesukKwHSSCjutTfInG" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHELLCHECK.PATH": "I do mind",
+    "Spring Boot.Music Dashboard.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "gh-pages",
+    "kotlin-language-version-configured": "true",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="com.sebastiandorata.musicdashboard.utils" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d5a33637-ea80-4492-a50a-436e21fbd2a8" name="Changes" comment="v1.0.3" />
+      <created>1776115542056</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776115542056</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Edit album details">
+      <option name="closed" value="true" />
+      <created>1776118819429</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1776118819429</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Edit album details">
+      <option name="closed" value="true" />
+      <created>1776118861615</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1776118861615</updated>
+    </task>
+    <task id="LOCAL-00003" summary="v1.0.5">
+      <option name="closed" value="true" />
+      <created>1776138713367</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1776138713367</updated>
+    </task>
+    <task id="LOCAL-00004" summary="v1.0.6">
+      <option name="closed" value="true" />
+      <created>1777914045961</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1777914045961</updated>
+    </task>
+    <task id="LOCAL-00005" summary="v1.0.6">
+      <option name="closed" value="true" />
+      <created>1777914165815</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1777914165815</updated>
+    </task>
+    <task id="LOCAL-00006" summary="v1.0.7">
+      <option name="closed" value="true" />
+      <created>1778082732327</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1778082732327</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Edit album details" />
+    <MESSAGE value="v1.0.5" />
+    <MESSAGE value="v1.0.6" />
+    <MESSAGE value="v1.0.7" />
+    <option name="LAST_COMMIT_MESSAGE" value="v1.0.7" />
+  </component>
+</project>
