@@ -1,11 +1,12 @@
 package com.sebastiandorata.musicdashboard.dto;
 
 /**
- * Carries the outcome of a single file evaluated during a library migration scan.
+ * Carries the outcome of a single file evaluated during import.
  *
- * <p>Each {@code MigrationResult} describes what happened to one audio file
- * found in the scanned folder. The {@link Status} enum drives which summary
- * counter is incremented in the UI and what message is shown per row.</p>
+ * <p>Previously this only described outcomes from the second-pass
+ * "reconcile" scan. Now that import is a single pass owned by
+ * {@code SongUpsertService}, it also covers the "brand new song" outcome
+ * ({@link Status#IMPORTED}), so one result list describes the whole import.
  *
  * @param fileName  the short file name (not the full path) for display
  * @param status    the outcome for this file
@@ -14,11 +15,14 @@ package com.sebastiandorata.musicdashboard.dto;
 public record MigrationResult(String fileName, Status status, String message) {
 
     /**
-     * The possible outcomes for a single file during migration.
+     * The possible outcomes for a single file during import.
      */
     public enum Status {
 
-        /** The file's path was updated in the database to the new location. */
+        /** Brand new song, not previously in the library. */
+        IMPORTED,
+
+        /** The file's path was updated in the database to a new location. */
         PATH_UPDATED,
 
         /**
@@ -48,7 +52,7 @@ public record MigrationResult(String fileName, Status status, String message) {
 
         /**
          * An unexpected error occurred while processing this file.
-         * The stack trace is printed to stderr; the migration continues.
+         * The stack trace is printed to stderr; the import continues.
          */
         ERROR
     }

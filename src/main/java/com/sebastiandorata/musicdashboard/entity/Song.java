@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,19 +20,26 @@ import java.util.Set;
  * {@link Artist artists} and {@link Genre genres}, and a many-to-one
  * relationship with its {@link Album}.</p>
  *
- * <p><b><u>References:</u></b></p>
- *<ul>
- *  <li><a href="https://stackoverflow.com/questions/2990799/difference-between-fetchtype-lazy-and-eager-in-java-persistence-api">
- *      FetchType in Java Persistence API </a> </li>
- *  </ul>
+ * <h2>Identity</h2>
+ * <p>{@code filePath} is now enforced unique at the database level. This
+ * is the fix for the "Query did not return a unique result: 2 results were
+ * returned" crash — previously nothing stopped two rows from sharing a path.
  *
- *
+ * <p>{@code contentFingerprint} is a SHA-256 hash of the song's normalized
+ * title + primary artist + duration, computed by
+ * {@code SongMetadataExtractor}. It gives the song a stable identity that
+ * survives the file being moved, re-imported under a different path, or
+ * imported again on a different machine/session — the basis for future
+ * multi-session sync — without needing to write an ID into the audio file
+ * itself.
  */
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "songs")
+@Table(name = "songs", indexes = {
+        @Index(name = "idx_songs_content_fingerprint", columnList = "content_fingerprint")
+})
 public class Song {
 
     @EqualsAndHashCode.Include
@@ -54,7 +60,13 @@ public class Song {
     @Column(name = "duration_seconds")
     private Integer duration;
 
-    @Column(name = "file_path", nullable = false, length = 500)
+    /**
+     * Enforced unique so two rows can never point at the same physical file.
+     * NOTE: if you already have duplicate rows in your database, run
+     * sql/01_dedupe_songs_and_albums.sql BEFORE this constraint is applied,
+     * or Hibernate's schema update / your migration tool will fail to add it.
+     */
+    @Column(name = "file_path", nullable = false, length = 500, unique = true)
     private String filePath;
 
     @Column(name = "file_format", length = 10)
@@ -78,14 +90,18 @@ public class Song {
     @Column(name = "track_number")
     private Integer trackNum;
 
-
-
+    /**
+     * Path-independent identity hash (title + primary artist + duration).
+     * Indexed (not uniquely constrained — see class javadoc) so
+     * {@code SongUpsertService} can find "this same song under a new path"
+     * quickly instead of scanning the whole table.
+     */
+    @Column(name = "content_fingerprint", length = 64)
+    private String contentFingerprint;
 
     @ManyToOne
     @JoinColumn(name = "album_id")
     private Album album;
-
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -121,4 +137,3 @@ public class Song {
         return title + " - " + artistName;
     }
 }
-

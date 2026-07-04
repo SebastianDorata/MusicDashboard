@@ -114,8 +114,7 @@ public class DashboardController {
                 new SidebarBuilder.NavEntry("♫", "My Library",  "library",   () -> { activeRoute = "library";   MainController.navigateTo("library");   }),
                 new SidebarBuilder.NavEntry("≡", "My Playlist", "playlist",  () -> { activeRoute = "playlist";  MainController.navigateTo("playlist");  }),
                 new SidebarBuilder.NavEntry("↓", "Import Files","import",    () -> { activeRoute = "import";    MainController.navigateTo("import");    }),
-                new SidebarBuilder.NavEntry("◫", "My Reports",  "analytics", () -> { activeRoute = "analytics"; MainController.navigateTo("analytics"); }),
-                new SidebarBuilder.NavEntry("◫", "Local Music",  "migration", () -> { activeRoute = "migration"; MainController.navigateTo("migration"); })
+                new SidebarBuilder.NavEntry("◫", "My Reports",  "analytics", () -> { activeRoute = "analytics"; MainController.navigateTo("analytics"); })
         );
 
         VBox sidebar = SidebarBuilder.build(

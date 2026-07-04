@@ -12,17 +12,24 @@ import java.util.Optional;
 /**
  * Spring Data JPA repository for {@link Song} entities.
  *
- * <p>Provides a derived finder to look up a song by its absolute file
- * path, used during import to skip files that have already been
- * ingested.</p>
+ * <p><b>{@code findFirstByFilePath} / {@code findFirstByContentFingerprint}</b>
+ * deliberately use "findFirst" rather than the derived-unique-result
+ * "findBy" style. "findBy" throws {@code NonUniqueResultException} the
+ * instant two rows share a value — which is exactly the crash this
+ * refactor fixes. "findFirst" degrades gracefully (picks the
+ * lowest-id row) even against a database that still has leftover
+ * duplicates from before this fix, while the new unique constraint on
+ * {@code file_path} (see the entity) prevents any new ones from being created.
  */
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
 
-    Optional<Song> findByFilePath(String filePath);
+    Optional<Song> findFirstByFilePath(String filePath);
+
+    Optional<Song> findFirstByContentFingerprint(String contentFingerprint);
 
     // Fetches all songs with artists and genres in one query
-    // Used by the library view to avoid N+1 on 4700 songs
+    // Used by the library view to avoid N+1 on thousands of songs
     @Query("SELECT DISTINCT s FROM Song s " +
             "LEFT JOIN FETCH s.artists " +
             "LEFT JOIN FETCH s.genres")

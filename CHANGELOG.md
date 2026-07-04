@@ -1,7 +1,70 @@
 # Changelog
 
 ---
+## 2026-07-04 v1.0.8<br>Import Pipeline Overhaul: Single-Pass Import + Duplicate-Row Fix
 
+### What went wrong
+
+A fresh library import started throwing this on every subsequent file that touched the same path:
+```
+[LibraryMigrationService] Error processing title.mp3: Query did not return a unique result: 2 results were returned
+org.springframework.dao.IncorrectResultSizeDataAccessException: Query did not return a unique result: 2 results were returned
+at LibraryMigrationService.processFile(LibraryMigrationService.java:178)
+```
+**Root cause:** `songs.file_path` had no uniqueness guarantee at the database level, and the import pipeline was split across two independent services that could each end up inserting a row for the same file:
+
+- `SongImportService.importSong` (Phase 1) — reads the file, does a partial import.
+- `LibraryMigrationService.processFile` (Phase 2) — reads the *same file again*, reconciles the rest of the metadata.
+
+Once two rows shared a `file_path`, `findByFilePath` (a derived Spring Data method that assumes uniqueness) threw `NonUniqueResultException` on every future lookup against that path — cascading into 1,853 errors on a single fresh-database import and every album showing up twice in the library.
+
+### The fix — collapse two passes into one, owned by one class
+
+Per-file reads were consolidated so each audio file is opened exactly once:
+
+| Old                                                                                                 | New                                              | Responsibility                                                                                                                      |
+|-----------------------------------------------------------------------------------------------------|--------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `SongImportService.importSong` (partial read) + `LibraryMigrationService.processFile` (second read) | `SongMetadataExtractor`                          | Reads the file **once** — tags, audio header, artwork, fingerprint                                                                  |
+| `SongImportService.importSong`, `LibraryMigrationService.syncMetadata`, `ImportService`             | `SongUpsertService`                              | The **one class** that decides create / update-in-place / relocate, and persists it                                                 |
+| `ImportOrchestrator` (IMPORT phase + RECONCILE phase)                                               | `ImportOrchestrator` (single phase)              | Loops files, delegates to the two classes above — no longer knows anything about matching or persistence rules                      |
+| `SongImportService` (rest of it)                                                                    | `SongImportService` (trimmed to `getAllSongs()`) | Kept only because `DashboardController`, `MyLibraryController`, `RecentlyPlayedController`, and `LibraryService` still read from it |
+| `ImportService`, `LibraryMigrationService`                                                          | *(deleted)*                                      | Fully absorbed into `SongUpsertService`                                                                                             |
+
+`SongUpsertService.upsert()` matches in order: exact canonical file path → content fingerprint → create new. This is also what fixed the two "never used" warnings on `extractMetadataPreview` and `importSongWithOverrides` — their job (read once, apply, persist) is now just how the pipeline always works, so the dead overloads went away with the old class.
+
+### Path normalization
+
+`File.getAbsolutePath()` was replaced with `File.getCanonicalFile().getAbsolutePath()` before any DB lookup or write. Two different path strings for the same physical file (symlink vs. direct access, `./` segments, etc.) previously defeated the exact-path match and let a second row slip in for what was really the same song.
+
+### New: content fingerprint for future multi-session sync
+
+Added `Song.contentFingerprint` — a SHA-256 hash of normalized `title + primary artist + duration`, computed once by `SongMetadataExtractor`. This gives each song a path-independent identity: the same song imported from a different folder, or on a different machine in a future sync feature, hashes to the same value and is recognized as "moved," not duplicated.
+
+Deliberately **not** implemented as a UUID written into the audio file's tags — writing tags back to MP3/M4A files risks corrupting them and wouldn't survive the file being re-tagged by another tool later. The fingerprint lives only in the database and is backfilled automatically onto old rows the first time each song is re-scanned.
+
+**Known limitation:** the fingerprint hashes exact duration, so a re-encoded file (different bitrate shifting duration by a fraction of a second) won't match by fingerprint alone — path matching covers the common case; fingerprint matching is a fallback for "moved or re-imported elsewhere," not frame-accurate audio fingerprinting.
+
+### Files changed
+
+| File                                                 | Change                                                                                                       |
+|:-----------------------------------------------------|:-------------------------------------------------------------------------------------------------------------|
+| `Song.java`                                          | Added `contentFingerprint` column; `filePath` now `unique = true`                                            |
+| `ExtractedSongMetadata.java`                         | New DTO — full single-pass extraction result                                                                 |
+| `MigrationResult.java`                               | Added `IMPORTED` status for newly-created songs                                                              |
+| `SongMetadataExtractor.java`                         | New — single file read, tag/header/artwork/fingerprint extraction                                            |
+| `SongUpsertService.java`                             | New — single owner of import persistence logic (path → fingerprint → create)                                 |
+| `ImportOrchestrator.java`                            | Reduced from two phases to one; delegates entirely to the two classes above                                  |
+| `SongImportService.java`                             | Trimmed to `getAllSongs()` only                                                                              |
+| `ImportService.java`, `LibraryMigrationService.java` | Deleted                                                                                                      |
+| `SongRepository.java`                                | `findByFilePath` → `findFirstByFilePath` (never throws on duplicates); added `findFirstByContentFingerprint` |
+| `MainImportController.java`                          | Updated for the simplified single-phase `ImportCallbacks` interface; added `IMPORTED` row styling            |
+
+
+
+
+
+
+---
 ## 2026-05-06 v1.0.7
 ### 1. DoublyLinkedList / "View All" Pagination Bug
 
