@@ -34,3 +34,4 @@ build/
 application.properties
 MusicDashboard.app/
 deploy.sh
+.DS_Store
