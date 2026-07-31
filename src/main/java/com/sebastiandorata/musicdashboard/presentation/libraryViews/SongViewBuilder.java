@@ -4,20 +4,12 @@ import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.presentation.shared.CardFactory;
 import com.sebastiandorata.musicdashboard.utils.SortStrategy;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Builds reusable song and album display components, list views, card grids,
@@ -75,30 +67,33 @@ public class SongViewBuilder {
     }
 
     /**
-     * Builds a scrollable list of songs grouped under A–Z section dividers,
-     * with a vertical {@link AlphabetBar} on the right that jumps to each section.
+     * Builds a scrollable, high-performance virtualized list of songs grouped under A–Z
+     * section dividers using a {@link TreeMap} to guarantee deterministic alphabetical ordering.
      *
-     * <p>Songs are sorted by the given strategy before grouping. Double
-     * left-clicking a row starts playback and sets the full sorted list as the
-     * queue. Right-clicking opens the {@link SongEditDialog} if one was supplied.</p>
+     * <p>Includes a vertical {@link AlphabetBar} on the right edge that jumps to sections
+     * instantly. Each section divider features a custom modern layout with an expanding
+     * horizontal line, matching the visual style of the artist view.</p>
+     *
+     * <p>Songs are sorted by the given strategy before grouping. Double left-clicking
+     * a row starts playback and sets the full sorted list as the queue. Right-clicking opens
+     * the {@link SongEditDialog} if one was supplied.</p>
      *
      * @param songs the songs to display
      * @param sort  the {@link SortStrategy} to apply before rendering
-     * @return a {@link BorderPane} with the grouped song list in the center
+     * @return a {@link BorderPane} with the grouped, optimized song list in the center
      *         and the {@link AlphabetBar} on the right
      */
     public BorderPane buildListView(List<Song> songs, SortStrategy sort) {
         List<Song> sorted = sortSongs(songs, sort);
 
-        // Group into sections for the alphabet dividers
-        Map<String, List<Song>> grouped = new LinkedHashMap<>();
+        // Guarantees A-Z sorting regardless of database output using a TreeMap
+        Map<String, List<Song>> grouped = new TreeMap<>();
         for (Song song : sorted) {
             String key = firstLetterKey(song.getTitle());
             grouped.computeIfAbsent(key, k -> new ArrayList<>()).add(song);
         }
 
         // Build a flat list with divider markers interleaved
-        // Use a record to distinguish dividers from songs
         List<Object> flatItems = new ArrayList<>();
         Map<String, Object> anchors = new LinkedHashMap<>();
 
@@ -109,14 +104,15 @@ public class SongViewBuilder {
             flatItems.addAll(entry.getValue()); // Song = row
         }
 
-        // Single virtualized ListView for all 4700 songs + dividers
+        // Single virtualized ListView for all songs + dividers
         ListView<Object> listView = new ListView<>();
         listView.getItems().addAll(flatItems);
         listView.getStyleClass().add("song-list-view");
-        listView.setFixedCellSize(52); // Set fixed height so JavaFX
-        // doesn't measure every cell
+        listView.setFixedCellSize(52); // Keep fixed height so JavaFX never measures every cell individually
+
 
         listView.setCellFactory(lv -> new ListCell<Object>() {
+
             private final SongCell songCell = new SongCell(
                     sorted,
                     ctx.musicPlayerService(),
@@ -126,44 +122,59 @@ public class SongViewBuilder {
                     false
             );
 
+            // Initialize click listeners once per cell instance for performance
+            {
+                setOnMouseClicked(e -> {
+                    Object item = getItem();
+                    if (item instanceof Song song) {
+                        if (e.getButton() == MouseButton.SECONDARY) {
+                            if (editDialog != null) editDialog.show(song, () -> {});
+                            e.consume();
+                        } else if (e.getClickCount() == 2 && e.getButton() == MouseButton.PRIMARY) {
+                            ctx.musicPlayerService().setQueue(sorted);
+                            ctx.musicPlayerService().playSong(song);
+                        }
+                    }
+                });
+            }
+
             @Override
             protected void updateItem(Object item, boolean empty) {
                 super.updateItem(item, empty);
+
                 if (empty || item == null) {
-                    setGraphic(null);
-                    setText(null);
-                    setStyle("");
+                    if (getText() != null) setText(null);
+                    if (getGraphic() != null) setGraphic(null);
                     return;
                 }
 
                 if (item instanceof String letter) {
-                    // Render as alphabet divider
-                    setGraphic(null);
-                    setText(letter);
-                    getStyleClass().setAll("alpha-divider");
+                    // Only modify CSS if the cell is changing types
+                    getStyleClass().remove("song-list-cell");
+                    if (!getStyleClass().contains("alpha-divider")) {
+                        getStyleClass().add("alpha-divider");
+                    }
+
+                    if (getText() != null) setText(null);
+
                     setMouseTransparent(false);
-                    setOnMouseClicked(null);
+
                 } else if (item instanceof Song song) {
-                    // Render as song row using the reusable SongCell
-                    setText(null);
-                    getStyleClass().setAll("song-list-cell");
+
+                    // Only modify CSS if the cell is changing types
+                    getStyleClass().remove("alpha-divider");
+                    if (!getStyleClass().contains("song-list-cell")) {
+                        getStyleClass().add("song-list-cell");
+                    }
+
+                    if (getText() != null) setText(null);
+
                     songCell.updateItem(song, false);
                     Node row = songCell.getGraphic();
-                    setGraphic(row);
 
-                    if (row != null) {
-                        setOnMouseClicked(e -> {
-                            if (e.getButton() == MouseButton.SECONDARY) {
-                                if (editDialog != null) editDialog.show(song, () -> {});
-                                e.consume();
-                                return;
-                            }
-                            if (e.getClickCount() == 2
-                                    && e.getButton() == MouseButton.PRIMARY) {
-                                ctx.musicPlayerService().setQueue(sorted);
-                                ctx.musicPlayerService().playSong(song);
-                            }
-                        });
+                    //Only update the graphic if the node reference changed
+                    if (getGraphic() != row) {
+                        setGraphic(row);
                     }
                 }
             }
@@ -171,10 +182,6 @@ public class SongViewBuilder {
 
         VBox.setVgrow(listView, Priority.ALWAYS);
 
-        // Build alphabet bar using the letter keys as anchors
-        // AlphabetBar needs Node anchors — map letters to their
-        // index in the ListView so clicking scrolls to that position
-        Map<String, Node> alphabetAnchors = new LinkedHashMap<>();
         AlphabetBar alphabetBar = new AlphabetBar(listView, flatItems, anchors);
 
         BorderPane layout = new BorderPane();
@@ -183,6 +190,9 @@ public class SongViewBuilder {
         VBox.setVgrow(layout, Priority.ALWAYS);
         return layout;
     }
+
+
+
 
     /**
      * Builds a grouped, scrollable song list using {@link SortStrategy#ALPHABETICAL}.
@@ -196,44 +206,6 @@ public class SongViewBuilder {
         return buildListView(songs, SortStrategy.ALPHABETICAL);
     }
 
-    /**
-     * Builds a {@link TilePane} card grid of songs sorted by the given strategy.
-     *
-     * <p>Each card is created by {@link CardFactory#createSongCard} and clicking
-     * it starts playback with the full sorted list as the queue.</p>
-     *
-     * @param songs the songs to display
-     * @param sort  the {@link SortStrategy} to apply before rendering
-     * @return a configured {@link TilePane} ready to be added to the scene graph
-     */
-    public TilePane buildGridView(List<Song> songs, SortStrategy sort) {
-        List<Song> sorted = sortSongs(songs, sort);
-        TilePane grid = buildBaseTilePane();
-
-        for (Song song : sorted) {
-            VBox card = CardFactory.createSongCard(song, ctx.musicPlayerService());
-            card.setOnMouseClicked(e -> {
-                if (e.getButton() == MouseButton.SECONDARY) { e.consume(); return; }
-                ctx.musicPlayerService().setQueue(sorted);
-                ctx.musicPlayerService().playSong(song);
-            });
-            card.setOnContextMenuRequested(javafx.event.Event::consume);
-            grid.getChildren().add(card);
-        }
-        return grid;
-    }
-
-    /**
-     * Builds a song card grid using {@link SortStrategy#ALPHABETICAL}.
-     * Equivalent to calling {@link #buildGridView(List, SortStrategy)} with
-     * {@code SortStrategy.ALPHABETICAL}.
-     *
-     * @param songs the songs to display
-     * @return a configured {@link TilePane} ready to be added to the scene graph
-     */
-    public TilePane buildGridView(List<Song> songs) {
-        return buildGridView(songs, SortStrategy.ALPHABETICAL);
-    }
 
     /**
      * Builds a {@link TilePane} card grid of albums.

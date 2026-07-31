@@ -73,7 +73,7 @@ public class LibraryService {
         Set<Album> direct = managed.getAlbums();
 
         // Pick up albums linked only through songs (existing fallback)
-        Set<Album> viaSongs = songRepository.findByIdWithDetails(artist.getArtistId())
+        Set<Album> viaSongs = songRepository.findByArtistIdWithAlbum(artist.getArtistId())
                 .stream()
                 .map(Song::getAlbum)
                 .filter(Objects::nonNull)

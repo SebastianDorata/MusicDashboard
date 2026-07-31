@@ -1,5 +1,21 @@
 # Changelog
 
+
+## - 2026-07-29
+
+### Fixed
+- **UI Performance Lag in Album Grid View**: Resolved severe scrolling stutter and UI freezing encountered when viewing large music collections (700+ albums).
+
+
+### Changed
+- **Migrated Grid Architecture**: Replaced the legacy `TilePane` implementation with a responsive `FlowPane` layout to allow more natural element wrapping and modern content alignment.
+- **Implemented Viewport Virtualization via Lazy-Loading**: Instead of instantiating and rendering the entire music catalog simultaneously on the JavaFX Application Thread, the grid now streams items dynamically.
+  - Initializes with a lightweight baseline batch of 40 elements.
+  - Attaches a low-overhead scroll-position listener to track viewport bounds.
+  - Automatically loads subsequent batches of 40 records on-demand as the user approaches the bottom 85% threshold of the scrollable region.
+- **Hardware Acceleration Tuning**: Enabled node bitmap caching (`setCacheHint(CacheHint.SPEED)`) across active album card components, reducing scene-graph layout passes and ensuring buttery-smooth vertical scrolling performance.
+- Changed database from postgres to H2.
+
 ---
 ## 2026-07-04 v1.0.8<br>Import Pipeline Overhaul: Single-Pass Import + Duplicate-Row Fix
 

@@ -26,13 +26,28 @@ import javafx.util.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * Factory for the dashboard stat cards row.
+ * Factory for the dashboard stat cards row, and for library grid cards
+ * (album / song cards used in My Library grid views).
  *
  * <p>The two Consumer parameters are intentionally kept. DashboardController
  * passes them and removing them would break compilation there.</p>
+ *
+ * <p><b><u>Album art performance:</u></b></p>
+ * <ul>
+ *   <li>Images are decoded at a small fixed size ({@link #CARD_WIDTH}) rather
+ *       than at their full embedded resolution. JavaFX's {@link Image}
+ *       constructor downsamples during decode when width/height are supplied,
+ *       which is dramatically cheaper than decoding full-resolution art and
+ *       scaling it down in the UI afterward.</li>
+ *   <li>Decoded {@link Image} objects are cached per album-art file path in
+ *       {@link #artCache}, so re-opening a view or re-sorting the grid never
+ *       re-decodes art that was already loaded once this session.</li>
+ * </ul>
  */
 @Component
 public class CardFactory extends UIComponent {
@@ -49,6 +64,27 @@ public class CardFactory extends UIComponent {
      */
     private ChangeListener<Song> songChangeListener;
     private static final double SCALE = Screen.getPrimary().getVisualBounds().getHeight() / 1080.0;
+
+    /**
+     * Fixed pixel size (both width and height) for library grid card art.
+     * Kept as a single constant so every card in the grid is the same size,
+     * which is what lets {@link javafx.scene.layout.TilePane} lay them out
+     * evenly with consistent gaps.
+     *
+     * <p>When a user-adjustable icon size setting is added, this can become
+     * a mutable field / passed-in parameter instead of a constant — the
+     * cache keys on file path only, so varying requested size per call would
+     * need the cache key to include size too. Not needed until that feature exists.
+     */
+
+    public static final double CARD_WIDTH = 150;
+
+    /**
+     * Session-lifetime cache of decoded album art, keyed by file path.
+     * Prevents re-decoding the same image every time a card is rebuilt
+     * (e.g. re-sorting, re-opening the Albums tab).
+     */
+    private static final Map<String, Image> artCache = new ConcurrentHashMap<>();
 
 
     public HBox createStatCards(Consumer<Album> onAlbumClicked, Consumer<Song>  onSongPlayed) {
@@ -186,15 +222,14 @@ public class CardFactory extends UIComponent {
     // view (Albums tab, Favourites, Artist detail) looks identical.
     // Sizing and hover effects live entirely in library.css under .library-card;
     // call sites must NOT add extra size overrides on top of the returned VBox.
+    // Every card is built to a fixed CARD_WIDTH so TilePane can lay them out
+    // in evenly-spaced, reflowing rows/columns.
 
     public static VBox createAlbumCard(Album album, MusicPlayerService musicPlayerService) {
         VBox card = buildBaseCard();
 
         ImageView art = buildCardArt();
-        if (album.getAlbumArtPath() != null) {
-            try { art.setImage(new Image(AppUtils.toImageUri(album.getAlbumArtPath()), true)); }
-            catch (Exception ignored) {}
-        }
+        art.setImage(loadCachedArt(album.getAlbumArtPath()));
 
         Label title = buildCardTitle(album.getTitle());
 
@@ -215,9 +250,8 @@ public class CardFactory extends UIComponent {
         VBox card = buildBaseCard();
 
         ImageView art = buildCardArt();
-        if (song.getAlbum() != null && song.getAlbum().getAlbumArtPath() != null) {
-            try { art.setImage(new Image(AppUtils.toImageUri(song.getAlbum().getAlbumArtPath()), true)); }
-            catch (Exception ignored) {}
+        if (song.getAlbum() != null) {
+            art.setImage(loadCachedArt(song.getAlbum().getAlbumArtPath()));
         }
 
         Label title = buildCardTitle(song.getTitle());
@@ -238,12 +272,16 @@ public class CardFactory extends UIComponent {
         card.getStyleClass().add("library-card");
         card.setAlignment(Pos.TOP_CENTER);
         card.setCursor(Cursor.HAND);
+        card.setPrefWidth(CARD_WIDTH);
+        card.setMaxWidth(CARD_WIDTH);
         return card;
     }
 
     private static ImageView buildCardArt() {
         ImageView iv = new ImageView();
         iv.getStyleClass().add("library-card-art");
+        iv.setFitWidth(CARD_WIDTH);
+        iv.setFitHeight(CARD_WIDTH);
         iv.setPreserveRatio(true);
         return iv;
     }
@@ -252,6 +290,7 @@ public class CardFactory extends UIComponent {
         Label lbl = new Label(text != null ? text : "—");
         lbl.getStyleClass().add("library-card-title");
         lbl.setWrapText(true);
+        lbl.setMaxWidth(CARD_WIDTH);
         return lbl;
     }
 
@@ -259,7 +298,36 @@ public class CardFactory extends UIComponent {
         Label lbl = new Label(text != null ? text : "—");
         lbl.getStyleClass().add("library-card-subtitle");
         lbl.setWrapText(true);
+        lbl.setMaxWidth(CARD_WIDTH);
         return lbl;
+    }
+
+    /**
+     * Returns the decoded {@link Image} for the given album art path, decoding
+     * and caching it on first request.
+     *
+     * <p>The {@link Image} constructor overload used here
+     * ({@code requestedWidth}/{@code requestedHeight} supplied) downsamples
+     * during decode rather than after, which is the main performance win over
+     * loading full-resolution embedded art and scaling it down in the view.
+     *
+     * <p>Subsequent calls for the same path are served from {@link #artCache}
+     * with no disk I/O or decode cost.
+     *
+     * @param artPath the album art file path, may be {@code null}
+     * @return the decoded, cached {@link Image}, or {@code null} if no path
+     *         was given or loading failed
+     */
+    private static Image loadCachedArt(String artPath) {
+        if (artPath == null || artPath.isBlank()) return null;
+        return artCache.computeIfAbsent(artPath, path -> {
+            try {
+                return new Image(AppUtils.toImageUri(path),
+                        CARD_WIDTH, CARD_WIDTH, true, true, true);
+            } catch (Exception e) {
+                return null;
+            }
+        });
     }
 
     /**

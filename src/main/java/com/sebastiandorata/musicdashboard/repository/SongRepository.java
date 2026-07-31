@@ -43,4 +43,13 @@ public interface SongRepository extends JpaRepository<Song, Long> {
             "LEFT JOIN FETCH s.album " +
             "WHERE s.songID = :id")
     Optional<Song> findByIdWithDetails(@Param("id") Long id);
+
+    // Fetches all songs credited to a given artist, with album eagerly loaded.
+// Used by LibraryService.resolveAlbumsForArtist to find albums that are
+// only linked through the artist's songs (no direct artist-album row).
+    @Query("SELECT DISTINCT s FROM Song s " +
+            "JOIN s.artists a " +
+            "LEFT JOIN FETCH s.album " +
+            "WHERE a.artistId = :artistId")
+    List<Song> findByArtistIdWithAlbum(@Param("artistId") Long artistId);
 }

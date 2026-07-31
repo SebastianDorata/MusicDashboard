@@ -35,3 +35,11 @@ application.properties
 MusicDashboard.app/
 deploy.sh
 .DS_Store
+.env.local
+
+
+build.sh
+buildh2.sh
+
+application-embedded.properties
+application-postgres.properties

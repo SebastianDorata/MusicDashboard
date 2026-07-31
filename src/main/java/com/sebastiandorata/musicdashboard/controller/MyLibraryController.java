@@ -334,9 +334,6 @@ public class MyLibraryController {
             wrapper.getStyleClass().add("main-bkColour");
             VBox.setVgrow(listWithBar, Priority.ALWAYS);
             sceneRoot.setCenter(wrapper);
-        } else {
-            contentArea.getChildren().addAll(header,
-                    songListBuilder.buildGridView(songs, state.currentSort));
         }
     }
 

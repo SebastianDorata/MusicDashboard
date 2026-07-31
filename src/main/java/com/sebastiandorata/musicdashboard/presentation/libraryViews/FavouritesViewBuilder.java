@@ -65,8 +65,6 @@ public class FavouritesViewBuilder {
             view.getChildren().add(buildEmptyState());
         } else if ("list".equals(displayMode)) {
             view.getChildren().add(songListBuilder.buildListView(songs));
-        } else {
-            view.getChildren().add(songListBuilder.buildGridView(songs));
         }
 
         return view;

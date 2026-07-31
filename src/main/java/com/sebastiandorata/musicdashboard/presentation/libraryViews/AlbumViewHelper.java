@@ -29,6 +29,18 @@ import java.util.function.Consumer;
  * songs in the album). The {@code onAlbumEdit} callback is responsible
  * for persisting the changes.</p>
  *
+ * <p><b><u>Grid view sizing:</u></b></p>
+ * <p>{@link #buildGridView} uses a {@link FlowPane} rather than a
+ * virtualized, manually row-chunked layout. {@code FlowPane} measures its
+ * children (all built to a fixed width by {@link CardFactory}) and
+ * automatically fits as many per row as the available width allows,
+ * reflowing continuously as the window is resized — the same behaviour
+ * CSS Grid {@code auto-fill} gives on the web. This keeps column count
+ * fully responsive (5 per row on a wide monitor, 3 on a laptop, recalculated
+ * live while dragging) and keeps the door open for a future adjustable
+ * icon-size setting, since changing card width alone reflows the grid with
+ * no extra logic required.</p>
+ *
  * <p>SRP: Only responsible for building album display nodes.</p>
  */
 public class AlbumViewHelper {
@@ -111,65 +123,76 @@ public class AlbumViewHelper {
         return layout;
     }
 
+
     /**
-     * Builds a virtualized row-based album grid.
-     * Albums are grouped into rows of COLUMNS cards each.
-     * Only visible rows are rendered at any time.
-     * Right-clicking a card opens the album edit dialog.
+     * Builds a fluid, reflowing album card grid using an optimized, lazy-loading FlowPane.
+     *
+     * <p>To prevent scrolling UI lag with large music collections, this method implements
+     * virtualization-like batch loading. It renders a light initial batch of cards, and
+     * continuously streams in subsequent batches on-demand as the user scrolls toward the
+     * bottom of the viewport.</p>
      *
      * @param albums the albums to display
      * @param sort   the sort strategy to apply
-     * @return a ScrollPane containing the virtualized grid
+     * @return a {@link ScrollPane} containing the high-performance reflowing grid
      */
     public ScrollPane buildGridView(List<Album> albums, SortStrategy sort) {
         List<Album> sorted = albums.stream()
                 .sorted(sort.getAlbumComparator())
                 .toList();
 
-        final int COLUMNS = 8;
+        FlowPane grid = new FlowPane();
+        grid.getStyleClass().add("flow-pane");
+        grid.setHgap(20);
+        grid.setVgap(20);
+        grid.setPadding(new Insets(0, 20, 0, 20));
+        grid.setAlignment(javafx.geometry.Pos.CENTER); // Kept Option 1 from earlier for clean spacing
 
-        List<List<Album>> rows = new ArrayList<>();
-        for (int i = 0; i < sorted.size(); i += COLUMNS) {
-            rows.add(sorted.subList(i,
-                    Math.min(i + COLUMNS, sorted.size())));
-        }
+        // Performance Constants
+        final int BATCH_SIZE = 40;
+        final int[] loadedCount = {0}; // Wrapped in array to allow modification inside lambda
 
-        ListView<List<Album>> gridView = new ListView<>();
-        gridView.getStyleClass().add("tile-pane");
-        gridView.setFixedCellSize(276);
-        gridView.getItems().addAll(rows);
+        // Task runner to append the next block of items to the scene graph
+        Runnable loadNextBatch = () -> {
+            int start = loadedCount[0];
+            int end = Math.min(start + BATCH_SIZE, sorted.size());
+            if (start >= end) return;
 
-        gridView.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(List<Album> row, boolean empty) {
-                super.updateItem(row, empty);
-                if (empty || row == null) {
-                    setGraphic(null);
-                    return;
-                }
-                HBox rowBox = new HBox(20);
-                rowBox.setPadding(new Insets(8));
-                rowBox.setMaxWidth(Double.MAX_VALUE);
-                rowBox.setAlignment(Pos.CENTER);
+            for (int i = start; i < end; i++) {
+                Album album = sorted.get(i);
+                VBox card = CardFactory.createAlbumCard(album, musicPlayerService);
 
-                for (Album album : row) {
-                    VBox card = CardFactory.createAlbumCard(album, musicPlayerService);
-                    attachClickHandler(card, album); //right click to edit album
-                    attachEditContextMenu(card, album);
-                    HBox.setHgrow(card, Priority.ALWAYS);
-                    rowBox.getChildren().add(card);
-                }
-                setGraphic(rowBox);
+                // Extra layer of optimization: cache node graphics as bitmaps while scrolling
+                card.setCache(true);
+                card.setCacheHint(javafx.scene.CacheHint.SPEED);
+
+                attachClickHandler(card, album);
+                attachEditContextMenu(card, album);
+                grid.getChildren().add(card);
+            }
+            loadedCount[0] = end;
+        };
+
+        // Render initial visible batch instantly
+        loadNextBatch.run();
+
+        ScrollPane scroll = new ScrollPane(grid);
+        scroll.setFitToWidth(true);
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scroll.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+        grid.setStyle("-fx-background-color: transparent;");
+
+        // Intersection Observer: Check if user is scrolling near the page boundary
+        scroll.vvalueProperty().addListener((obs, oldVal, newVal) -> {
+            // Trigger the next batch when user scrolls past 85% of the current height
+            if (newVal.doubleValue() > 0.85 && loadedCount[0] < sorted.size()) {
+                javafx.application.Platform.runLater(loadNextBatch);
             }
         });
 
-        ScrollPane scroll = new ScrollPane(gridView);
-        scroll.setFitToWidth(true);
-        scroll.setFitToHeight(true);
-        scroll.setStyle("-fx-background-color: transparent; " + "-fx-background: transparent;");
-        gridView.setStyle("-fx-background-color: transparent;");
         return scroll;
     }
+
 
     /**
      * Attaches a right-click context menu to the given node that opens
