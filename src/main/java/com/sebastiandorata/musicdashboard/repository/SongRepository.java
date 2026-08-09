@@ -2,6 +2,7 @@ package com.sebastiandorata.musicdashboard.repository;
 
 import com.sebastiandorata.musicdashboard.entity.Song;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -52,4 +53,9 @@ public interface SongRepository extends JpaRepository<Song, Long> {
             "LEFT JOIN FETCH s.album " +
             "WHERE a.artistId = :artistId")
     List<Song> findByArtistIdWithAlbum(@Param("artistId") Long artistId);
+
+    // DB-side cascade delete
+    @Modifying
+    @Query(value = "DELETE FROM playlist_songs WHERE song_id = :songId", nativeQuery = true)
+    void removeFromAllPlaylists(@Param("songId") Long songId);
 }

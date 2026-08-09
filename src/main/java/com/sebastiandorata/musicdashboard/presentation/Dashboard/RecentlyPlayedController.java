@@ -6,7 +6,7 @@ import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.presentation.UIComponent;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import com.sebastiandorata.musicdashboard.service.PlaybackTrackingService;
-import com.sebastiandorata.musicdashboard.service.SongImportService;
+import com.sebastiandorata.musicdashboard.service.Import.SongImportService;
 import com.sebastiandorata.musicdashboard.service.UserSessionService;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import javafx.scene.control.Label;

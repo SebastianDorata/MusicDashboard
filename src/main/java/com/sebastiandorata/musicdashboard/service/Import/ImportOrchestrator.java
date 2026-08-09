@@ -1,7 +1,8 @@
-package com.sebastiandorata.musicdashboard.service;
+package com.sebastiandorata.musicdashboard.service.Import;
 
 import com.sebastiandorata.musicdashboard.dto.ExtractedSongMetadata;
 import com.sebastiandorata.musicdashboard.dto.MigrationResult;
+import com.sebastiandorata.musicdashboard.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +16,17 @@ import java.util.concurrent.Executors;
  * Single source-of-truth entry point for the import pipeline.
  *
  * <p>Genuinely single-pass now: for each audio file, {@link SongMetadataExtractor}
- * reads it once and {@link SongUpsertService} persists the result (create,
+ * reads it once and {@link SongUpdateService} persists the result (create,
  * update-in-place, or relocate). There is no separate "scan for new files"
  * phase followed by a "reconcile metadata" phase — one file, one read, one
  * write, one result.
  *
  * <p>This class deliberately knows nothing about *how* a song is matched or
- * persisted — that all lives in {@link SongUpsertService}. If a future
+ * persisted — that all lives in {@link SongUpdateService}. If a future
  * change needs a new matching rule or an extra synced field, this class
  * should not need to change at all (OCP).
  *
- * <p>Imports are serialised on a single-threaded executor so concurrent
+ * <p>Imports are serialized on a single-threaded executor so concurrent
  * invocations are queued, never interleaved — this also means two imports
  * can never race each other into creating duplicate rows for the same file.
  */
@@ -33,8 +34,8 @@ import java.util.concurrent.Executors;
 public class ImportOrchestrator {
 
     @Autowired private SongMetadataExtractor extractor;
-    @Autowired private SongUpsertService     upsertService;
-    @Autowired private LibraryService        libraryService;
+    @Autowired private SongUpdateService upsertService;
+    @Autowired private LibraryService libraryService;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor(r -> {
         Thread t = new Thread(r, "import-pipeline");

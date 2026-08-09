@@ -119,7 +119,7 @@ public class YearEndReportService {
                 .findByUserIdOrderByPlayedAtDesc(userId)
                 .stream()
                 .filter(h -> h.getPlayedAt().getYear() == year)
-                .collect(Collectors.toList());
+                .toList();
 
         return yearHistory.stream()
                 .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))
@@ -142,7 +142,7 @@ public class YearEndReportService {
                 .findByUserIdOrderByPlayedAtDesc(userId)
                 .stream()
                 .filter(h -> h.getPlayedAt().getYear() == year)
-                .collect(Collectors.toList());
+                .toList();
 
         return yearHistory.stream()
                 .filter(h -> PlaybackConstants.isValidPlay(h.getDurationPlayedSeconds()))

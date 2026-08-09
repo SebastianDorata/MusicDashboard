@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "year_end_reports", uniqueConstraints = {//Prevent duplicates from ever being created again
-        @UniqueConstraint(columnNames = {"user_id", "year"})
+@Table(name = "year_end_reports", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "report_year"})
 })
 public class YearEndReport {
 
@@ -37,7 +37,7 @@ public class YearEndReport {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "year", nullable = false)
+    @Column(name = "report_year", nullable = false)   // renamed
     private Integer year;
 
     @Column(name = "total_listening_time_minutes")

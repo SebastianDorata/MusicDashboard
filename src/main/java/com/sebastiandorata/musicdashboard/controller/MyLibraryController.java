@@ -11,6 +11,7 @@ import com.sebastiandorata.musicdashboard.repository.ArtistRepository;
 import com.sebastiandorata.musicdashboard.repository.GenreRepository;
 import com.sebastiandorata.musicdashboard.repository.SongRepository;
 import com.sebastiandorata.musicdashboard.service.*;
+import com.sebastiandorata.musicdashboard.service.Import.SongImportService;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import com.sebastiandorata.musicdashboard.utils.SortStrategy;
 import jakarta.annotation.PostConstruct;
@@ -27,6 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * Top-level controller for the My Library page.
@@ -48,42 +50,37 @@ import java.util.Objects;
 public class MyLibraryController {
 
 
-    @Lazy @Autowired private MusicPlayerService   musicPlayerService;
-    @Lazy @Autowired private SongImportService    songImportService;
-    @Autowired private PlaylistService            playlistService;
-    @Autowired private FavouriteService           favouriteService;
-    @Autowired private LibraryService             libraryService;
-    @Autowired private GenreFilterService         genreFilterService;
-    @Autowired private SongRepository             songRepository;
-    @Autowired private AlbumRepository            albumRepository;
-    @Autowired private ArtistRepository           artistRepository;
-    @Autowired private GenreRepository            genreRepository;
-    @Autowired private ArtistDiscographyNavigation artistNavigation;
+    @Lazy @Autowired  private MusicPlayerService musicPlayerService;
+    @Lazy @Autowired  private SongImportService songImportService;
+          @Autowired  private PlaylistService playlistService;
+          @Autowired  private FavouriteService favouriteService;
+          @Autowired  private LibraryService libraryService;
+          @Autowired  private GenreFilterService genreFilterService;
+          @Autowired  private SongRepository songRepository;
+          @Autowired  private AlbumRepository albumRepository;
+          @Autowired  private ArtistRepository artistRepository;
+          @Autowired  private GenreRepository genreRepository;
+          @Autowired  private ArtistDiscographyNavigation artistNavigation;
 
-    private final LibraryState state = new LibraryState();
+                      private final LibraryState                                state = new LibraryState();
+                      private       Map<String, Button>                         tabButtons = Map.of();
+                      private       ToggleButton                                listToggle;
+                      private       ToggleButton                                gridToggle;
+                      private       HBox                                        filterControlsBox;
+                      private       ComboBox<SortStrategy>                      sortComboBox;
+                      private       ComboBox<LibraryTopBarBuilder.GenreOption>  genreComboBox;
+                      private       VBox                                        contentArea;
+                      private       BorderPane                                  sceneRoot;
+                      private       ScrollPane                                  outerScrollPane;
+                      private       SongHandler                                 menuHandler;
+                      private       SongViewBuilder                             songListBuilder;
+                      private       AlbumViewBuilder                            albumDetailBuilder;
+                      private       AlbumViewHelper                             albumViewHelper;
+                      private       ArtistViewBuilder                           artistViewBuilder;
+                      private       FavouritesViewBuilder                       favouritesBuilder;
 
-    private final Map<String, Button> tabButtons = new LinkedHashMap<>();
-    private ToggleButton listToggle;
-    private ToggleButton gridToggle;
-    private HBox filterControlsBox;
-    private ComboBox<SortStrategy> sortComboBox;
-    private ComboBox<LibraryTopBarBuilder.GenreOption>  genreComboBox;
-    private VBox contentArea;
-    private BorderPane sceneRoot;
-    private ScrollPane outerScrollPane;
 
-    private SongHandler menuHandler;
-    private SongViewBuilder songListBuilder;
-    private AlbumViewBuilder albumDetailBuilder;
-    private AlbumViewHelper albumViewHelper;
-    private ArtistViewBuilder artistViewBuilder;
-    private FavouritesViewBuilder favouritesBuilder;
-
-    @PostConstruct
-    public void register() {
-        MainController.registerLibrary(this);
-    }
-
+    //private static final Logger LOGGER = Logger.getLogger(MyLibraryController.class.getName());
 
     public void show() {
         state.resetToDefault();
@@ -105,7 +102,6 @@ public class MyLibraryController {
         applyScene();
     }
 
-
     private void applyScene() {
         Scene scene = createScene();
         try {
@@ -122,16 +118,21 @@ public class MyLibraryController {
         SongEditDialog editDialog = new SongEditDialog(songRepository, albumRepository, artistRepository, genreRepository);
 
         LibraryHandler ctx = new LibraryHandler(musicPlayerService, playlistService, favouriteService,
-                (song, node) -> menuHandler.show(song, node), editDialog);
+                (song, node) -> menuHandler.show(song, node), editDialog,
+                song -> {
+                    libraryService.deleteSong(song.getSongID());
+                    // If we're viewing the song's album detail, refresh it so the
+                    // deleted row disappears instead of showing a stale list.
+                    if (state.currentAlbum != null) {
+                        state.currentAlbum = libraryService.getAlbumWithFullDetails(state.currentAlbum.getAlbumId());
+                    }
+                    loadContent();
+                });
 
-        menuHandler        = new SongHandler(ctx);
-        songListBuilder    = new SongViewBuilder(ctx, editDialog);
-
-        // Artist drill-in uses the centralized navigation service
+        menuHandler = new SongHandler(ctx);
+        songListBuilder = new SongViewBuilder(ctx, editDialog);
         albumDetailBuilder = new AlbumViewBuilder(ctx, this::backFromAlbum, artist -> artistNavigation.navigateToArtist(artist));
-
-
-        albumViewHelper    = new AlbumViewHelper(musicPlayerService, this::drillIntoAlbum, (album, result) -> {
+        albumViewHelper = new AlbumViewHelper(musicPlayerService, this::drillIntoAlbum, (album, result) -> {
             album.setTitle(result.title());
             album.setReleaseYear(result.releaseYear());
             albumRepository.save(album);
@@ -139,7 +140,11 @@ public class MyLibraryController {
             // Apply genre to all songs if provided
             if (result.genre() != null) {
                 Genre genre = genreRepository.findByName(result.genre())
-                        .orElseGet(() -> { Genre g = new Genre(); g.setName(result.genre()); return genreRepository.save(g); });
+                        .orElseGet(() -> {
+                            Genre g = new Genre();
+                            g.setName(result.genre());
+                            return genreRepository.save(g);
+                        });
                 for (Song song : album.getSongs()) {
                     song.getGenres().clear();
                     song.getGenres().add(genre);
@@ -148,11 +153,15 @@ public class MyLibraryController {
             }
 
             libraryService.invalidateCache();
-            loadContent(); // refresh the view
-        });
+            loadContent();
+        },
+                album -> {
+                    libraryService.deleteAlbum(album.getAlbumId());
+                    loadContent();
+                });
 
-        artistViewBuilder  = new ArtistViewBuilder(ctx, this::drillIntoAlbum, libraryService);
-        favouritesBuilder  = new FavouritesViewBuilder(ctx);
+        artistViewBuilder = new ArtistViewBuilder(ctx, this::drillIntoAlbum, libraryService);
+        favouritesBuilder = new FavouritesViewBuilder(ctx);
     }
 
     private Scene createScene() {
@@ -177,43 +186,42 @@ public class MyLibraryController {
         return new Scene(sceneRoot, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
-
     private VBox buildTopBar() {
-        LibraryTopBarBuilder.Result result = LibraryTopBarBuilder.build(
-                tabButtons,
-                genreRepository,
-                state.currentView,
-                state.currentDisplayMode,
-                this::switchView,
-                this::switchDisplayMode,
-                genre -> {
-                    state.currentGenreFilter = genre;
-                    loadContent();
-                },
-                sort -> {
-                    state.currentSort = sort;
-                    loadContent();
-                }
-        );
+        LibraryTopBarBuilder.Config config = LibraryTopBarBuilder.Config.builder()
+               .availableGenres(genreRepository.findAll())
+                                .currentView(state.currentView)
+                                .currentDisplayMode(state.currentDisplayMode)
+                               .onTabSwitch(this::switchView)
+                                .onDisplayMode(this::switchDisplayMode)
+                                .onGenreFilter(genre -> {
+                                state.currentGenreFilter = genre;
+                                loadContent();
+                           })
+                                .onSortChange(sort -> {
+                                state.currentSort = sort;
+                               loadContent();
+                            })
+                                .build();
 
-        listToggle        = result.listToggle();
-        gridToggle        = result.gridToggle();
+                        LibraryTopBarBuilder.Result result = LibraryTopBarBuilder.build(config);
+               tabButtons = result.tabButtons();
+
+        listToggle = result.listToggle();
+        gridToggle = result.gridToggle();
         filterControlsBox = result.filterControlsBox();
-        sortComboBox      = result.sortComboBox();
-        genreComboBox     = result.genreComboBox();
+        sortComboBox = result.sortComboBox();
+        genreComboBox = result.genreComboBox();
         return result.topBar();
     }
 
-
     private void switchView(String view) {
-        state.currentView        = view;
-        state.currentAlbum       = null;
-        state.currentArtist      = null;
-        state.currentSort        = SortStrategy.ALPHABETICAL;
+        state.currentView = view;
+        state.currentAlbum = null;
+        state.currentArtist = null;
+        state.currentSort = SortStrategy.ALPHABETICAL;
         state.currentGenreFilter = null;
-
         // Reset dropdowns without triggering their onChange callbacks
-        if (sortComboBox  != null) sortComboBox.setValue(SortStrategy.ALPHABETICAL);
+        if (sortComboBox != null) sortComboBox.setValue(SortStrategy.ALPHABETICAL);
         if (genreComboBox != null && !genreComboBox.getItems().isEmpty())
             genreComboBox.setValue(genreComboBox.getItems().getFirst());
 
@@ -232,7 +240,7 @@ public class MyLibraryController {
                 state.currentDisplayMode = "list";
                 listToggle.setSelected(true);
                 gridToggle.setVisible(true);
-                filterControlsBox.setVisible(false);
+                filterControlsBox.setVisible(true);
             }
             case "albums" -> {
                 state.currentDisplayMode = "grid";
@@ -266,17 +274,17 @@ public class MyLibraryController {
     }
 
     private void backFromAlbum() {
-        state.currentAlbum       = null;
-        state.currentView        = "albums";
+        state.currentAlbum = null;
+        state.currentView = "albums";
         state.currentDisplayMode = "grid";
         gridToggle.setSelected(true);
         loadContent();
     }
 
     private void drillIntoArtist(Artist artist) {
-        state.currentArtist      = artist;
-        state.currentAlbum       = null;
-        state.currentView        = "artists";
+        state.currentArtist = artist;
+        state.currentAlbum = null;
+        state.currentView = "artists";
         state.currentDisplayMode = "grid";
         gridToggle.setVisible(true);
         gridToggle.setSelected(true);
@@ -285,12 +293,11 @@ public class MyLibraryController {
     }
 
     private void backFromArtist() {
-        state.currentArtist      = null;
+        state.currentArtist = null;
         state.currentDisplayMode = "list";
         listToggle.setSelected(true);
         loadContent();
     }
-
 
     private void loadContent() {
         contentArea.getChildren().clear();
@@ -310,18 +317,18 @@ public class MyLibraryController {
             return;
         }
         switch (state.currentView) {
-            case "songs"      -> loadSongsView();
-            case "albums"     -> loadAlbumsView();
-            case "artists"    -> loadArtistsView();
+            case "songs" -> loadSongsView();
+            case "albums" -> loadAlbumsView();
+            case "artists" -> loadArtistsView();
             case "favourites" -> loadFavouritesView();
         }
+
     }
 
     private void loadSongsView() {
         List<Song> songs = genreFilterService.filterSongsByGenre(
                 songImportService.getAllSongs(),
                 state.currentGenreFilter);
-
         Label header = new Label("All Songs (" + songs.size() + ")");
         header.getStyleClass().add("view-header");
         header.setPadding(new Insets(20, 20, 4, 20));
@@ -385,8 +392,22 @@ public class MyLibraryController {
     }
 
     private void loadFavouritesView() {
+        List<Song> favourites;
+        try {
+            favourites = favouriteService.getUserFavouritesSortedByDate();
+        } catch (Exception e) {
+            favourites = List.of();
+        }
+
+        List<Song> filtered = genreFilterService.filterSongsByGenre(
+                favourites, state.currentGenreFilter);
+
+        List<Song> sorted = filtered.stream()
+                .sorted(state.currentSort.getSongComparator())
+                .toList();
+
         contentArea.getChildren().add(
-                favouritesBuilder.build(state.currentDisplayMode));
+                favouritesBuilder.build(state.currentDisplayMode, sorted));
         gridToggle.setVisible(true);
     }
 
@@ -400,4 +421,11 @@ public class MyLibraryController {
                 "grid".equals(state.currentDisplayMode)
                         ? "nav-btn-active" : "nav-btn");
     }
+
+   /*private void myButtonClickMethod() {
+        String className = this.getClass().getSimpleName();
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+
+        System.out.println("Class: " + className + " | Method: " + methodName);
+    }*/
 }

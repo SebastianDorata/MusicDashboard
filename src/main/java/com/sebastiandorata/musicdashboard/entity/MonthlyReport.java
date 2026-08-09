@@ -1,6 +1,6 @@
 package com.sebastiandorata.musicdashboard.entity;
 
-import com.sebastiandorata.musicdashboard.service.MonthlyReportService;
+import com.sebastiandorata.musicdashboard.service.handlers.MonthlyReportService;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "monthly_reports", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "year", "month"})
+        @UniqueConstraint(columnNames = {"user_id", "report_year", "report_month"})  // ← renamed here too
 })
 public class MonthlyReport {
 
@@ -37,10 +37,10 @@ public class MonthlyReport {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "report_year", nullable = false)   // renamed
     private Integer year;
 
-    @Column(nullable = false)
+    @Column(name = "report_month", nullable = false)   // renamed
     private Integer month;
 
     @Column(nullable = false)

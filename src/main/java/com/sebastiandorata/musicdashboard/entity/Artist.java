@@ -32,6 +32,10 @@ public class Artist {
     @Column(name = "name", nullable = false, unique = true, length = 255)
     private String name;
 
+    /** MusicBrainz artist ID, when known. Nullable — most tags/scrobbles won't have it. */
+    @Column(name = "mbid", length = 36, unique = true)
+    private String mbid;
+
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
 

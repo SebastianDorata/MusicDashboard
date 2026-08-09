@@ -6,9 +6,12 @@ import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.repository.AlbumRepository;
 import com.sebastiandorata.musicdashboard.repository.ArtistRepository;
 import com.sebastiandorata.musicdashboard.repository.SongRepository;
+import com.sebastiandorata.musicdashboard.service.Import.SongImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.sebastiandorata.musicdashboard.repository.FavouriteRepository;
+import com.sebastiandorata.musicdashboard.repository.PlaybackHistoryRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,6 +30,8 @@ public class LibraryService {
     @Autowired private ArtistRepository artistRepository;
     @Autowired private SongRepository songRepository;
     @Autowired private SongImportService songService;
+    @Autowired private FavouriteRepository favouriteRepository;
+    @Autowired private PlaybackHistoryRepository playbackHistoryRepository;
 
     // In-memory cache. Songs only change on import
     private List<Song>   songCache   = null;
@@ -69,7 +74,7 @@ public class LibraryService {
         // Re-attach via ID. Never trust the detached entity's lazy collections
         Artist managed = artistRepository.findByIdWithAlbums(artist.getArtistId())
                 .orElse(artist);
-
+    // Do not modify again, otherwise one random album per artist.
         Set<Album> direct = managed.getAlbums();
 
         // Pick up albums linked only through songs (existing fallback)
@@ -90,5 +95,42 @@ public class LibraryService {
         return albumRepository.findByIdWithSongsAndArtists(albumId)
                 .orElseThrow(() -> new IllegalStateException(
                         "Album not found: " + albumId));
+    }
+
+
+    /**
+     * Permanently deletes a song and everything that references it: playback
+     * history, favourites, playlist entries. Song's own artist/genre join rows
+     * are cleaned up automatically by Hibernate since Song owns those tables.
+     */
+    @Transactional
+    public void deleteSong(Long songId) {
+        playbackHistoryRepository.deleteBySongId(songId);
+        favouriteRepository.deleteBySongId(songId);
+        songRepository.removeFromAllPlaylists(songId);
+        songRepository.deleteById(songId);
+        invalidateCache();
+    }
+
+    /**
+     * Permanently deletes an album and every song it contains, cascading each
+     * song through {@link #deleteSong(Long)} first so their playback history,
+     * favourites, and playlist entries are cleaned up too.
+     */
+    @Transactional
+    public void deleteAlbum(Long albumId) {
+        Album album = albumRepository.findByIdWithSongsAndArtists(albumId)
+                .orElseThrow(() -> new IllegalStateException("Album not found: " + albumId));
+
+        List<Long> songIds = album.getSongs().stream()
+                .map(Song::getSongID)
+                .collect(Collectors.toList());
+
+        for (Long songId : songIds) {
+            deleteSong(songId);
+        }
+
+        albumRepository.deleteById(albumId);
+        invalidateCache();
     }
 }

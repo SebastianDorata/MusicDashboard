@@ -1,6 +1,6 @@
 package com.sebastiandorata.musicdashboard.controller;
 
-import com.sebastiandorata.musicdashboard.presentation.shared.SidebarBuilder;
+import com.sebastiandorata.musicdashboard.presentation.shared.AppSidebar;
 import com.sebastiandorata.musicdashboard.presentation.playlist.PlaylistViewBuilder;
 import com.sebastiandorata.musicdashboard.entity.Playlist;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.sebastiandorata.musicdashboard.utils.AppUtils.APP_WIDTH;
 
@@ -32,24 +33,17 @@ import static com.sebastiandorata.musicdashboard.utils.AppUtils.APP_WIDTH;
 @Component
 public class PlaylistController {
 
-    @Autowired private PlaylistService    playlistService;
-    @Lazy @Autowired private MusicPlayerService musicPlayerService;
-
+    @Autowired          private PlaylistService    playlistService;
+    @Lazy @Autowired    private MusicPlayerService musicPlayerService;
 
     private Playlist selectedPlaylist = null;
     private String displayMode = "grid";
-
-
-    private VBox sidebarRoot;
     private HBox headerBar;
     private VBox contentArea;
-    private ScrollPane contentScroll;
-
     private PlaylistViewBuilder viewBuilder;
 
     @PostConstruct
     public void register() {
-        MainController.registerPlaylist(this);
         viewBuilder = new PlaylistViewBuilder(playlistService, musicPlayerService, this);
     }
 
@@ -59,46 +53,22 @@ public class PlaylistController {
         displayMode      = "grid";
 
         try {
-            scene.getStylesheets().add(getClass().getResource("/css/globalStyle.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/buttons.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/playlist.css").toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/globalStyle.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/buttons.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/playlist.css")).toExternalForm());
         } catch (Exception e) {
             System.out.println("CSS not found: " + e.getMessage());
         }
-
         MainController.switchViews(scene);
     }
 
     private Scene createScene() {
         BorderPane root = new BorderPane();
         root.getStyleClass().add("dark-page-bg");
-
-        sidebarRoot = buildSidebar();
-        root.setLeft(sidebarRoot);
+        VBox left = AppSidebar.build("playlist");
+        root.setLeft(left);
         root.setCenter(buildCenter());
-
         return new Scene(root, APP_WIDTH, AppUtils.APP_HEIGHT);
-    }
-
-    /**
-     * Sidebar holds only the "+ New Playlist" button via SidebarBuilder.
-     * Playlist rows are displayed in the center content area instead.
-     */
-    private VBox buildSidebar() {
-        VBox newPlaylistSection = viewBuilder.buildSidebarNewButton();
-
-        return SidebarBuilder.build(
-                List.of("panels", "playlist-sidebar"),
-                "My Playlists",
-                true,
-                List.of(),
-                null,
-                false,
-                newPlaylistSection,
-                "Return home",
-                "← Dashboard",
-                () -> MainController.navigateTo("dashboard")
-        );
     }
 
     /**
@@ -109,7 +79,7 @@ public class PlaylistController {
         headerBar    = buildHeaderBar();
         contentArea  = buildContentArea();
 
-        contentScroll = new ScrollPane(contentArea);
+        ScrollPane contentScroll = new ScrollPane(contentArea);
         contentScroll.setFitToWidth(true);
         contentScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         contentScroll.getStyleClass().add("scroll-pane");
@@ -141,9 +111,6 @@ public class PlaylistController {
             bar.getChildren().addAll(title, spacer, buildToggleBtn("☰  List", "list"),
                     buildToggleBtn("⊞  Grid", "grid"));
         } else {
-            Button backBtn = new Button("← Back");
-            backBtn.getStyleClass().add("nav-btn-back");
-            backBtn.setOnAction(e -> clearSelection());
 
             Label title = new Label(selectedPlaylist.getName());
             title.getStyleClass().add("txt-white-md-bld");
@@ -151,7 +118,7 @@ public class PlaylistController {
             Region spacer = new Region();
             HBox.setHgrow(spacer, Priority.ALWAYS);
 
-            bar.getChildren().addAll(backBtn, title, spacer,
+            bar.getChildren().addAll(title, spacer,
                     buildToggleBtn("☰  List", "list"),
                     buildToggleBtn("⊞  Grid", "grid"));
         }
@@ -173,8 +140,6 @@ public class PlaylistController {
         btn.setOnAction(e -> setDisplayMode(mode));
         return btn;
     }
-
-
 
     /**
      * No-selection state shows playlist browser (grid or list of all playlists).

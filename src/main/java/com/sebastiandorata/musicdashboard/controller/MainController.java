@@ -1,62 +1,63 @@
 package com.sebastiandorata.musicdashboard.controller;
 
 import com.sebastiandorata.musicdashboard.controller.Authentication.AuthenticationController;
+import jakarta.annotation.PostConstruct;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
 /**
- * Static navigation hub for the application.
+ * Navigation hub for the application.
  *
- * <p>Holds singleton references to every top-level page controller and the
- * primary {@link Stage}. {@link #navigateTo(String)} routes a
- * view key to the corresponding controller's {@code show()} method.
- * {@link #switchViews(Scene)} replaces the stage's active
- * scene.</p>
+ * <p>Spring manages exactly one instance of this bean. Each top-level page
+ * controller is injected directly — previously every controller called a
+ * {@code registerX()} method here from its own {@code @PostConstruct},
+ * hand-rolling a service locator that Spring's container already provides.
+ *
+ * <p>{@link #navigateTo(String)} and {@link #switchViews(Scene)} stay
+ * accessible as static calls, since the rest of the codebase (view
+ * builders, dialog handlers) invokes them as {@code MainController.navigateTo(...)}
+ * from many places that aren't themselves Spring-managed. A self-reference
+ * captured once at startup backs the static methods.
  */
+@Component
 public class MainController {
+
     @Setter
     @Getter
     private static Stage mainStage;
 
-    private static AnalyticsController analyticsController;
-    private static AuthenticationController authenticationController;
-    private static DashboardController dashboardController;
-    private static MainImportController mainImportController;
-    private static MyLibraryController myLibraryController;
-    private static PlaylistController playlistController;
+    private static MainController instance;
 
-    public static void registerAuth(AuthenticationController controller) {
-        authenticationController = controller;
-    }
-    public static void registerDashboard(DashboardController controller) {
-        dashboardController = controller;
-    }
-    public static void registerImport(MainImportController controller) {
-        mainImportController = controller;
-    }
-    public static void registerLibrary(MyLibraryController controller) {
-        myLibraryController = controller;
-    }
-    public static void registerPlaylist(PlaylistController controller) {
-        playlistController = controller;
-    }
-    public static void registerAnalytics(AnalyticsController controller) {
-        analyticsController = controller;
+    @Lazy @Autowired private AnalyticsController analyticsController;
+    @Lazy @Autowired private AuthenticationController authenticationController;
+    @Lazy @Autowired private DashboardController dashboardController;
+    @Lazy @Autowired private ImportController importController;
+    @Lazy @Autowired private MyLibraryController myLibraryController;
+    @Lazy @Autowired private PlaylistController playlistController;
+    @Lazy @Autowired private SettingsController settingsController;
+
+    @PostConstruct
+    public void init() {
+        instance = this;
     }
 
     public static void navigateTo(String view) {
         switch (view) {
-            case "dashboard"  -> dashboardController.show();
-            case "library"    -> myLibraryController.show();
-            case "auth"       -> authenticationController.show();
-            case "import"    -> mainImportController.show();
-            case "analytics"    -> analyticsController.show();
-            case "playlist"    -> playlistController.show();
+            case "dashboard"  -> instance.dashboardController.show();
+            case "library"    -> instance.myLibraryController.show();
+            case "auth"       -> instance.authenticationController.show();
+            case "import"     -> instance.importController.show();
+            case "analytics"  -> instance.analyticsController.show();
+            case "playlist"   -> instance.playlistController.show();
+            case "settings"   -> instance.settingsController.show();
             default           -> System.err.println("Unknown view: " + view);
         }
     }
-
 
     public static void switchViews(Scene newScene) {
         javafx.scene.Parent newRoot = newScene.getRoot();

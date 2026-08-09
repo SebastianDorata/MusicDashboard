@@ -69,6 +69,14 @@ public class Song {
     @Column(name = "file_path", nullable = false, length = 500, unique = true)
     private String filePath;
 
+    /** MusicBrainz recording ID. Not unique — Last.fm track mbids are frequently blank *  or shared across re-releases, unlike artist/album mbids. */
+    @Column(name = "mbid", length = 36)
+    private String mbid;
+
+    /** True for songs that exist only as metadata (e.g. an unmatched Last.fm scrobble). */
+    @Column(name = "is_placeholder", nullable = false)
+    private Boolean isPlaceholder = false;
+
     @Column(name = "file_format", length = 10)
     private String fileFormat;
 

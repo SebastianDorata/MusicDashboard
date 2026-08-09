@@ -3,6 +3,7 @@ package com.sebastiandorata.musicdashboard.repository;
 import com.sebastiandorata.musicdashboard.entity.PlaybackHistory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -67,4 +68,8 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
     List<PlaybackHistory> findByUserIdAndYear(
             @Param("userId") Long userId,
             @Param("year") int year);
+    // DB-side cascade delete
+    @Modifying
+    @Query("DELETE FROM PlaybackHistory p WHERE p.song.songID = :songId")
+    void deleteBySongId(@Param("songId") Long songId);
 }

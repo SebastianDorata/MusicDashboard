@@ -2,6 +2,7 @@ package com.sebastiandorata.musicdashboard.presentation.shared;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -12,85 +13,114 @@ import javafx.scene.layout.VBox;
 import java.util.List;
 
 /**
- * Builds the shared sidebar structure used by DashboardController
- * and AnalyticsController.
+ * Generic, reusable sidebar builder.
  *
- * <p><b><u>Both sidebars share:</u></b></p>
- * <ul>
- *   <li>App title (via AppUtils.SideBarTitle()).</li>
- *   <li>Nav section with label and nav buttons.</li>
- *   <li>Optional extra content slot (e.g. year selector in Analytics).</li>
- *   <li>Spacer and optional back button pinned to the bottom.</li>
- * </ul>
+ * <p>Knows nothing about the application's specific pages — only how to lay
+ * out a title, one or two groups of nav buttons, an optional extra-content
+ * slot, and an optional back-navigation section.
  *
- * <p>SRP: Only responsible for sidebar layout assembly.</p>
- * <p>OCP: Callers supply their own NavEntry lists and optional extras,
- * no modification needed to add new pages.</p>
- *
- * <p>Time Complexity: O(n) where n = number of nav entries.</p>
- * <p>Space Complexity: O(n).</p>
+ * <p>Any controller that needs its own sidebar (the standard app nav, or a
+ * page-specific one like Analytics' "My Reports" panel) builds a
+ * {@link SidebarConfig} and calls {@link #build(SidebarConfig)}. For the
+ * app's standard Dashboard/Library/Playlist/... tabs, use {@link AppSidebar}
+ * instead of redefining that entry list at another call site.
  */
 public class SidebarBuilder {
 
-    /**
-     * A single navigation entry in the sidebar.
-     *
-     * @param icon      emoji or symbol shown before the label
-     * @param label     display text
-     * @param activeKey the route key used to determine if this item is active
-     * @param action    what happens when the button is clicked
-     */
+    private SidebarBuilder() {}
+
+    /** A single navigation entry in the sidebar. */
     public record NavEntry(String icon, String label, String activeKey, Runnable action) {}
 
-    /**
-     * Builds a complete sidebar VBox.
-     *
-     * @param styleClasses CSS classes to apply to the sidebar root (e.g. "panels", "sidebar")
-     * @param sectionTitle label shown above the nav entries (e.g. "Reports", null to omit)
-     * @param entries list of nav entries
-     * @param activeKey the currently active route key, matching entry gets nav-btn-active
-     * @param backLabel label shown above the back button section (e.g. "Return home"). Pass null to omit the back section entirely.
-     * @param extraContent optional VBox inserted below the nav entries (e.g. year selector). Pass null to omit.
-     * @param backAction what happens when the back button is clicked. Pass null if no back button.
-     * @return the fully assembled sidebar VBox
-     */
-    public static VBox build(
-                             List<String>    styleClasses,
-                             String          sectionTitle,
-                             boolean         separatorBefore,
-                             List<NavEntry>  entries,
-                             String          activeKey,
-                             boolean         separatorAfter,
-                             VBox            extraContent,
-                             String          backLabel,
-                             String          backButtonText,
-                             Runnable        backAction) {
+    /** Optional bottom-of-sidebar back-navigation section. */
+    public record BackSection(String sectionLabel, String buttonText, Runnable action) {}
 
+    /** Immutable sidebar configuration. Construct via {@link #builder()}. */
+    public static final class SidebarConfig {
+        final List<String> styleClasses;
+        final String activeKey;
+        final List<NavEntry> primaryEntries;
+        final List<NavEntry> secondaryEntries;
+        final boolean separatorAfterPrimary;
+        final Node extraContent;
+        final BackSection backSection;
+
+        private SidebarConfig(Builder b) {
+            this.styleClasses = b.styleClasses;
+            this.activeKey = b.activeKey;
+            this.primaryEntries = b.primaryEntries;
+            this.secondaryEntries = b.secondaryEntries;
+            this.separatorAfterPrimary = b.separatorAfterPrimary;
+            this.extraContent = b.extraContent;
+            this.backSection = b.backSection;
+        }
+
+        public static Builder builder() { return new Builder(); }
+
+        public static final class Builder {
+            private List<String> styleClasses = List.of("panels", "sidebar");
+            private String activeKey;
+            private List<NavEntry> primaryEntries = List.of();
+            private List<NavEntry> secondaryEntries;
+            private boolean separatorAfterPrimary = true;
+            private Node extraContent;
+            private BackSection backSection;
+
+            public Builder styleClasses(List<String> v)          { this.styleClasses = v; return this; }
+            public Builder activeKey(String v)                   { this.activeKey = v; return this; }
+            public Builder primaryEntries(List<NavEntry> v)       { this.primaryEntries = v; return this; }
+            public Builder secondaryEntries(List<NavEntry> v)     { this.secondaryEntries = v; return this; }
+            public Builder separatorAfterPrimary(boolean v)       { this.separatorAfterPrimary = v; return this; }
+            public Builder extraContent(Node v)                  { this.extraContent = v; return this; }
+            public Builder backSection(BackSection v)             { this.backSection = v; return this; }
+
+            public SidebarConfig build() { return new SidebarConfig(this); }
+        }
+    }
+
+    public static VBox build(SidebarConfig config) {
         VBox sidebar = new VBox(8);
         sidebar.setPadding(new Insets(20, 12, 5, 12));
-        sidebar.getStyleClass().addAll(styleClasses);
+        sidebar.getStyleClass().addAll(config.styleClasses);
         sidebar.setMinWidth(220);
         sidebar.setPrefWidth(250);
         sidebar.setMaxWidth(300);
         sidebar.setMaxHeight(Double.MAX_VALUE);
         VBox.setVgrow(sidebar, Priority.ALWAYS);
 
+        sidebar.getChildren().add(sidebarTitle());
+        sidebar.getChildren().add(separator());
 
-        sidebar.getChildren().add(SideBarTitle());
+        addEntries(sidebar, config.primaryEntries, config.activeKey);
 
-        if (sectionTitle != null) {
-            Label sectionLabel = new Label(sectionTitle);
-            sectionLabel.getStyleClass().add("sidebar-section-label");
-            sidebar.getChildren().add(sectionLabel);
-        }
-        if (separatorBefore) {
-            Separator sep = new Separator();
-            sep.getStyleClass().add("sidebar-sep");
-            sidebar.getChildren().add(sep);
+        if (config.separatorAfterPrimary) {
+            sidebar.getChildren().add(separator());
         }
 
+        if (config.secondaryEntries != null) {
+            addEntries(sidebar, config.secondaryEntries, config.activeKey);
+        }
 
-        //Nav entries
+        if (config.extraContent != null) {
+            sidebar.getChildren().add(config.extraContent);
+        }
+
+        if (config.backSection != null) {
+            Label label = new Label(config.backSection.sectionLabel());
+            label.getStyleClass().add("sidebar-section-label");
+            sidebar.getChildren().add(label);
+
+            Button backBtn = new Button(config.backSection.buttonText());
+            backBtn.getStyleClass().addAll("nav-btn-back", "txt-white-sm-bld");
+            backBtn.setMaxWidth(Double.MAX_VALUE);
+            backBtn.setOnAction(e -> config.backSection.action().run());
+            sidebar.getChildren().add(backBtn);
+        }
+
+        return sidebar;
+    }
+
+    private static void addEntries(VBox sidebar, List<NavEntry> entries, String activeKey) {
         for (NavEntry entry : entries) {
             Button btn = buildNavButton(entry.icon(), entry.label());
             if (entry.activeKey() != null && entry.activeKey().equals(activeKey)) {
@@ -99,37 +129,14 @@ public class SidebarBuilder {
             btn.setOnAction(e -> entry.action().run());
             sidebar.getChildren().add(btn);
         }
-
-        //  Optional extra content
-        if (extraContent != null) {
-            if (separatorAfter) {
-                Separator sep = new Separator();
-                sep.getStyleClass().add("sidebar-sep");
-                sidebar.getChildren().add(sep);
-            }
-            sidebar.getChildren().add(extraContent);
-        }
-
-        //Optional back section
-            if (backLabel != null) {
-                Label label = new Label(backLabel);
-                label.getStyleClass().addAll("sidebar-section-label");
-                sidebar.getChildren().add(label);
-
-            Button backBtn = new Button(backButtonText);
-            backBtn.getStyleClass().addAll("nav-btn-back","txt-white-sm-bld");
-            backBtn.setMaxWidth(Double.MAX_VALUE);
-            backBtn.setOnAction(e -> backAction.run());
-            sidebar.getChildren().add(backBtn);
-        }
-
-        return sidebar;
     }
 
-    /**
-     * Builds a single nav button with icon + label.
-     * Caller adds active/inactive style classes after this returns.
-     */
+    private static Separator separator() {
+        Separator sep = new Separator();
+        sep.getStyleClass().add("sidebar-sep");
+        return sep;
+    }
+
     public static Button buildNavButton(String icon, String text) {
         Button btn = new Button(icon + "   " + text);
         btn.getStyleClass().add("nav-btn");
@@ -137,9 +144,10 @@ public class SidebarBuilder {
         btn.setAlignment(Pos.CENTER_LEFT);
         return btn;
     }
-    public static VBox SideBarTitle() {
+
+    public static VBox sidebarTitle() {
         VBox box = new VBox(10);
-        Label music  = new Label("Music");
+        Label music = new Label("Music");
         music.getStyleClass().add("txt-white-bld-thirty");
 
         Label dash = new Label("Dashboard");
@@ -151,6 +159,4 @@ public class SidebarBuilder {
         box.getChildren().add(nameRow);
         return box;
     }
-
-
 }

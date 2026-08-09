@@ -56,11 +56,6 @@ public class AuthenticationController {
     private final PasswordField signupPasswordField = new PasswordField();
     private final Label         signupFeedbackLabel = new Label();
 
-    @PostConstruct
-    public void register() {
-        MainController.registerAuth(this);
-    }
-
     public void show() {
         Scene scene = createScene();
         try {

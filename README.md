@@ -19,16 +19,16 @@
 | **Model / Entities** | Hibernate JPA Entities      | Maps database tables to Java objects                       |
 | **Database**         | PostgreSQL                  | Relational data storage                                    |
 
-
-| Library                                                  | Version | Purpose                                                 |
-|----------------------------------------------------------|---------|---------------------------------------------------------|
-| Spring Boot                                              | 4.0.3   | Backend framework & dependency injection                |
-| JavaFX                                                   | 25.0.2  | Desktop GUI framework                                   |
-| Hibernate JPA                                            | 7.0.6   | ORM for PostgreSQL                                      |
-| Spring Security                                          | 7.0.4   | Authentication & authorization                          |
-| Lombok                                                   | -       | Reduces boilerplate code                                |
-| [jaudiotagger](https://github.com/RouHim/jaudiotagger)   | 2.0.16  | Reading audio file metadata (artist, album, track info) |
-| PostgreSQL                                               | 18      | Relational database                                     |
+| Library                                                | Version | Purpose                                                 |
+|--------------------------------------------------------|---------|---------------------------------------------------------|
+| Spring Boot                                            | 4.0.3   | Backend framework & dependency injection                |
+| JavaFX                                                 | 25.0.2  | Desktop GUI framework                                   |
+| Hibernate JPA                                          | 7.0.6   | ORM for PostgreSQL                                      |
+| Spring Security                                        | 7.0.4   | Authentication & authorization                          |
+| Lombok                                                 | -       | Reduces boilerplate code                                |
+| [jaudiotagger](https://github.com/RouHim/jaudiotagger) | 2.0.16  | Reading audio file metadata (artist, album, track info) |
+| H2                                                     | 2.3.232 | Embedded  Relational database                           |
+| ~~PostgreSQL~~                                         | ~~18~~  | ~~Relational database~~                                 |
 
 
                          

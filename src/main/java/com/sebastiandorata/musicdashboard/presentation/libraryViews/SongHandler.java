@@ -61,7 +61,31 @@ public class SongHandler {
         menu.show(anchor, Side.BOTTOM, 0, 0);
     }
 
+    /** Confirms, then permanently deletes via {@link LibraryHandler#onDeleteSong()}. */
+    private MenuItem buildDeleteMenuItem(Song song) {
+        MenuItem item = new MenuItem("🗑  Delete Song");
+        item.setOnAction(e -> confirmAndDelete(song));
+        item.setDisable(ctx.onDeleteSong() == null);
+        return item;
+    }
 
+    private void confirmAndDelete(Song song) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Song");
+        confirm.setHeaderText("Delete \"" + song.getTitle() + "\"?");
+        confirm.setContentText("This permanently removes the song, including its playback "
+                + "history, favourites, and any playlists it's in. This cannot be undone.");
+
+        confirm.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.OK) {
+                try {
+                    ctx.onDeleteSong().accept(song);
+                } catch (Exception ex) {
+                    AppUtils.showError("Could not delete song: " + ex.getMessage());
+                }
+            }
+        });
+    }
 
     private MenuItem buildFavouriteMenuItem(Song song) {
         boolean isFav;

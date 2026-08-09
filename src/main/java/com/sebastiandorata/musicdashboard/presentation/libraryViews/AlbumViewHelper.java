@@ -3,14 +3,14 @@ package com.sebastiandorata.musicdashboard.presentation.libraryViews;
 import com.sebastiandorata.musicdashboard.entity.Album;
 import com.sebastiandorata.musicdashboard.presentation.shared.CardFactory;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import com.sebastiandorata.musicdashboard.utils.SortStrategy;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-
+import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -48,6 +48,7 @@ public class AlbumViewHelper {
     private final MusicPlayerService musicPlayerService;
     private final Consumer<Album>    onAlbumSelected;
     private final BiConsumer<Album, AlbumEditDialog.Result> onAlbumEdit;
+    private final Consumer<Album> onAlbumDelete;
 
     /**
      * @param musicPlayerService used by album cards to play the first song
@@ -57,10 +58,12 @@ public class AlbumViewHelper {
      */
     public AlbumViewHelper(MusicPlayerService musicPlayerService,
                            Consumer<Album> onAlbumSelected,
-                           BiConsumer<Album, AlbumEditDialog.Result> onAlbumEdit) {
+                           BiConsumer<Album, AlbumEditDialog.Result> onAlbumEdit,
+                           Consumer<Album> onAlbumDelete) {
         this.musicPlayerService = musicPlayerService;
         this.onAlbumSelected    = onAlbumSelected;
         this.onAlbumEdit        = onAlbumEdit;
+        this.onAlbumDelete      = onAlbumDelete;
     }
 
     /**
@@ -206,14 +209,36 @@ public class AlbumViewHelper {
 
         MenuItem editItem = new MenuItem("✏  Edit Album");
         editItem.setOnAction(e ->
-                AlbumEditDialog.show(album).ifPresent(result -> onAlbumEdit.accept(album, result))
-        );
+                AlbumEditDialog.show(album).ifPresent(result -> onAlbumEdit.accept(album, result)));
 
-        menu.getItems().add(editItem);
+        MenuItem deleteItem = new MenuItem("🗑  Delete Album");
+        deleteItem.setOnAction(e -> confirmAndDeleteAlbum(album));
+
+        menu.getItems().addAll(editItem, deleteItem);
 
         node.setOnContextMenuRequested(e ->
-                menu.show(node, e.getScreenX(), e.getScreenY())
-        );
+                menu.show(node, e.getScreenX(), e.getScreenY()));
+    }
+
+    private void confirmAndDeleteAlbum(Album album) {
+        int songCount = album.getSongs() != null ? album.getSongs().size() : 0;
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Album");
+        confirm.setHeaderText("Delete \"" + album.getTitle() + "\"?");
+        confirm.setContentText("This permanently deletes the album and all " + songCount
+                + " song(s) it contains, including their playback history, favourites, "
+                + "and playlist entries. This cannot be undone.");
+
+        confirm.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.OK && onAlbumDelete != null) {
+                try {
+                    onAlbumDelete.accept(album);
+                } catch (Exception ex) {
+                    AppUtils.showError("Could not delete album: " + ex.getMessage());
+                }
+            }
+        });
     }
 
     private void attachClickHandler(Node node, Album album) {

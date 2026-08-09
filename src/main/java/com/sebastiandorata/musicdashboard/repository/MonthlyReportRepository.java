@@ -1,7 +1,7 @@
 package com.sebastiandorata.musicdashboard.repository;
 
 import com.sebastiandorata.musicdashboard.entity.MonthlyReport;
-import com.sebastiandorata.musicdashboard.service.MonthlyReportService;
+import com.sebastiandorata.musicdashboard.service.handlers.MonthlyReportService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -38,6 +38,10 @@ public class Album {
     @Column(name = "release_year")
     private Integer releaseYear;
 
+        /** MusicBrainz artist ID, when known. Nullable — most tags/scrobbles won't have it. */
+        @Column(name = "mbid", length = 36, unique = true)
+        private String mbid;
+
     @Column(name = "album_art_path", length = 500)
     private String albumArtPath;
 

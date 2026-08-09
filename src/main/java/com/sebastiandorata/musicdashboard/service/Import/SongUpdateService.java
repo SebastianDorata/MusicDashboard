@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.service;
+package com.sebastiandorata.musicdashboard.service.Import;
 
 import com.sebastiandorata.musicdashboard.dto.ExtractedSongMetadata;
 import com.sebastiandorata.musicdashboard.dto.MigrationResult;
@@ -56,7 +56,7 @@ import java.util.function.Consumer;
  * </ol>
  */
 @Service
-public class SongUpsertService {
+public class SongUpdateService {
 
     @Autowired private SongRepository   songRepository;
     @Autowired private AlbumRepository  albumRepository;

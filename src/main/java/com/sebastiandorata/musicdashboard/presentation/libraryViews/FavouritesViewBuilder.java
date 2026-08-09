@@ -21,41 +21,25 @@ import java.util.List;
  * <p>When the favourites list is empty, an empty-state placeholder is shown
  * instead of the song list.</p>
  */
+
 public class FavouritesViewBuilder {
 
     private final LibraryHandler ctx;
     private final SongViewBuilder songListBuilder;
 
-    /**
-     * Constructs a {@code FavouritesViewBuilder}.
-     *
-     * @param ctx the {@link LibraryHandler} providing the {@code FavouriteService}
-     *            and other shared services
-     */
     public FavouritesViewBuilder(LibraryHandler ctx) {
         this.ctx             = ctx;
         this.songListBuilder = new SongViewBuilder(ctx);
     }
 
     /**
-     * Builds and returns the complete Favourites view.
-     *
-     * <p>Fetches the current user's favourites via {@link LibraryHandler#favouriteService()}.
-     * On failure an empty list is used so the UI degrades gracefully.</p>
-     *
-     * @param displayMode {@code "list"} for a list view, or any other value for a grid view
-     * @return a {@link VBox} containing the header label and the song list or empty state
+     * Builds the Favourites view from an already filtered + sorted list.
+     * Called by MyLibraryController once genre filter and sort strategy
+     * have been applied, mirroring loadSongsView() / loadAlbumsView().
      */
-    public VBox build(String displayMode) {
+    public VBox build(String displayMode, List<Song> songs) {
         VBox view = new VBox(12);
         view.setFillWidth(true);
-
-        List<Song> songs;
-        try {
-            songs = ctx.favouriteService().getUserFavouritesSortedByDate();
-        } catch (Exception e) {
-            songs = List.of();
-        }
 
         Label header = new Label("Favourites (" + songs.size() + ")");
         header.getStyleClass().add("song-header");
@@ -68,6 +52,21 @@ public class FavouritesViewBuilder {
         }
 
         return view;
+    }
+
+    /**
+     * Legacy no-arg-filter overload, kept for any other call sites.
+     * Delegates to {@link #build(String, List)} with the default
+     * date-sorted, unfiltered favourites list.
+     */
+    public VBox build(String displayMode) {
+        List<Song> songs;
+        try {
+            songs = ctx.favouriteService().getUserFavouritesSortedByDate();
+        } catch (Exception e) {
+            songs = List.of();
+        }
+        return build(displayMode, songs);
     }
 
     private VBox buildEmptyState() {

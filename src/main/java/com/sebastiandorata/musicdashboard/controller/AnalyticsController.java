@@ -8,6 +8,7 @@ import com.sebastiandorata.musicdashboard.presentation.Analytics.*;
 import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.*;
 import com.sebastiandorata.musicdashboard.presentation.Dashboard.PlaybackPanelController;
 import com.sebastiandorata.musicdashboard.presentation.helpers.PlayerConfig;
+import com.sebastiandorata.musicdashboard.presentation.shared.AppSidebar;
 import com.sebastiandorata.musicdashboard.presentation.shared.SidebarBuilder;
 import com.sebastiandorata.musicdashboard.service.MusicPlayerService;
 import com.sebastiandorata.musicdashboard.service.handlers.*;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Year;
 import java.util.List;
+import java.util.Objects;
 
 import static com.sebastiandorata.musicdashboard.presentation.Analytics.AnalyticsSectionBuilder.buildSection;
 import static com.sebastiandorata.musicdashboard.presentation.Analytics.AnalyticsSectionBuilder.populateRows;
@@ -49,50 +51,43 @@ import static com.sebastiandorata.musicdashboard.utils.AppUtils.APP_WIDTH;
 @Component
 public class AnalyticsController {
 
+    @Lazy   @Autowired private WeeklyReportViewModel        weeklyReportViewModel;
+    @Lazy   @Autowired private MonthlyReportViewModel       monthlyReportViewModel;
+    @Lazy   @Autowired private ListeningHistoryViewModel    listeningHistoryViewModel;
+    @Lazy   @Autowired private TopSongsViewModel            topSongsViewModel;
+    @Lazy   @Autowired private TopAlbumsViewModel           topAlbumsViewModel;
+    @Lazy   @Autowired private TopArtistsViewModel          topArtistsViewModel;
+    @Lazy   @Autowired private MusicPlayerService           musicPlayerService;
+    @Lazy   @Autowired private MyLibraryController          myLibraryController;
+    @Lazy   @Autowired private PlaybackPanelController      playbackPanelController;
 
-    @Lazy @Autowired private WeeklyReportViewModel       weeklyReportViewModel;
-    @Lazy @Autowired private MonthlyReportViewModel      monthlyReportViewModel;
-    @Lazy @Autowired private ListeningHistoryViewModel   listeningHistoryViewModel;
-    @Lazy @Autowired private TopSongsViewModel           topSongsViewModel;
-    @Lazy @Autowired private TopAlbumsViewModel          topAlbumsViewModel;
-    @Lazy @Autowired private TopArtistsViewModel         topArtistsViewModel;
+            @Autowired private DataLoadingService           dataLoadingService;
+            @Autowired private GenericModalLoader           genericModalLoader;
+            @Autowired private AnalyticsCacheService        analyticsCacheService;
+            @Autowired private ListeningHistoryService      listeningHistoryService;
+            @Autowired private ListeningPaginationService   paginationService;
+            @Autowired private WeeklyReportCalendarController weeklyCalendarController;
+            @Autowired private YearWrappedViewController    wrappedViewController;
 
-    @Autowired private DataLoadingService         dataLoadingService;
-    @Autowired private GenericModalLoader         genericModalLoader;
-    @Autowired private AnalyticsCacheService      analyticsCacheService;
-    @Autowired private ListeningHistoryService    listeningHistoryService;
-    @Autowired private ListeningPaginationService paginationService;
-    @Lazy @Autowired private MusicPlayerService   musicPlayerService;
-
-    @Lazy @Autowired private MyLibraryController  myLibraryController;
-    @Lazy @Autowired private PlaybackPanelController playbackPanelController;
-    @Autowired private WeeklyReportCalendarController weeklyCalendarController;
-    @Autowired private YearWrappedViewController wrappedViewController;
-
-    private ComboBox<Integer> yearSelector;
-    private VBox centerContent;
-    private StackPane mainPane;
-    private String currentView = "history";
-    private BorderPane content;
+                       private ComboBox<Integer>            yearSelector;
+                       private VBox                         centerContent;
+                       private StackPane                    mainPane;
+                       private String                       currentView = "history";
+                       private BorderPane                   content;
 
 
-    @PostConstruct
-    public void register() {
-        MainController.registerAnalytics(this);
-    }
 
 
     public void show() {
         Scene scene = this.createScene();
-
         try {
-            scene.getStylesheets().add(getClass().getResource("/css/globalStyle.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/buttons.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/wrapped.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/musicPlayer.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/dashboard.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/analytics.css").toExternalForm());
-            scene.getStylesheets().add(getClass().getResource("/css/reports.css").toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/globalStyle.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/buttons.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/wrapped.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/musicPlayer.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/dashboard.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/analytics.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/reports.css")).toExternalForm());
 
         } catch (Exception e) {
             System.out.println("CSS not found: " + e.getMessage());
@@ -100,11 +95,6 @@ public class AnalyticsController {
 
         MainController.switchViews(scene);
     }
-
-
-
-
-
 
     private Scene createScene() {
         content = new BorderPane();
@@ -117,8 +107,7 @@ public class AnalyticsController {
         showListeningHistory();
         mainPane = new StackPane(content);
 
-        Scene scene = new Scene(mainPane, APP_WIDTH, AppUtils.APP_HEIGHT);
-        return scene;
+        return new Scene(mainPane, APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
     private VBox createLeftMenu() {
@@ -138,18 +127,15 @@ public class AnalyticsController {
         VBox yearBox = new VBox(4, yearLabel, yearSelector);
         yearBox.setPadding(new Insets(8, 0, 4, 0));
 
-        return SidebarBuilder.build(
-                List.of("panels", "sidebar"),
-                "My Reports",
-                true,
-                entries,
-                currentView,
-                true,
-                yearBox,
-                "Return home",
-                "← Dashboard",
-                () -> MainController.navigateTo("dashboard")
-        );
+        SidebarBuilder.SidebarConfig config = SidebarBuilder.SidebarConfig.builder()
+                .activeKey(currentView)
+                .primaryEntries(entries)
+                .extraContent(yearBox)
+                .backSection(new SidebarBuilder.BackSection(
+                        "Return home", "← Dashboard", () -> MainController.navigateTo("dashboard")))
+                .build();
+
+        return SidebarBuilder.build(config);
     }
 
     private ScrollPane createCenterArea() {

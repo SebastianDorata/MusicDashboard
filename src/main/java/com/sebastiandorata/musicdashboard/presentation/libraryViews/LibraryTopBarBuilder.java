@@ -2,7 +2,6 @@ package com.sebastiandorata.musicdashboard.presentation.libraryViews;
 
 import com.sebastiandorata.musicdashboard.controller.MainController;
 import com.sebastiandorata.musicdashboard.entity.Genre;
-import com.sebastiandorata.musicdashboard.repository.GenreRepository;
 import com.sebastiandorata.musicdashboard.utils.SortStrategy;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.StringConverter;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -17,29 +17,79 @@ import java.util.function.Consumer;
 /**
  * Builds the top bar for the My Library page.
  *
- * <p>Extracted from MyLibraryController to separate UI
- * construction from control logic. All interactive elements
- * receive callbacks from the controller so this class has
- * no dependency on controller state.</p>
+ * <p>Pure UI construction: takes already-resolved data ({@code availableGenres})
+ * and callbacks via {@link Config}, and has no dependency on any repository
+ * or service. Callers are responsible for fetching genres and wiring the
+ * returned {@link Result#tabButtons()} into their own state.</p>
  *
  * <p>SRP: Only responsible for constructing the top bar node.</p>
  */
 public class LibraryTopBarBuilder {
 
+    private LibraryTopBarBuilder() {}
+
     /**
-     * Builds the complete top bar and returns a Result record
-     * carrying the built node and all references the controller
-     * needs for later style updates.
+     * Immutable input to {@link #build(Config)}. Construct via {@link #builder()}.
      */
-    public static Result build(
-            Map<String, Button>    tabButtons,
-            GenreRepository        genreRepository,
-            String                 currentView,
-            String                 currentDisplayMode,
-            Consumer<String>       onTabSwitch,
-            Consumer<String>       onDisplayMode,
-            Consumer<Genre>        onGenreFilter,
-            Consumer<SortStrategy> onSortChange) {
+    public static final class Config {
+        final List<Genre> availableGenres;
+        final String currentView;
+        final String currentDisplayMode;
+        final Consumer<String> onTabSwitch;
+        final Consumer<String> onDisplayMode;
+        final Consumer<Genre> onGenreFilter;
+        final Consumer<SortStrategy> onSortChange;
+
+        private Config(Builder b) {
+            this.availableGenres    = b.availableGenres;
+            this.currentView        = b.currentView;
+            this.currentDisplayMode = b.currentDisplayMode;
+            this.onTabSwitch        = b.onTabSwitch;
+            this.onDisplayMode      = b.onDisplayMode;
+            this.onGenreFilter      = b.onGenreFilter;
+            this.onSortChange       = b.onSortChange;
+        }
+
+        public static Builder builder() { return new Builder(); }
+
+        public static final class Builder {
+            private List<Genre> availableGenres = List.of();
+            private String currentView;
+            private String currentDisplayMode;
+            private Consumer<String> onTabSwitch;
+            private Consumer<String> onDisplayMode;
+            private Consumer<Genre> onGenreFilter;
+            private Consumer<SortStrategy> onSortChange;
+
+            public Builder availableGenres(List<Genre> v)        { this.availableGenres = v; return this; }
+            public Builder currentView(String v)                 { this.currentView = v; return this; }
+            public Builder currentDisplayMode(String v)          { this.currentDisplayMode = v; return this; }
+            public Builder onTabSwitch(Consumer<String> v)       { this.onTabSwitch = v; return this; }
+            public Builder onDisplayMode(Consumer<String> v)     { this.onDisplayMode = v; return this; }
+            public Builder onGenreFilter(Consumer<Genre> v)      { this.onGenreFilter = v; return this; }
+            public Builder onSortChange(Consumer<SortStrategy> v){ this.onSortChange = v; return this; }
+
+            public Config build() { return new Config(this); }
+        }
+    }
+
+    /**
+     * Carries all built nodes back to the controller, including the tab
+     * button map — the builder returns this rather than mutating a
+     * caller-supplied map.
+     */
+    public record Result(
+            VBox                    topBar,
+            Map<String, Button>     tabButtons,
+            ToggleButton            listToggle,
+            ToggleButton            gridToggle,
+            HBox                    filterControlsBox,
+            ComboBox<SortStrategy>  sortComboBox,
+            ComboBox<GenreOption>   genreComboBox
+    ) {}
+
+    public static Result build(Config config) {
+        Map<String, Button> tabButtons = new LinkedHashMap<>();
 
         VBox topBar = new VBox(10);
         topBar.setPadding(new Insets(20));
@@ -68,14 +118,14 @@ public class LibraryTopBarBuilder {
                 {"Artists", "artists"}, {"Favourites", "favourites"}}) {
             String tabKey = pair[1];
             Button btn = new Button(pair[0]);
-            updateTabStyle(btn, tabKey, currentView);
+            updateTabStyle(btn, tabKey, config.currentView);
             btn.setOnMouseEntered(e -> {
-                if (!tabKey.equals(currentView))
+                if (!tabKey.equals(config.currentView))
                     btn.getStyleClass().add("btn-enter");
             });
             btn.setOnMouseExited(e ->
                     btn.getStyleClass().remove("btn-enter"));
-            btn.setOnAction(e -> onTabSwitch.accept(tabKey));
+            btn.setOnAction(e -> config.onTabSwitch.accept(tabKey));
             tabButtons.put(tabKey, btn);
             leftGroup.getChildren().add(btn);
         }
@@ -86,20 +136,20 @@ public class LibraryTopBarBuilder {
         ToggleButton listToggle = new ToggleButton("List");
         listToggle.setToggleGroup(viewGroup);
         listToggle.getStyleClass().addAll("nav-btn", "txt-white-md-bld");
-        listToggle.setOnAction(e -> onDisplayMode.accept("list"));
+        listToggle.setOnAction(e -> config.onDisplayMode.accept("list"));
 
         ToggleButton gridToggle = new ToggleButton("Grid");
         gridToggle.setToggleGroup(viewGroup);
-        gridToggle.setSelected("grid".equals(currentDisplayMode));
+        gridToggle.setSelected("grid".equals(config.currentDisplayMode));
         gridToggle.getStyleClass().addAll("nav-btn-active", "txt-white-md-bld");
-        gridToggle.setOnAction(e -> onDisplayMode.accept("grid"));
+        gridToggle.setOnAction(e -> config.onDisplayMode.accept("grid"));
 
         HBox centerGroup = new HBox(10, listToggle, gridToggle);
         centerGroup.setAlignment(Pos.CENTER);
 
         // Filter controls on the right
         FilterControls filterControls = buildFilterControls(
-                genreRepository, onGenreFilter, onSortChange);
+                config.availableGenres, config.onGenreFilter, config.onSortChange);
 
         HBox rightGroup = new HBox(filterControls.box());
         rightGroup.setAlignment(Pos.CENTER_RIGHT);
@@ -118,6 +168,7 @@ public class LibraryTopBarBuilder {
 
         return new Result(
                 topBar,
+                tabButtons,
                 listToggle,
                 gridToggle,
                 filterControls.box(),
@@ -127,7 +178,7 @@ public class LibraryTopBarBuilder {
     }
 
     private static FilterControls buildFilterControls(
-            GenreRepository        genreRepository,
+            List<Genre>             availableGenres,
             Consumer<Genre>        onGenreFilter,
             Consumer<SortStrategy> onSortChange) {
 
@@ -141,10 +192,9 @@ public class LibraryTopBarBuilder {
         genreComboBox.setPrefWidth(150);
         genreComboBox.getStyleClass().addAll("combo-box", "txt-white-sm");
 
-        // Populate genres
+        // Populate genres from already-resolved data — no repository access here
         genreComboBox.getItems().add(new GenreOption(null, "All Genres"));
-        List<Genre> allGenres = genreRepository.findAll();
-        for (Genre genre : allGenres) {
+        for (Genre genre : availableGenres) {
             genreComboBox.getItems().add(new GenreOption(genre, genre.getName()));
         }
         genreComboBox.setValue(genreComboBox.getItems().get(0));
@@ -195,35 +245,14 @@ public class LibraryTopBarBuilder {
                 tabKey.equals(currentView) ? "nav-btn-active" : "nav-btn");
     }
 
-    // Result records
-
-    /**
-     * Carries all built nodes back to the controller so it can
-     * hold references for later style updates without traversing
-     * the scene graph.
-     */
-    public record Result(
-            VBox                    topBar,
-            ToggleButton            listToggle,
-            ToggleButton            gridToggle,
-            HBox                    filterControlsBox,
-            ComboBox<SortStrategy>  sortComboBox,
-            ComboBox<GenreOption>   genreComboBox
-    ) {}
-
-    /**
-     * Internal carrier for the filter controls section.
-     */
+    /** Internal carrier for the filter controls section. */
     private record FilterControls(
             HBox                    box,
             ComboBox<SortStrategy>  sortComboBox,
             ComboBox<GenreOption>   genreComboBox
     ) {}
 
-    /**
-     * Display wrapper for Genre in the ComboBox.
-     * Record replaces the old private static inner class.
-     */
+    /** Display wrapper for Genre in the ComboBox. */
     public record GenreOption(Genre genre, String display) {
         @Override
         public String toString() { return display; }

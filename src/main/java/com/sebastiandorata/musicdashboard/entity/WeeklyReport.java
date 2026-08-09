@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "weekly_reports", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "year", "week_of_year"})
+        @UniqueConstraint(columnNames = {"user_id", "report_year", "week_of_year"})
 })
 public class WeeklyReport {
 
@@ -34,7 +34,7 @@ public class WeeklyReport {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "report_year", nullable = false)   // renamed
     private Integer year;
 
     @Column(name = "week_of_year", nullable = false)

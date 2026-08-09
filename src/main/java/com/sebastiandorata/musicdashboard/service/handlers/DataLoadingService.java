@@ -49,16 +49,3 @@ public class DataLoadingService {
         );
     }
 }
-// =============================================================================
-// Bug:
-// The original implementation called new Thread(...).start() for every async
-// request. Thread creation carries roughly 1-2 ms of OS overhead each time,
-// and threads are never reused. Under normal Dashboard load this means 4-6
-// threads are created and destroyed in rapid succession just to populate the
-// stat cards.
-//
-// Fix: replaced with a cached thread pool (up to 4 threads). Threads are
-// created on first use and reused for subsequent requests, eliminating
-// per-call creation overhead. A cached pool rather than a fixed pool is chosen
-// so idle threads are reclaimed after 60 seconds and do not waste resources
-// when the app is idle.

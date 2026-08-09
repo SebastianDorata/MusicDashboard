@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.service;
+package com.sebastiandorata.musicdashboard.service.Import;
 
 import com.sebastiandorata.musicdashboard.dto.ExtractedSongMetadata;
 import org.jaudiotagger.audio.AudioFile;

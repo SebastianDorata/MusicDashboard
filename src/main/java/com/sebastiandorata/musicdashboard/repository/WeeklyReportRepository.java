@@ -18,5 +18,4 @@ import java.util.Optional;
 @Repository
 public interface WeeklyReportRepository extends JpaRepository<WeeklyReport, Long> {
     Optional<WeeklyReport> findByUserIdAndYearAndWeekOfYear(Long userId, Integer year, Integer weekOfYear);
-    List<WeeklyReport> findByUserIdAndYear(Long userId, Integer year);
 }

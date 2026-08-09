@@ -3,7 +3,7 @@ package com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel;
 import com.sebastiandorata.musicdashboard.dto.MonthlyReportData;
 import com.sebastiandorata.musicdashboard.entity.MonthlyReport;
 import com.sebastiandorata.musicdashboard.service.handlers.DataLoadingService;
-import com.sebastiandorata.musicdashboard.service.MonthlyReportService;
+import com.sebastiandorata.musicdashboard.service.handlers.MonthlyReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

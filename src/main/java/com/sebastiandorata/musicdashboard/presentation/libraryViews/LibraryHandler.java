@@ -7,6 +7,7 @@ import com.sebastiandorata.musicdashboard.service.PlaylistService;
 import javafx.scene.Node;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 
 /**
@@ -34,6 +35,5 @@ import java.util.function.BiConsumer;
  */
 public record LibraryHandler(MusicPlayerService musicPlayerService, PlaylistService playlistService,
                              FavouriteService favouriteService, BiConsumer<Song, Node> onSongMenu,
-                             SongEditDialog editDialog) {
-
+                             SongEditDialog editDialog, Consumer<Song> onDeleteSong) {
 }

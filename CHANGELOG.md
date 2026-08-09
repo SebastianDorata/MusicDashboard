@@ -1,6 +1,15 @@
 # Changelog
 
 
+
+## 2026-08-08  v1.0.9
+
+### Added
+- **MusicBrainz ID & Last.fm Scrobble Support (schema)**: Added `mbid` columns to `artists`, `albums`, and `songs`, plus `is_placeholder` on `songs` and `external_scrobble_id` on `playback_history`, laying the groundwork for MusicBrainz-based matching and a future Last.fm listening-history importer. `songs.file_path` is now nullable to support placeholder songs with no local file. See [MBID and Scrobble Support Schema Change](Documents/MBIDandScrobbleSupportSchemaChange.md) for full details.
+  
+### Changed
+- Investigated a startup failure where the app couldn't create three report tables (monthly, weekly, year-end) after switching to the H2 embedded database. The root cause was that year and month are reserved keywords in H2, which silently broke schema generation under Hibernate's old ddl-auto=update setting — it quietly skipped those tables. This was compounded by a missing Flyway migration file, where the database's internal migration history referenced a V1 script that no longer existed on disk. Fixed by renaming the affected columns, writing a complete Flyway baseline covering every table (not just the broken ones), and switching to ddl-auto=validate so future schema mismatches fail immediately instead of failing silently. Full incident report and root-cause breakdown documented separately. See [Schema Migration Incident Report](Documents/SchemaMigrationIncidentReport.md) for full details.
+
 ## - 2026-07-29
 
 ### Fixed

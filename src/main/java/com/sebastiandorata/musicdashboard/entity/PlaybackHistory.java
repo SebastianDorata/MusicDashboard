@@ -52,6 +52,13 @@ public class PlaybackHistory {
     @Column(name = "source", length = 50)
     private String source;
 
+    /*** External identifier for imported plays (e.g. Last.fm's scrobble {@code uts}
+     * * timestamp). Lets a re-import detect and skip already-imported scrobbles.
+     * Null for plays recorded natively by this app.
+     */
+    @Column(name = "external_scrobble_id", length = 64, unique = true)
+    private String externalScrobbleId;
+
     public PlaybackHistory() {
         this.playedAt = LocalDateTime.now();
     }

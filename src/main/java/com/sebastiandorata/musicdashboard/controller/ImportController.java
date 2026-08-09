@@ -1,9 +1,9 @@
 package com.sebastiandorata.musicdashboard.controller;
 
 import com.sebastiandorata.musicdashboard.dto.MigrationResult;
-import com.sebastiandorata.musicdashboard.presentation.shared.SidebarBuilder;
-import com.sebastiandorata.musicdashboard.service.ImportOrchestrator;
-import com.sebastiandorata.musicdashboard.service.ImportOrchestrator.ImportCallbacks;
+import com.sebastiandorata.musicdashboard.presentation.shared.AppSidebar;
+import com.sebastiandorata.musicdashboard.service.Import.ImportOrchestrator;
+import com.sebastiandorata.musicdashboard.service.Import.ImportOrchestrator.ImportCallbacks;
 import com.sebastiandorata.musicdashboard.utils.AppUtils;
 import jakarta.annotation.PostConstruct;
 import javafx.application.Platform;
@@ -18,29 +18,16 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Single UI entry point for all import functionality.
- *
- * <h2>Layout</h2>
- * <pre>
- * ┌─────────────┬────────────────────────────────────────────────┐
- * │             │  Header: "Import Music"                        │
- * │   Sidebar   ├────────────────────────────────────────────────┤
- * │  (Dashboard │  Browse row  [path label]  [Browse…] [Scan]   │
- * │   style)    ├────────────────────────────────────────────────┤
- * │             │  Drag-and-drop zone                            │
- * │             ├────────────────────────────────────────────────┤
- * │             │  Progress bar + phase label                    │
- * │             ├────────────────────────────────────────────────┤
- * │             │  Results table (MigrationResult rows)          │
- * └─────────────┴────────────────────────────────────────────────┘
- * </pre>
  *
  * <h2>Workflows</h2>
  * <b>Option A — Drag-and-drop</b>: user drops files or folders onto the
@@ -62,13 +49,10 @@ import java.util.List;
  * {@link Platform#runLater(Runnable)}.
  */
 @Component
-public class MainImportController {
+public class ImportController {
 
     @Autowired
-    private ImportOrchestrator orchestrator;
-
-    // ── Mutable UI state ──────────────────────────────────────────────────────
-
+    private ImportOrchestrator         orchestrator;
     private File                       selectedFolder  = null;
     private Button                     scanBtn         = null;
     private Label                      folderPathLabel = null;
@@ -78,56 +62,27 @@ public class MainImportController {
     private Label                      summaryLabel    = null;
     private TableView<MigrationResult> resultsTable    = null;
 
-    // ── Spring lifecycle ──────────────────────────────────────────────────────
-
-    @PostConstruct
-    public void register() {
-        MainController.registerImport(this);
-    }
-
-    // ── Navigation entry point ────────────────────────────────────────────────
 
     public void show() {
-        Scene scene = buildScene();
-        loadStylesheets(scene);
+        Scene scene = createScene();
+        try {
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/globalStyle.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/buttons.css")).toExternalForm());
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/dashboard.css")).toExternalForm());
+        } catch (Exception e) {
+            System.out.println("CSS not found: " + e.getMessage());
+        }
         MainController.switchViews(scene);
     }
 
-    // ── Scene construction ────────────────────────────────────────────────────
-
-    private Scene buildScene() {
+    private Scene createScene() {
         BorderPane root = new BorderPane();
-        root.setLeft(buildSidebar());
+        VBox left = AppSidebar.build("import");
+        root.setLeft(left);
         root.setCenter(buildMainContent());
         return new Scene(root, AppUtils.APP_WIDTH, AppUtils.APP_HEIGHT);
     }
 
-    /**
-     * Left sidebar — same style as the Dashboard, with the "Import Files" entry
-     * highlighted as the active route.
-     */
-    private VBox buildSidebar() {
-        var entries = List.of(
-                new SidebarBuilder.NavEntry("♫", "My Library",  "library",
-                        () -> MainController.navigateTo("library")),
-                new SidebarBuilder.NavEntry("≡", "My Playlist", "playlist",
-                        () -> MainController.navigateTo("playlist")),
-                new SidebarBuilder.NavEntry("↓", "Import Files","import",
-                        () -> MainController.navigateTo("import")),
-                new SidebarBuilder.NavEntry("◫", "My Reports",  "analytics",
-                        () -> MainController.navigateTo("analytics"))
-        );
-
-        return SidebarBuilder.build(
-                List.of("panels", "sidebar"),
-                "My Dashboard",
-                true,
-                entries,
-                "import",   // activeRoute — highlights "Import Files"
-                true,
-                null, null, null, null
-        );
-    }
 
     /**
      * Right-hand content area containing the header, browse row, drop zone,
@@ -158,23 +113,16 @@ public class MainImportController {
         VBox.setVgrow(resultsTable, Priority.ALWAYS);
         return content;
     }
-
-    // ── UI component builders ─────────────────────────────────────────────────
-
+    
     private StackPane buildHeader() {
         StackPane header = new StackPane();
         header.setMaxWidth(Double.MAX_VALUE);
-
-        Button homeBtn = new Button("← Dashboard");
-        homeBtn.getStyleClass().addAll("nav-btn-back", "txt-white-md-bld");
-        homeBtn.setOnAction(e -> MainController.navigateTo("dashboard"));
-        StackPane.setAlignment(homeBtn, Pos.CENTER_LEFT);
 
         Label title = new Label("Import Music");
         title.getStyleClass().addAll("txt-white-bld-forty", "txt-centre-underline");
         StackPane.setAlignment(title, Pos.CENTER);
 
-        header.getChildren().addAll(homeBtn, title);
+        header.getChildren().add(title);
         return header;
     }
 
@@ -272,8 +220,8 @@ public class MainImportController {
     @SuppressWarnings("unchecked")
     private TableView<MigrationResult> buildResultsTable() {
         TableView<MigrationResult> table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        table.getStyleClass().add("analytics-section-container");
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+        table.getStyleClass().addAll("analytics-section-container", "dark-table");
         table.setPlaceholder(new Label("Results will appear here after importing."));
 
         TableColumn<MigrationResult, String> fileCol = new TableColumn<>("File");
@@ -281,6 +229,17 @@ public class MainImportController {
                 new SimpleStringProperty(c.getValue().fileName()));
         fileCol.setPrefWidth(280);
 
+        TableColumn<MigrationResult, String> statusCol = getMigrationResultStringTableColumn();
+
+        TableColumn<MigrationResult, String> detailCol = new TableColumn<>("Details");
+        detailCol.setCellValueFactory(c ->
+                new SimpleStringProperty(c.getValue().message()));
+
+        table.getColumns().addAll(fileCol, statusCol, detailCol);
+        return table;
+    }
+
+    private @NonNull TableColumn<MigrationResult, String> getMigrationResultStringTableColumn() {
         TableColumn<MigrationResult, String> statusCol = new TableColumn<>("Status");
         statusCol.setCellValueFactory(c ->
                 new SimpleStringProperty(formatStatus(c.getValue().status())));
@@ -295,13 +254,7 @@ public class MainImportController {
                 setStyle(statusColour(row.status()));
             }
         });
-
-        TableColumn<MigrationResult, String> detailCol = new TableColumn<>("Details");
-        detailCol.setCellValueFactory(c ->
-                new SimpleStringProperty(c.getValue().message()));
-
-        table.getColumns().addAll(fileCol, statusCol, detailCol);
-        return table;
+        return statusCol;
     }
 
     // ── Event handlers ────────────────────────────────────────────────────────
@@ -447,18 +400,5 @@ public class MainImportController {
             case SKIPPED          -> "-fx-text-fill: #777777;";
             case ERROR            -> "-fx-text-fill: #e94560;";
         };
-    }
-
-    private void loadStylesheets(Scene scene) {
-        try {
-            scene.getStylesheets().add(
-                    getClass().getResource("/css/globalStyle.css").toExternalForm());
-            scene.getStylesheets().add(
-                    getClass().getResource("/css/buttons.css").toExternalForm());
-            scene.getStylesheets().add(
-                    getClass().getResource("/css/dashboard.css").toExternalForm());
-        } catch (Exception e) {
-            System.out.println("CSS not found: " + e.getMessage());
-        }
     }
 }

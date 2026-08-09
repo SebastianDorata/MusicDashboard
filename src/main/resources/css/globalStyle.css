@@ -270,3 +270,48 @@
     -fx-text-fill: #1db954;
     -fx-font-weight: bold;
 }
+/* ─── Table view (Import results) ───────────────────────────── */
+.dark-table {
+    -fx-background-color: #1a1a1a;
+    -fx-table-cell-border-color: transparent;
+}
+.dark-table .column-header-background {
+    -fx-background-color: #2a2a2a;
+}
+.dark-table .column-header,
+.dark-table .filler {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: transparent transparent #404040 transparent;
+}
+.dark-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+.dark-table .table-row-cell {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: transparent transparent #2a2a2a transparent;
+    -fx-table-cell-border-color: transparent;
+}
+.dark-table .table-row-cell:odd {
+    -fx-background-color: #232323;
+}
+.dark-table .table-row-cell:selected {
+    -fx-background-color: rgba(29, 185, 84, 0.2);
+}
+.dark-table .table-row-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+.dark-table .table-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-alignment: center-left;
+    -fx-padding: 8 10 8 10;
+}
+.dark-table .placeholder .label {
+    -fx-text-fill: #b3b3b3;
+}
+.dark-table .scroll-bar:vertical,
+.dark-table .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}

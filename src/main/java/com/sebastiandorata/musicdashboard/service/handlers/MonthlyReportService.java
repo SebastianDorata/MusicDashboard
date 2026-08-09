@@ -1,7 +1,8 @@
-package com.sebastiandorata.musicdashboard.service;
+package com.sebastiandorata.musicdashboard.service.handlers;
 
 import com.sebastiandorata.musicdashboard.entity.*;
 import com.sebastiandorata.musicdashboard.repository.*;
+import com.sebastiandorata.musicdashboard.service.UserSessionService;
 import com.sebastiandorata.musicdashboard.utils.PlaybackAggregator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

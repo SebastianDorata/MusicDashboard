@@ -1,4 +1,4 @@
-package com.sebastiandorata.musicdashboard.service;
+package com.sebastiandorata.musicdashboard.service.Import;
 
 import com.sebastiandorata.musicdashboard.entity.Song;
 import com.sebastiandorata.musicdashboard.repository.SongRepository;
@@ -14,7 +14,7 @@ import java.util.List;
  * during import ({@code importSong}, {@code importSongWithOverrides},
  * {@code extractMetadataPreview} — the two methods your IDE flagged as
  * "never used" lived here). That responsibility now belongs to
- * {@link SongMetadataExtractor} (reads the file) and {@link SongUpsertService}
+ * {@link SongMetadataExtractor} (reads the file) and {@link SongUpdateService}
  * (persists the result), so the import pipeline has exactly one owner and
  * one pass per file.
  *
