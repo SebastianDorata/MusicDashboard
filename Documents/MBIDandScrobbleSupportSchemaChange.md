@@ -1,8 +1,9 @@
 # MusicDashboard — MBID & Scrobble Support Schema Change
 
-**Project:** MusicDashboard (JavaFX + Spring Boot)
-**Date:** August 8, 2026
-**Environment:** macOS, IntelliJ IDEA, Java 26, Spring Boot 4.0.3, Hibernate 7.2.4.Final, H2 2.3.232, Flyway 11.14.1
+**Project:** MusicDashboard (JavaFX + Spring Boot)<br>
+**Author:** Sebastian Dorata<br>
+**Date:** August 8, 2026<br>
+**Environment:** macOS, IntelliJ IDEA, Java 26, Spring Boot 4.0.3, Hibernate 7.2.4.Final, H2 2.3.232, Flyway 11.14.1<br>
 **Status:** Applied and verified against H2 (embedded profile). Not yet run against Postgres.
 
 ---

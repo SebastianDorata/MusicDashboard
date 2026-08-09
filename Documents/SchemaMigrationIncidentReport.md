@@ -1,8 +1,8 @@
 # MusicDashboard — Schema Migration Incident Report
 
-**Project:** MusicDashboard (JavaFX + Spring Boot)
-**Author:** Sebastian Dorata
-**Date:** August 6, 2026
+**Project:** MusicDashboard (JavaFX + Spring Boot)<br>
+**Author:** Sebastian Dorata<br>
+**Date:** August 6, 2026<br>
 **Environment:** macOS, IntelliJ IDEA, Java 26, Spring Boot 4.0.3, Hibernate 7.2.4.Final, H2 2.3.232, Flyway 11.14.1
 
 ---
