@@ -4,16 +4,18 @@
 
 ## Behavior
 
-PostgreSQL-only migrations, read only by the `postgres` profile. It contains `V3__songs_file_path_nullable.sql` (`ALTER COLUMN file_path SET NULL`), a script with the same name and version number as `common/V3__songs_file_path_nullable.sql`. Because the postgres profile reads both `common` and `postgresql`, this duplicate version is a known hazard: Flyway rejects two scripts with the same version in its locations, so check this file before using the postgres profile.
+Reserved for migrations that only PostgreSQL should run. It is currently empty (no files): all three migrations are written in SQL that both PostgreSQL and H2 accept, so they live in `common/`. The postgres profile, which is the default, still lists this folder in `spring.flyway.locations`, so a script placed here is picked up automatically.
+
+An earlier `V3__songs_file_path_nullable.sql` in this folder was removed. It had the same version number as the script of that name in `common/`, which made Flyway refuse to start on PostgreSQL, and its `SET NULL` syntax is not valid PostgreSQL. The `common/` script uses `DROP NOT NULL`, which both engines accept.
 
 ## Responsibilities
 
-- Owns SQL that only PostgreSQL accepts.
-- Shared SQL belongs in `common/`. Never reuse a version number that exists in `common/`, because the postgres profile loads both folders.
+- Owns SQL that only PostgreSQL accepts, if any is ever needed.
+- Shared SQL belongs in `common/`. Never reuse a version number that exists in `common/`, because the postgres profile loads both folders and Flyway rejects two scripts with the same version.
 
 ## S.O.L.I.D. principles used
 
-Not applicable: this folder holds no logic of its own, so none of the five principles can be shown here. A single SQL script.
+Not applicable: this folder holds no logic of its own, and currently no files.
 
 ## Code reused
 
@@ -21,7 +23,8 @@ None.
 
 ## Table of contents
 
-- [V3__songs_file_path_nullable.sql](V3__songs_file_path_nullable.sql)
+There are no files in this folder yet.
+
 - [← Back to root](../../../../../../README.md)
 
 ## Sequence diagram
@@ -33,7 +36,8 @@ sequenceDiagram
     participant PG as postgresql/
     participant DB as PostgreSQL
     Prof->>F: locations = common + postgresql
-    F->>PG: read V3
-    PG-->>F: ALTER TABLE songs ...
-    F->>DB: execute and record
+    F->>PG: scan classpath:db/migration/postgresql
+    PG-->>F: no scripts yet
+    Note over F,PG: a V4 or later PostgreSQL-only script would be applied here
+    F->>DB: schema stays at the version from common/
 ```

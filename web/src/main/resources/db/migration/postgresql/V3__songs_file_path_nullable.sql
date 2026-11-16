@@ -1,1 +1,0 @@
-ALTER TABLE songs ALTER COLUMN file_path SET NULL;

@@ -74,8 +74,8 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
             "LEFT JOIN FETCH p.song s " +
             "LEFT JOIN FETCH s.artists " +
             "WHERE p.user.id = :userId " +
-            "AND FUNCTION('YEAR', p.playedAt) = :year " +
-            "AND FUNCTION('MONTH', p.playedAt) = :month " +
+            "AND EXTRACT(YEAR FROM p.playedAt) = :year " +
+            "AND EXTRACT(MONTH FROM p.playedAt) = :month " +
             "ORDER BY p.playedAt DESC")
     List<PlaybackHistory> findByUserIdAndYearAndMonth(
             @Param("userId") Long userId,
@@ -94,7 +94,7 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
             "LEFT JOIN FETCH p.song s " +
             "LEFT JOIN FETCH s.artists " +
             "WHERE p.user.id = :userId " +
-            "AND FUNCTION('YEAR', p.playedAt) = :year " +
+            "AND EXTRACT(YEAR FROM p.playedAt) = :year " +
             "ORDER BY p.playedAt DESC")
     List<PlaybackHistory> findByUserIdAndYear(
             @Param("userId") Long userId,

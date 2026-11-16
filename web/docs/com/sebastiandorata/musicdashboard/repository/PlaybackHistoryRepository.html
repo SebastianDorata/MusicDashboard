@@ -229,7 +229,7 @@ loaded in one query. Analytics services call this once and aggregate in memory.<
 <section class="detail" id="findByUserIdAndYearAndMonth(java.lang.Long,int,int)">
 <h3>findByUserIdAndYearAndMonth</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="annotations">@Query("SELECT p FROM PlaybackHistory p LEFT JOIN FETCH p.song s LEFT JOIN FETCH s.artists WHERE p.user.id = :userId AND FUNCTION('YEAR', p.playedAt) = :year AND FUNCTION('MONTH', p.playedAt) = :month ORDER BY p.playedAt DESC")
+<div class="member-signature"><span class="annotations">@Query("SELECT p FROM PlaybackHistory p LEFT JOIN FETCH p.song s LEFT JOIN FETCH s.artists WHERE p.user.id = :userId AND EXTRACT(YEAR FROM p.playedAt) = :year AND EXTRACT(MONTH FROM p.playedAt) = :month ORDER BY p.playedAt DESC")
 </span><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/PlaybackHistory.html" title="class in com.sebastiandorata.musicdashboard.entity">PlaybackHistory</a>&gt;</span>&nbsp;<span class="element-name">findByUserIdAndYearAndMonth</span><wbr><span class="parameters">(@Param("userId")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;userId,
  @Param("year")
@@ -253,7 +253,7 @@ its artists loaded. Filtering happens in the database for monthly reports.</div>
 <section class="detail" id="findByUserIdAndYear(java.lang.Long,int)">
 <h3>findByUserIdAndYear</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="annotations">@Query("SELECT p FROM PlaybackHistory p LEFT JOIN FETCH p.song s LEFT JOIN FETCH s.artists WHERE p.user.id = :userId AND FUNCTION('YEAR', p.playedAt) = :year ORDER BY p.playedAt DESC")
+<div class="member-signature"><span class="annotations">@Query("SELECT p FROM PlaybackHistory p LEFT JOIN FETCH p.song s LEFT JOIN FETCH s.artists WHERE p.user.id = :userId AND EXTRACT(YEAR FROM p.playedAt) = :year ORDER BY p.playedAt DESC")
 </span><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../entity/PlaybackHistory.html" title="class in com.sebastiandorata.musicdashboard.entity">PlaybackHistory</a>&gt;</span>&nbsp;<span class="element-name">findByUserIdAndYear</span><wbr><span class="parameters">(@Param("userId")
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;userId,
  @Param("year")

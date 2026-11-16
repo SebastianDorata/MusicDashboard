@@ -4,7 +4,7 @@
 
 ## Behavior
 
-Three subfolders split the SQL by database. `common/` runs on every database, `h2/` is for H2-only scripts (currently empty) and `postgresql/` is for PostgreSQL-only scripts. The embedded profile uses `common` and `h2`; the postgres profile uses `common` and `postgresql`.
+Three subfolders split the SQL by database. `common/` runs on every database and holds all three migrations today. `h2/` and `postgresql/` are for scripts only one engine should run, and both are currently empty. The postgres profile, which is the default, uses `common` and `postgresql`; the embedded profile uses `common` and `h2`.
 
 ## Responsibilities
 
