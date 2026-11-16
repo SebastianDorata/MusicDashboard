@@ -14,5 +14,11 @@ import java.util.Optional;
  */
 @Repository
 public interface GenreRepository extends JpaRepository<Genre, Long> {
+    /**
+     * Finds a genre by its exact name. Used during import to reuse an existing genre record.
+     *
+     * @param name the genre name to match exactly
+     * @return the matching genre, or an empty {@code Optional} if none exists
+     */
     Optional<Genre> findByName(String name);
 }

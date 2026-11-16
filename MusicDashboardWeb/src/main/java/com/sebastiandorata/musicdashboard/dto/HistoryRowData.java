@@ -12,10 +12,15 @@ import com.sebastiandorata.musicdashboard.utils.AppUtils;
  * entity so that clicking the row can start playback immediately.</p>
  */
 public class HistoryRowData {
+    /** Title of the played song. */
     public String songTitle;
+    /** Primary artist name for the played song. */
     public String artistName;
+    /** Relative time string for when the song was played, such as "3m ago". */
     public String playedAt;
+    /** Seconds the song was played for this record. */
     public int durationSeconds;
+    /** Song entity used by the click handler to start playback; may be {@code null}. */
     public Song song;
 
 

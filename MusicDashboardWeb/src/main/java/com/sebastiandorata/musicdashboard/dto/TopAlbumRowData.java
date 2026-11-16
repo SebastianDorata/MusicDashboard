@@ -11,9 +11,13 @@ import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.TopAl
  * in My Library.</p>
  */
 public class TopAlbumRowData {
+    /** Title of the album. */
     public String albumTitle;
+    /** Release year as a string, or "Unknown" if absent. */
     public String releaseYear;
+    /** Number of songs in the album. */
     public int songCount;
+    /** Album entity used by the click handler to open the album in My Library. */
     public Album album;
 
 

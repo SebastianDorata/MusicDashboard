@@ -192,6 +192,10 @@ public class PlaylistService {
      * Returns playlist songs as a List for UI compatibility.
      * Converts from Set to List here so the rest of the UI
      * code that expects {@code List<Song>} does not need to change.
+     *
+     * @param playlistId the ID of the playlist
+     * @return the songs in the playlist; an empty list if it has none
+     * @throws IllegalStateException if the playlist is not found
      */
     public List<Song> getPlaylistSongs(Long playlistId) {
         Playlist playlist = getPlaylistById(playlistId)

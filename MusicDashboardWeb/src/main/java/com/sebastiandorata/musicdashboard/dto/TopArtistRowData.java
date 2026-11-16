@@ -11,8 +11,11 @@ import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.TopAr
  * both fields display "—".</p>
  */
 public class TopArtistRowData {
+    /** Artist entity reference; {@code null} for placeholder rows. */
     public Artist artist;
+    /** Display name of the artist, or "—" for placeholder rows. */
     public String artistName;
+    /** Formatted listening time such as "2h 15m", or "—" for placeholder rows. */
     public String listeningTime;
 
 

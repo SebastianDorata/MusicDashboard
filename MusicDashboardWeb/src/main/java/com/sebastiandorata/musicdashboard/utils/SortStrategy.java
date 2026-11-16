@@ -17,6 +17,7 @@ import java.util.Comparator;
  */
 public enum SortStrategy {
 
+    /** Sorts songs and albums by title, A to Z, ignoring case. */
     ALPHABETICAL("Alphabetical") {
         @Override
         public Comparator<Song> getSongComparator() {
@@ -37,6 +38,7 @@ public enum SortStrategy {
         }
     },
 
+    /** Sorts songs and albums by title, Z to A, ignoring case. */
     REVERSE_ALPHABETICAL("Reverse Alphabetical") {
         @Override
         public Comparator<Song> getSongComparator() {
@@ -57,6 +59,7 @@ public enum SortStrategy {
         }
     },
 
+    /** Sorts by the most recent first-listened date first, with alphabetical tiebreaks. */
     RECENTLY_ADDED("Recently Added") {
         @Override
         public Comparator<Song> getSongComparator() {
@@ -83,6 +86,7 @@ public enum SortStrategy {
         }
     },
 
+    /** Sorts by highest play count first, with alphabetical tiebreaks. */
     MOST_PLAYED("Most Played") {
         @Override
         public Comparator<Song> getSongComparator() {

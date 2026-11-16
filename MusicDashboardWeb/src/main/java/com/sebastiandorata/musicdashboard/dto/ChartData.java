@@ -19,14 +19,23 @@ import java.util.function.Consumer;
  */
 
 public class ChartData {
+    /** Listening minutes per month for the selected year. */
     public Map<YearMonth, Integer> currentYearData;
+    /** Listening minutes per month for the previous year; empty when there is no previous-year history. */
     public Map<YearMonth, Integer> previousYearData;
+    /** Listening minutes per month for the all-time highest year; empty when it is the current or previous year. */
     public Map<YearMonth, Integer> highestYearData;
+    /** The year currently shown in the chart. */
     public Integer selectedYear;
+    /** The year immediately before {@code selectedYear}. */
     public Integer previousYear;
+    /** The year with the highest total listening time. */
     public Integer highestYear;
+    /** All years with playback history, newest first. */
     public List<Integer> allYears;
+    /** {@code true} if playback history exists for {@code previousYear}. */
     public boolean hasPreviousYear;
+    /** {@code true} if {@code previousYear} equals {@code highestYear}. */
     public boolean isPreviousYearHighest;
 
 

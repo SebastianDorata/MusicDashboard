@@ -21,8 +21,13 @@ import java.util.List;
 @Repository
 public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory, Long> {
 
-    // Full history. Still needed for analytics aggregation
-    // but now fetches song+artists in one query instead of n+1
+    /**
+     * Returns all playback records for a user, newest first, with each song and its artists
+     * loaded in one query. Analytics services call this once and aggregate in memory.
+     *
+     * @param userId the ID of the user
+     * @return the user's playback records ordered by {@code played_at} descending; an empty list if there are none
+     */
     @Query("SELECT p FROM PlaybackHistory p " +
             "LEFT JOIN FETCH p.song s " +
             "LEFT JOIN FETCH s.artists " +
@@ -30,13 +35,25 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
             "ORDER BY p.playedAt DESC")
     List<PlaybackHistory> findByUserIdOrderByPlayedAtDesc(@Param("userId") Long userId);
 
+    /**
+     * Returns the IDs of a user's most recent playback records, newest first.
+     *
+     * @param userId   the ID of the user
+     * @param pageable the page to return, which sets the number of IDs
+     * @return the playback record IDs in the requested page; an empty list if there are none
+     */
     @Query("SELECT p.playbackId FROM PlaybackHistory p " +
             "WHERE p.user.id = :userId " +
             "ORDER BY p.playedAt DESC")
     List<Long> findRecentIdsByUserId(
             @Param("userId") Long userId, Pageable pageable);
 
-    // Step 2: Fetch full records with JOIN FETCH using those IDs
+    /**
+     * Fetches the playback records with the given IDs, with each song and its artists loaded.
+     *
+     * @param ids the playback record IDs to fetch
+     * @return the matching records, newest first; an empty list if none match
+     */
     @Query("SELECT p FROM PlaybackHistory p " +
             "LEFT JOIN FETCH p.song s " +
             "LEFT JOIN FETCH s.artists " +
@@ -44,8 +61,15 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
             "ORDER BY p.playedAt DESC")
     List<PlaybackHistory> findByIdsWithSongs(@Param("ids") List<Long> ids);
 
-    // DB-side filtering for monthly reports
-    // Replaces in-memory stream filtering across all songs
+    /**
+     * Returns one user's playback records for a given month, newest first, with each song and
+     * its artists loaded. Filtering happens in the database for monthly reports.
+     *
+     * @param userId the ID of the user
+     * @param year   the calendar year
+     * @param month  the month number, 1 to 12
+     * @return the matching records; an empty list if there are none
+     */
     @Query("SELECT p FROM PlaybackHistory p " +
             "LEFT JOIN FETCH p.song s " +
             "LEFT JOIN FETCH s.artists " +
@@ -58,7 +82,14 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
             @Param("year") int year,
             @Param("month") int month);
 
-    // DB-side filtering for yearly reports and chart data
+    /**
+     * Returns one user's playback records for a given year, newest first, with each song and
+     * its artists loaded. Filtering happens in the database for yearly reports and chart data.
+     *
+     * @param userId the ID of the user
+     * @param year   the calendar year
+     * @return the matching records; an empty list if there are none
+     */
     @Query("SELECT p FROM PlaybackHistory p " +
             "LEFT JOIN FETCH p.song s " +
             "LEFT JOIN FETCH s.artists " +
@@ -68,7 +99,12 @@ public interface PlaybackHistoryRepository extends JpaRepository<PlaybackHistory
     List<PlaybackHistory> findByUserIdAndYear(
             @Param("userId") Long userId,
             @Param("year") int year);
-    // DB-side cascade delete
+
+    /**
+     * Deletes every playback record for the given song, directly in the database.
+     *
+     * @param songId the ID of the song whose playback records should be removed
+     */
     @Modifying
     @Query("DELETE FROM PlaybackHistory p WHERE p.song.songID = :songId")
     void deleteBySongId(@Param("songId") Long songId);

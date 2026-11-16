@@ -154,6 +154,8 @@ public class LibraryService {
      * Permanently deletes a song and everything that references it: playback
      * history, favourites, playlist entries. Song's own artist/genre join rows
      * are cleaned up automatically by Hibernate since Song owns those tables.
+     *
+     * @param songId the ID of the song to delete
      */
     @Transactional
     public void deleteSong(Long songId) {
@@ -168,6 +170,9 @@ public class LibraryService {
      * Permanently deletes an album and every song it contains, cascading each
      * song through {@link #deleteSong(Long)} first so their playback history,
      * favourites, and playlist entries are cleaned up too.
+     *
+     * @param albumId the ID of the album to delete
+     * @throws IllegalStateException if no album exists with the given ID
      */
     @Transactional
     public void deleteAlbum(Long albumId) {

@@ -17,6 +17,22 @@ import java.util.Optional;
  */
 @Repository
 public interface MonthlyReportRepository extends JpaRepository<MonthlyReport, Long> {
+    /**
+     * Finds one user's monthly report for a given year and month.
+     *
+     * @param userId the ID of the owning user
+     * @param year   the calendar year of the report
+     * @param month  the month number, 1 to 12
+     * @return the matching report, or an empty {@code Optional} if none has been generated
+     */
     Optional<MonthlyReport> findByUserIdAndYearAndMonth(Long userId, Integer year, Integer month);
+
+    /**
+     * Returns all of one user's monthly reports for a given year.
+     *
+     * @param userId the ID of the owning user
+     * @param year   the calendar year of the reports
+     * @return the matching monthly reports; an empty list if there are none
+     */
     List<MonthlyReport> findByUserIdAndYear(Long userId, Integer year);
 }

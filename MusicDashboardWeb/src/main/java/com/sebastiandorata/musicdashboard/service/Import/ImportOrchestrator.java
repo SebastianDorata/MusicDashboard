@@ -178,13 +178,27 @@ public class ImportOrchestrator {
         /** Called when the provided inputs contain no supported audio files. */
         void onNoFiles();
 
-        /** Called once, before the first file is processed. */
+        /**
+         * Called once, before the first file is processed.
+         *
+         * @param totalFiles the number of supported audio files that will be processed
+         */
         void onStart(int totalFiles);
 
-        /** Called after each file is processed. */
+        /**
+         * Called after each file is processed.
+         *
+         * @param current  the one-based position of the file that was just processed
+         * @param total    the total number of files in this run
+         * @param fileName the name of the file that was just processed
+         */
         void onProgress(int current, int total, String fileName);
 
-        /** Called once after every file has been processed. */
+        /**
+         * Called once after every file has been processed.
+         *
+         * @param results the outcome for each processed file
+         */
         void onComplete(List<MigrationResult> results);
 
         /**

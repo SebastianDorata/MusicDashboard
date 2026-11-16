@@ -145,6 +145,8 @@ public class ChartViewModel {
      *
      * Reserved for future features that may need year selection or filtering.
      * Current use: Informational for graph header labels.
+     *
+     * @return all years with listening data, as returned by {@code YearEndReportService#getAvailableYears()}
      */
     public List<Integer> getAllAvailableYears() {
         return yearEndReportService.getAvailableYears();

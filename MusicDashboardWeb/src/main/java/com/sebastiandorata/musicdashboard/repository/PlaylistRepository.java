@@ -17,6 +17,11 @@ import java.util.List;
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
-    // Get all playlists belonging to a user
+    /**
+     * Returns all playlists belonging to a user.
+     *
+     * @param userId the ID of the owning user
+     * @return the user's playlists; an empty list if there are none
+     */
     List<Playlist> findByUserId(Long userId);
 }

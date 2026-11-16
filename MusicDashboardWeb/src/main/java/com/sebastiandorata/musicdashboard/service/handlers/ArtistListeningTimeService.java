@@ -44,7 +44,9 @@ public class ArtistListeningTimeService {
      * "Ym" for display in the Top Artists panels.</p>
      */
     public static class ArtistTimeData implements Comparable<ArtistTimeData> {
+        /** The artist being ranked. */
         public Artist artist;
+        /** Accumulated listening time for the artist, in seconds. */
         public Integer totalSeconds;
 
         /**
@@ -88,6 +90,9 @@ public class ArtistListeningTimeService {
      * Filter &amp; validate: O(n)
      * Take top k: O(k)
      * Space Complexity: O(n) for grouping, O(k) for result
+     *
+     * @param limit the maximum number of artists to return
+     * @return the top artists by total listening time, highest first; an empty list when there is no history or no user is logged in
      */
     public List<ArtistTimeData> getTopArtistsAllTime(int limit) {
         Long userId = userSessionService.getCurrentUserId();

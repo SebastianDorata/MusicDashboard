@@ -46,6 +46,8 @@ public class ListeningPaginationService {
      *
      * <p>Time Complexity: O(n log n).</p>
      * <p>Space Complexity: O(n).</p>
+     *
+     * @return the user's songs ranked by listening time, or an empty list when no user is logged in
      */
     public DoublyLinkedList<Song> getAllTopSongs() {
         Long userId = userSessionService.getCurrentUserId();
@@ -78,6 +80,8 @@ public class ListeningPaginationService {
      *
      * <p>Time Complexity: O(n log n).</p>
      * <p>Space Complexity: O(n).</p>
+     *
+     * @return the user's albums ranked by listening time, or an empty list when no user is logged in
      */
     public DoublyLinkedList<Album> getAllTopAlbums() {
         Long userId = userSessionService.getCurrentUserId();
@@ -148,6 +152,8 @@ public class ListeningPaginationService {
      *
      * <p>Time Complexity: O(n log n)
      * <p>Space Complexity: O(n)
+     *
+     * @return the user's artists ranked by listening time, or an empty list when no user is logged in
      */
     public DoublyLinkedList<Artist> getAllTopArtists() {
         Long userId = userSessionService.getCurrentUserId();

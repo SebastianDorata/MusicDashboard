@@ -19,10 +19,20 @@ import java.util.Optional;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
+    /**
+     * Finds an album by its exact title. Used during import to reuse an existing album record.
+     *
+     * @param title the album title to match exactly
+     * @return the matching album, or an empty {@code Optional} if none exists
+     */
     Optional<Album> findByTitle(String title);
 
-    // Fetches all albums with their artists in one query
-    // Used by the album grid view
+    /**
+     * Fetches all albums with their artists, songs, song artists and song genres in one query.
+     * Used by the album grid view.
+     *
+     * @return every album, with those associations loaded; an empty list if there are no albums
+     */
     @Query("SELECT DISTINCT a FROM Album a " +
             "LEFT JOIN FETCH a.artists " +
             "LEFT JOIN FETCH a.songs s " +
@@ -30,8 +40,13 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
             "LEFT JOIN FETCH s.genres")
     List<Album> findAllWithArtists();
 
-    // Fetches one album with songs and artists
-    // Used when drilling into an album detail view
+    /**
+     * Fetches one album with its artists, songs, song artists and song genres in one query.
+     * Used when drilling into an album detail view.
+     *
+     * @param id the album ID
+     * @return the album with those associations loaded, or an empty {@code Optional} if no album has this ID
+     */
     @Query("SELECT DISTINCT a FROM Album a " +
             "LEFT JOIN FETCH a.artists " +
             "LEFT JOIN FETCH a.songs s " +

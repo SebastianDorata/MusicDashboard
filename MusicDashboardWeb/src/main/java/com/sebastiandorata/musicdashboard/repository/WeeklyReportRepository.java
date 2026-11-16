@@ -17,5 +17,13 @@ import java.util.Optional;
  */
 @Repository
 public interface WeeklyReportRepository extends JpaRepository<WeeklyReport, Long> {
+    /**
+     * Finds one user's weekly report for a given year and ISO week number.
+     *
+     * @param userId     the ID of the owning user
+     * @param year       the calendar year of the report
+     * @param weekOfYear the ISO week number of the report
+     * @return the matching report, or an empty {@code Optional} if none has been generated
+     */
     Optional<WeeklyReport> findByUserIdAndYearAndWeekOfYear(Long userId, Integer year, Integer weekOfYear);
 }

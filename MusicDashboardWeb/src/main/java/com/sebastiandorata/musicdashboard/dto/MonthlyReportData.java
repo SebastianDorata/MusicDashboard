@@ -10,13 +10,21 @@ import java.time.Month;
  * album, and genre ("—" when not available).</p>
  */
 public class MonthlyReportData {
+    /** Month number, 1 to 12. */
     public int month;
+    /** Upper-case English month name, such as "JANUARY". */
     public String monthName;
+    /** Total songs played in the month. */
     public int totalSongs;
+    /** Total listening time in the month, in minutes. */
     public int totalMinutes;
+    /** Name of the most-played song, or "—". */
     public String topSongName;
+    /** Name of the most-played artist, or "—". */
     public String topArtistName;
+    /** Name of the most-played album, or "—". */
     public String topAlbumName;
+    /** Name of the most-played genre, or "—". */
     public String topGenreName;
 
     /**

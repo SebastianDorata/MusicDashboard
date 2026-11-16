@@ -30,17 +30,28 @@ public class YearEndReportViewModel {
 
     /** All data needed to render one year's wrapped screen. */
     public static class WrappedData {
+        /** The calendar year summarised. */
         public final int    year;
+        /** Total listening time in the year, in minutes. */
         public final int    totalMinutes;
+        /** Total songs played in the year. */
         public final int    totalSongs;
+        /** Title of the top song, or "—". */
         public final String topSongTitle;
+        /** Primary artist of the top song, or "—". */
         public final String topSongArtist;
+        /** Name of the top artist, or "—". */
         public final String topArtistName;
+        /** Title of the top album, or "—". */
         public final String topAlbumTitle;
+        /** Name of the top genre, or "—". */
         public final String topGenreName;
 
+        /** The top songs with their play counts. */
         public final List<Map.Entry<Song, Long>>   topSongs;
+        /** The top artists with their play counts. */
         public final List<Map.Entry<Artist, Long>> topArtists;
+        /** Listening minutes keyed by month; months with no activity are absent. */
         public final Map<YearMonth, Integer> monthlyMinutes;
 
         /**

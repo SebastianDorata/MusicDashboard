@@ -14,5 +14,12 @@ import java.util.List;
 @Repository
 public interface SyncQueueRepository extends JpaRepository<SyncQueueEntry, Long> {
 
+    /**
+     * Returns one user's sync queue entries that have the given status.
+     *
+     * @param userId the ID of the owning user
+     * @param status the status to match, such as {@code pending}, {@code synced} or {@code failed}
+     * @return the matching sync entries; an empty list if there are none
+     */
     List<SyncQueueEntry> findByUserIdAndStatus(Long userId, String status);
 }

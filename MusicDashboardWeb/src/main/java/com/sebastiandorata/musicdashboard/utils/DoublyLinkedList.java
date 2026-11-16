@@ -20,6 +20,8 @@ import java.util.List;
  *
  * Use case: Analytics listings (songs, artists, albums, history)
  * where users paginate through results and may traverse backward.
+ *
+ * @param <T> the type of element stored in the list
  */
 public class DoublyLinkedList<T> {
 
@@ -133,6 +135,10 @@ public class DoublyLinkedList<T> {
      * Returns a window (page) of elements from the list.
      * Time Complexity: O(offset + limit)
      * Space Complexity: O(limit)
+     *
+     * @param offset the zero-based index of the first element to return
+     * @param limit  the maximum number of elements to return
+     * @return the elements in the window, or an empty list if {@code offset} is out of range
      */
     public List<T> getWindow(int offset, int limit) {
         List<T> window = new ArrayList<>();

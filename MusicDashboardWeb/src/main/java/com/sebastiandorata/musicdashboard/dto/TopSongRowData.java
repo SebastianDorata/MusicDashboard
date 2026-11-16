@@ -10,9 +10,13 @@ import com.sebastiandorata.musicdashboard.presentation.Analytics.viewmodel.TopSo
  * entity so that clicking the row starts playback immediately.</p>
  */
 public class TopSongRowData {
+    /** Title of the song. */
     public String songTitle;
+    /** Primary artist name for the song. */
     public String artistName;
+    /** Total duration of the song in seconds. */
     public int durationSeconds;
+    /** Song entity used by the click handler to start playback. */
     public Song song;
 
 

@@ -15,14 +15,23 @@ import java.util.function.Consumer;
  */
 
 public class AllTimeStatsData {
+    /** Total listening time across all years, in whole hours. */
     public Integer totalAllTimeHours;
+    /** Listening time for the selected year, in whole hours. */
     public Integer currentYearHours;
+    /** Listening time for the year before the selected year, in whole hours. */
     public Integer previousYearHours;
+    /** Listening time for the all-time highest year, in whole hours. */
     public Integer highestYearHours;
+    /** The calendar year with the highest listening time. */
     public Integer highestYear;
+    /** Current year hours minus previous year hours. */
     public Integer deltaVsPrevious;
+    /** Current year hours minus the all-time highest year hours. */
     public Integer deltaVsAllTimeHigh;
+    /** {@code true} if playback history exists for the year before the selected year. */
     public boolean hasPreviousYear;
+    /** {@code true} if the previous year is also the all-time highest year. */
     public boolean isPreviousYearHighest;
 
 

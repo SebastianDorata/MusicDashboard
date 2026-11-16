@@ -18,8 +18,19 @@ import java.util.Optional;
  */
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Long> {
+    /**
+     * Finds an artist by its exact name. Used during import to reuse an existing artist record.
+     *
+     * @param name the artist name to match exactly
+     * @return the matching artist, or an empty {@code Optional} if none exists
+     */
     Optional<Artist> findByName(String name);
 
+    /**
+     * Fetches all artists with their songs, song genres and albums in one query.
+     *
+     * @return every artist, with those associations loaded; an empty list if there are no artists
+     */
     @Query("SELECT DISTINCT a FROM Artist a " +
             "LEFT JOIN FETCH a.songs s " +
             "LEFT JOIN FETCH s.genres " +
@@ -27,6 +38,12 @@ public interface ArtistRepository extends JpaRepository<Artist, Long> {
     List<Artist> findAllWithSongs();
 
 
+    /**
+     * Fetches one artist with their albums in one query.
+     *
+     * @param id the artist ID
+     * @return the artist with albums loaded, or an empty {@code Optional} if no artist has this ID
+     */
     @Query("SELECT a FROM Artist a " +
             "LEFT JOIN FETCH a.albums " +
             "WHERE a.artistId = :id")

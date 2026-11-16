@@ -13,14 +13,35 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository <User, Long>{
 
+    /**
+     * Finds a user by exact email address.
+     *
+     * @param email the email address to match
+     * @return the matching user, or an empty {@code Optional} if none exists
+     */
     Optional<User> findByEmail(String email);
 
-    // Check if email already exists
+    /**
+     * Checks whether an account already uses the given email address.
+     *
+     * @param email the email address to check
+     * @return {@code true} if a user with this email exists
+     */
     boolean existsByEmail(String email);
 
-    // Find user by username
+    /**
+     * Finds a user by exact username.
+     *
+     * @param username the username to match
+     * @return the matching user, or an empty {@code Optional} if none exists
+     */
     Optional<User> findByUsername(String username);
 
-    // Check if username already exists
+    /**
+     * Checks whether an account already uses the given username.
+     *
+     * @param username the username to check
+     * @return {@code true} if a user with this username exists
+     */
     boolean existsByUsername(String username);
 }

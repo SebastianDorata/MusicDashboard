@@ -37,6 +37,8 @@ public class ListeningHistoryService {
      *
      * <p>Time Complexity: O(n).</p>
      * <p>Space Complexity: O(k) where k = valid plays.</p>
+     *
+     * @return the current user's valid plays, newest first; an empty list when no user is logged in
      */
     public DoublyLinkedList<PlaybackHistory> getListeningHistory() {
         Long userId = userSessionService.getCurrentUserId();
@@ -60,6 +62,10 @@ public class ListeningHistoryService {
      * Gets a specific window from listening history.
      * <p>Time Complexity: O(offset + limit).</p>
      * <p>Space Complexity: O(limit).</p>
+     *
+     * @param offset the zero-based index of the first entry to return
+     * @param limit  the maximum number of entries to return
+     * @return the entries in the window, newest first; an empty list when {@code offset} is out of range
      */
     public List<PlaybackHistory> getListeningHistoryWindow(int offset, int limit) {
         DoublyLinkedList<PlaybackHistory> history = getListeningHistory();
@@ -69,6 +75,8 @@ public class ListeningHistoryService {
     /**
      * Gets total count of valid listening history entries.
      * Time Complexity: O(n)
+     *
+     * @return the number of valid plays for the current user; {@code 0} when no user is logged in
      */
     public int getListeningHistoryCount() {
         Long userId = userSessionService.getCurrentUserId();

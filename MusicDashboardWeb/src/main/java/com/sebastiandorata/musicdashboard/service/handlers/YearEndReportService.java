@@ -44,6 +44,10 @@ public class YearEndReportService {
      *
      * <p>Uses SERIALIZABLE isolation + DataIntegrityViolationException catch
      * to prevent duplicate report creation under concurrent access (TOCTOU).</p>
+     *
+     * @param year the calendar year of the report
+     * @return the stored report for the year, generated first if it did not exist
+     * @throws IllegalStateException if no user is logged in
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public YearEndReport getOrGenerateYearReport(int year) {
@@ -108,6 +112,10 @@ public class YearEndReportService {
     /**
      * Returns the top N most-played songs for the current user in the given year.
      * Read-only — no report is generated or persisted here.
+     *
+     * @param year  the calendar year to rank within
+     * @param limit the maximum number of songs to return
+     * @return song/play-count entries, highest count first; an empty list when no user is logged in
      */
     public List<Map.Entry<Song, Long>> getTopSongsForYear(int year, int limit) {
         Long userId = userSessionService.getCurrentUserId();
@@ -131,6 +139,10 @@ public class YearEndReportService {
     /**
      * Returns the top N most-listened-to artists for the current user in the given year.
      * Read-only — no report is generated or persisted here.
+     *
+     * @param year  the calendar year to rank within
+     * @param limit the maximum number of artists to return
+     * @return artist/play-count entries, highest count first; an empty list when no user is logged in
      */
     public List<Map.Entry<Artist, Long>> getTopArtistsForYear(int year, int limit) {
         Long userId = userSessionService.getCurrentUserId();
@@ -155,6 +167,9 @@ public class YearEndReportService {
     /**
      * Returns a sparse map of YearMonth → total listening minutes for chart visualization.
      * Months with no activity are omitted. Only valid plays are included.
+     *
+     * @param year the calendar year to chart
+     * @return listening minutes keyed by month; an empty map when no user is logged in
      */
     public Map<YearMonth, Integer> getMonthlyListeningTime(int year) {
         Long userId = userSessionService.getCurrentUserId();
@@ -174,6 +189,8 @@ public class YearEndReportService {
     /**
      * Returns the distinct years for which the current user has any playback history,
      * sorted descending (most recent first).
+     *
+     * @return the years with playback history, newest first; an empty list when no user is logged in
      */
     public List<Integer> getAvailableYears() {
         Long userId = userSessionService.getCurrentUserId();
