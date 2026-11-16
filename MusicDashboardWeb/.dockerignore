@@ -20,6 +20,9 @@ target-*/
 # also keeps them out of the jar's static resources.
 README.md
 **/README.md
+# Generated Javadoc HTML and the script that builds it
+docs/
+generate-javadoc.sh
 
 # Docker files themselves
 Dockerfile

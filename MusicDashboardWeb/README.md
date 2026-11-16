@@ -5,12 +5,14 @@ The Spring Web edition of MusicDashboard: a personal music-library app (library 
 ## Table of contents
 
 - [src](src/README.md): the Maven source tree (Java code in `src/main/java`, configuration, migrations, templates and static assets in `src/main/resources`)
+- [docs](docs/README.md): the generated Javadoc HTML for the Java code (start at [docs/index.html](docs/index.html))
 - [Project overview](#project-overview)
 - [Sequence diagram](#sequence-diagram)
 - [Dependencies](#dependencies)
 - [Tech stack](#tech-stack)
 - [How to run](#how-to-run)
 - [Run with Docker](#run-with-docker): [Dockerfile](Dockerfile), [docker-compose.yml](docker-compose.yml) and [.dockerignore](.dockerignore)
+- [API documentation (Javadoc)](#api-documentation-javadoc): [generate-javadoc.sh](generate-javadoc.sh)
 - [Relation to the desktop edition](#relation-to-the-desktop-edition)
 - [References](#references)
 
@@ -146,6 +148,20 @@ What to know:
 - **Health.** The container reports healthy once the sign-in page answers.
 - **PostgreSQL** is not wired into the compose file. Under the `postgres` profile Flyway is given two migrations numbered V3, one in `common` and one in `postgresql` (see the [postgresql migrations README](src/main/resources/db/migration/postgresql/README.md)).
 
+## API documentation (Javadoc)
+
+Every class and every public or protected member in `src/main/java` carries a Javadoc comment. The browsable HTML version is in [docs](docs/README.md); open [docs/index.html](docs/index.html).
+
+To regenerate it after changing any Javadoc comment, run [generate-javadoc.sh](generate-javadoc.sh) from this folder:
+
+```bash
+./generate-javadoc.sh
+```
+
+The script asks Maven for the project's classpath, runs the JDK's `javadoc` tool<sup>12</sup> with the options IntelliJ's "Generate JavaDoc" uses by default (protected scope, an index split per letter), and replaces `docs/` only when the tool reports no errors. It adds `-notimestamp`, so regenerating unchanged sources produces identical files. The tool's full output goes to `target/javadoc.log`.
+
+The tool also prints one "use of default constructor" warning for each class that has no explicit constructor (Spring beans, mostly). The script counts those separately from real documentation gaps, of which there are currently none.
+
 ## Relation to the desktop edition
 
 The JavaFX desktop edition lives one folder up. Entities, repositories, services, DTOs and Flyway migrations are carried over. What changed:
@@ -171,3 +187,4 @@ Both editions use the same H2 file by default, so they share one library, accoun
 9. Docker, multi-stage builds. https://docs.docker.com/build/building/multi-stage/
 10. Docker, Compose file reference. https://docs.docker.com/reference/compose-file/
 11. Spring Boot, externalized configuration. https://docs.spring.io/spring-boot/reference/features/external-config.html
+12. Oracle, the javadoc command. https://docs.oracle.com/en/java/javase/25/docs/specs/man/javadoc.html
