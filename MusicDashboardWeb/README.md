@@ -10,6 +10,7 @@ The Spring Web edition of MusicDashboard: a personal music-library app (library 
 - [Dependencies](#dependencies)
 - [Tech stack](#tech-stack)
 - [How to run](#how-to-run)
+- [Run with Docker](#run-with-docker): [Dockerfile](Dockerfile), [docker-compose.yml](docker-compose.yml) and [.dockerignore](.dockerignore)
 - [Relation to the desktop edition](#relation-to-the-desktop-edition)
 - [References](#references)
 
@@ -101,6 +102,7 @@ From `pom.xml` (versions managed by the Spring Boot 4.0.3 parent unless a versio
 - Thymeleaf templates, plain JavaScript and CSS (no framework, no front-end build step)
 - Flyway migrations
 - H2 2.3.232 file database (default) or PostgreSQL
+- Docker (optional): a two-stage image on Eclipse Temurin 25, started with Docker Compose
 
 ## How to run
 
@@ -118,6 +120,31 @@ Database selection is by profile (`DB_PROFILE`):
 - `postgres`: set `DB_PROFILE=postgres` and the `DB_PASSWORD` environment variable; the datasource points at `localhost:5432/MusicDashDB`.
 
 The `application*.properties` files are git-ignored, as in the desktop project, so a fresh clone must create them.
+
+## Run with Docker
+
+Three files in this folder package the app as a container:
+
+- [Dockerfile](Dockerfile): a two-stage build<sup>9</sup>. Maven on JDK 25 compiles and packages the jar; the final image holds only a Java 25 runtime and that jar, and runs as an unprivileged user.
+- [docker-compose.yml](docker-compose.yml): starts the container with a named volume for its data and your music folder mounted<sup>10</sup>.
+- [.dockerignore](.dockerignore): keeps build output, IDE files and documentation out of the build context.
+
+From this folder:
+
+```bash
+docker compose up --build
+```
+
+Then open `http://localhost:8080` and create an account on the sign-in page.
+
+What to know:
+
+- **Its own database.** The container keeps an H2 file in the `musicdashboard-data` volume, under `/data/db`. It is separate from the `~/.musicdashboard` file that the desktop edition and `mvn spring-boot:run` share, because the song paths stored there point at host folders that do not exist inside the container.
+- **Your music.** `MUSIC_DIR` (default `~/Music`) is mounted at `/music`. On the Import page, enter `/music` as the folder to scan. Files uploaded through the browser go to `/data/uploads` in the same volume.
+- **Cover art.** The importer saves embedded cover art as `cover.jpg` beside the audio files, so the music folder is mounted read-write. Append `:ro` to that mount in `docker-compose.yml` to forbid it; albums then show the placeholder icon.
+- **Settings.** The image sets the datasource, Flyway locations, upload folder and port through environment variables, which take precedence over the `application*.properties` files<sup>11</sup>. It therefore runs the same from a fresh clone that lacks those files. Override any of them with an `environment:` block in the compose file; `MUSICDASHBOARD_PORT` changes the published port.
+- **Health.** The container reports healthy once the sign-in page answers.
+- **PostgreSQL** is not wired into the compose file. Under the `postgres` profile Flyway is given two migrations numbered V3, one in `common` and one in `postgresql` (see the [postgresql migrations README](src/main/resources/db/migration/postgresql/README.md)).
 
 ## Relation to the desktop edition
 
@@ -141,3 +168,6 @@ Both editions use the same H2 file by default, so they share one library, accoun
 6. Flyway documentation. https://documentation.red-gate.com/flyway
 7. Spring MVC reference. https://docs.spring.io/spring-framework/reference/web/webmvc.html (Spring Boot reference: https://docs.spring.io/spring-boot/)
 8. H2, automatic mixed mode. https://www.h2database.com/html/features.html#auto_mixed_mode
+9. Docker, multi-stage builds. https://docs.docker.com/build/building/multi-stage/
+10. Docker, Compose file reference. https://docs.docker.com/reference/compose-file/
+11. Spring Boot, externalized configuration. https://docs.spring.io/spring-boot/reference/features/external-config.html

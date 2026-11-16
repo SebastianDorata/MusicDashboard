@@ -1,0 +1,29 @@
+# Runs the MusicDashboard web edition in one container.
+#
+#   docker compose up --build        build the image and start the app
+#   docker compose down              stop it (the data volume is kept)
+#
+# Optional settings, read from the shell or from a .env file next to this file:
+#   MUSICDASHBOARD_PORT   host port to publish (default 8080)
+#   MUSIC_DIR             host folder with your music (default ~/Music)
+
+services:
+  musicdashboard-web:
+    build: .
+    image: musicdashboard-web:latest
+    container_name: musicdashboard-web
+    ports:
+      - "${MUSICDASHBOARD_PORT:-8080}:8080"
+    volumes:
+      # Database and browser uploads. A named volume, so the data survives
+      # rebuilding or removing the container.
+      - musicdashboard-data:/data
+      # Your music, visible inside the container as /music. On the Import page,
+      # enter /music as the folder to scan. It is mounted read-write because the
+      # importer saves embedded cover art as cover.jpg beside the audio files;
+      # append ":ro" to forbid that (albums then show the placeholder icon).
+      - ${MUSIC_DIR:-${HOME}/Music}:/music
+    restart: unless-stopped
+
+volumes:
+  musicdashboard-data:
