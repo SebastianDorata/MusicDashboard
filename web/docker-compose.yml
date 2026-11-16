@@ -7,6 +7,10 @@
 #   MUSICDASHBOARD_PORT   host port to publish (default 8080)
 #   MUSIC_DIR             host folder with your music (default ~/Music)
 
+# A fixed project name keeps the volume and network names the same wherever
+# this folder lives or whatever it is called.
+name: musicdashboard-web
+
 services:
   musicdashboard-web:
     build: .

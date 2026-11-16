@@ -1,3 +1,5 @@
+[← Back to the repository root](../README.md)
+
 # MusicDashboard Web
 
 The Spring Web edition of MusicDashboard: a personal music-library app (library browsing, playlists, import, listening analytics and playback) that runs in the browser. It is a second copy of the JavaFX desktop edition in which the JavaFX client layer was replaced by Spring MVC controllers, Thymeleaf templates and plain JavaScript and CSS.
@@ -164,7 +166,7 @@ The tool also prints one "use of default constructor" warning for each class tha
 
 ## Relation to the desktop edition
 
-The JavaFX desktop edition lives one folder up. Entities, repositories, services, DTOs and Flyway migrations are carried over. What changed:
+The JavaFX desktop edition lives beside this folder, in [fx](../fx/README.md). Entities, repositories, services, DTOs and Flyway migrations are carried over. What changed:
 
 - Controllers are Spring MVC controllers returning Thymeleaf views and JSON instead of JavaFX scene controllers.
 - Many users can be signed in at once; per-user state comes from Spring Security.
