@@ -43,3 +43,6 @@ buildh2.sh
 
 application-embedded.properties
 application-postgres.properties
+
+# Docker Compose settings (holds the database password)
+.env

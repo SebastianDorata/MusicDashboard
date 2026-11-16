@@ -54,7 +54,7 @@ sequenceDiagram
     participant C as DashboardController
     participant VM as View models / services
     participant R as Repositories
-    participant DB as Database (H2 or PostgreSQL)
+    participant DB as PostgreSQL
     participant T as Thymeleaf
     B->>Sec: GET /dashboard (session cookie)
     Sec->>Sec: check authentication
@@ -88,10 +88,10 @@ From `pom.xml` (versions managed by the Spring Boot 4.0.3 parent unless a versio
 | spring-boot-starter-security | managed (Spring Security 7.0.4) | Form login, authorization, BCrypt |
 | spring-boot-starter-data-jpa | managed | Spring Data repositories and Hibernate |
 | spring-boot-starter-jdbc | managed | JDBC and the connection pool |
-| spring-boot-starter-flyway | managed | Flyway schema migrations |
+| spring-boot-starter-flyway, flyway-database-postgresql | managed | Flyway schema migrations, with Flyway's PostgreSQL support |
 | spring-boot-devtools | managed (runtime, optional) | Automatic restart during development |
-| h2 | 2.3.232 (runtime) | Embedded database, default profile |
-| postgresql | managed (runtime) | PostgreSQL driver for the `postgres` profile |
+| postgresql | managed (runtime) | PostgreSQL JDBC driver, used by the default `postgres` profile |
+| h2 | 2.3.232 (runtime) | Embedded database for the optional `embedded` profile |
 | lombok | managed (optional) | Boilerplate reduction |
 | jaudiotagger (com.github.RouHim) | 2.0.16 | Reading audio tags (artist, album, title, duration) |
 | jna | 5.19.1 | Native access library |
@@ -105,37 +105,52 @@ From `pom.xml` (versions managed by the Spring Boot 4.0.3 parent unless a versio
 - Spring Boot 4.0.3, Spring MVC, Spring Security 7, Spring Data JPA with Hibernate
 - Thymeleaf templates, plain JavaScript and CSS (no framework, no front-end build step)
 - Flyway migrations
-- H2 2.3.232 file database (default) or PostgreSQL
+- PostgreSQL (tested with version 18), or an embedded H2 2.3.232 file for running without a database server
 - Docker (optional): a two-stage image on Eclipse Temurin 25, started with Docker Compose
 
 ## How to run
 
-From this folder:
+The application needs a PostgreSQL database, the `DB_PASSWORD` environment variable and three configuration files. The root README's [Getting started](../README.md#getting-started) section walks through all three; the files go in `src/main/resources` of this folder.
+
+The web edition adds these lines to `application.properties`:
+
+```properties
+server.port=8080
+# Keep the persistence session open while a template renders
+spring.jpa.open-in-view=true
+# Audio uploads from the Import page
+spring.servlet.multipart.max-file-size=500MB
+spring.servlet.multipart.max-request-size=4GB
+# Where files uploaded through the browser are stored before import
+musicdashboard.upload-dir=${user.home}/.musicdashboard/uploads
+```
+
+Then, from this folder:
 
 ```bash
 JAVA_HOME=$(/usr/libexec/java_home -v 25) mvn spring-boot:run
 ```
 
-Then open `http://localhost:8080` and create an account on the sign-in page. `server.port` and the other settings are in `src/main/resources/application.properties`.
+Open `http://localhost:8080` and create an account on the sign-in page. Flyway creates the tables on first start.
 
-Database selection is by profile (`DB_PROFILE`):
+Database selection is by profile, through the `DB_PROFILE` environment variable:
 
-- `embedded` (default): the H2 file `~/.musicdashboard/data/musicdashboard` opened with `AUTO_SERVER=TRUE`<sup>8</sup>, so several processes can use it at once.
-- `postgres`: set `DB_PROFILE=postgres` and the `DB_PASSWORD` environment variable; the datasource points at `localhost:5432/MusicDashDB`.
-
-The `application*.properties` files are git-ignored, as in the desktop project, so a fresh clone must create them.
+- `postgres` (default): PostgreSQL at `localhost:5432`, database `MusicDashDB`, user `postgres`, password from `DB_PASSWORD`.
+- `embedded`: an H2 file at `~/.musicdashboard/data/musicdashboard`, opened with `AUTO_SERVER=TRUE`<sup>8</sup> so that more than one process can use it. No database server is needed.
 
 ## Run with Docker
 
-Three files in this folder package the app as a container:
+These files in this folder package the app and its database as containers:
 
 - [Dockerfile](Dockerfile): a two-stage build<sup>9</sup>. Maven on JDK 25 compiles and packages the jar; the final image holds only a Java 25 runtime and that jar, and runs as an unprivileged user.
-- [docker-compose.yml](docker-compose.yml): starts the container with a named volume for its data and your music folder mounted<sup>10</sup>.
+- [docker-compose.yml](docker-compose.yml): starts the application and a PostgreSQL 18 database as two containers, with named volumes for the data and your music folder mounted<sup>10</sup>.
+- [.env.example](.env.example): a template for the settings the compose file reads.
 - [.dockerignore](.dockerignore): keeps build output, IDE files and documentation out of the build context.
 
-From this folder:
+From this folder, choose a database password and start both containers:
 
 ```bash
+cp .env.example .env    # then edit .env and set DB_PASSWORD
 docker compose up --build
 ```
 
@@ -143,12 +158,12 @@ Then open `http://localhost:8080` and create an account on the sign-in page.
 
 What to know:
 
-- **Its own database.** The container keeps an H2 file in the `musicdashboard-data` volume, under `/data/db`. It is separate from the `~/.musicdashboard` file that the desktop edition and `mvn spring-boot:run` share, because the song paths stored there point at host folders that do not exist inside the container.
-- **Your music.** `MUSIC_DIR` (default `~/Music`) is mounted at `/music`. On the Import page, enter `/music` as the folder to scan. Files uploaded through the browser go to `/data/uploads` in the same volume.
+- **Its own database.** The compose file runs PostgreSQL in a second container, `musicdashboard-db`, and keeps its data in the `musicdashboard-db` volume. It is separate from any PostgreSQL server on your machine, so an existing library is not visible here: create an account and import your music on first start. The application container waits for the database to accept connections before it starts.
+- **The password.** `DB_PASSWORD` is required and is given to both containers. It is read from the `.env` file, which is git-ignored, and is never baked into the image.
+- **Your music.** `MUSIC_DIR` (default `~/Music`) is mounted at `/music`. On the Import page, enter `/music` as the folder to scan. Files uploaded through the browser go to `/data/uploads` in the `musicdashboard-data` volume.
 - **Cover art.** The importer saves embedded cover art as `cover.jpg` beside the audio files, so the music folder is mounted read-write. Append `:ro` to that mount in `docker-compose.yml` to forbid it; albums then show the placeholder icon.
-- **Settings.** The image sets the datasource, Flyway locations, upload folder and port through environment variables, which take precedence over the `application*.properties` files<sup>11</sup>. It therefore runs the same from a fresh clone that lacks those files. Override any of them with an `environment:` block in the compose file; `MUSICDASHBOARD_PORT` changes the published port.
-- **Health.** The container reports healthy once the sign-in page answers.
-- **PostgreSQL** is not wired into the compose file. Under the `postgres` profile Flyway is given two migrations numbered V3, one in `common` and one in `postgresql` (see the [postgresql migrations README](src/main/resources/db/migration/postgresql/README.md)).
+- **Settings.** The image sets the PostgreSQL datasource, Flyway locations, upload folder and port through environment variables, which take precedence over the `application*.properties` files<sup>11</sup>. It therefore runs the same from a fresh clone that lacks those files. Override any of them with an `environment:` block in the compose file; `MUSICDASHBOARD_PORT` changes the published port.
+- **Health.** Each container has a health check: the database passes once it accepts connections, the application once the sign-in page answers.
 
 ## API documentation (Javadoc)
 
@@ -174,7 +189,7 @@ The JavaFX desktop edition lives beside this folder, in [fx](../fx/README.md). E
 - Import scans a server folder or takes browser uploads.
 - Playback happens in the browser; the server keeps only the queue and records history.
 
-Both editions use the same H2 file by default, so they share one library, accounts and listening history, and can run at the same time.
+Both editions connect to the same PostgreSQL database by default, so they share one library, accounts and listening history.
 
 ## References
 

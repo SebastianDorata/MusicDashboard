@@ -4,7 +4,7 @@
 
 ## Behavior
 
-Everything Maven copies onto the classpath unchanged. `application.properties` holds shared settings (JPA `validate`, Flyway, `server.port`, upload limits, `musicdashboard.upload-dir`) and picks the active profile from `DB_PROFILE`, defaulting to `embedded`. `application-embedded.properties` points at the H2 file `~/.musicdashboard/data/musicdashboard` with `AUTO_SERVER=TRUE`, shared with the desktop edition; `application-postgres.properties` points at PostgreSQL and reads `DB_PASSWORD`. `db/` has the Flyway migrations, `static/` the JS/CSS/icons and `templates/` the Thymeleaf pages. The `application*.properties` files are git-ignored.
+Everything Maven copies onto the classpath unchanged. `application.properties` holds shared settings (JPA `validate`, Flyway, `server.port`, upload limits, `musicdashboard.upload-dir`) and picks the active profile from `DB_PROFILE`, defaulting to `postgres`. `application-embedded.properties` is the optional alternative: it points at the H2 file `~/.musicdashboard/data/musicdashboard` with `AUTO_SERVER=TRUE`, so no database server is needed; `application-postgres.properties` points at PostgreSQL and reads `DB_PASSWORD`. `db/` has the Flyway migrations, `static/` the JS/CSS/icons and `templates/` the Thymeleaf pages. The `application*.properties` files are git-ignored.
 
 ## Responsibilities
 
@@ -39,8 +39,8 @@ sequenceDiagram
     participant Fly as Flyway (db/)
     participant Web as static/ + templates/
     Boot->>App: load shared settings
-    App-->>Boot: spring.profiles.active = DB_PROFILE or embedded
-    Boot->>Prof: load embedded or postgres datasource and flyway.locations
+    App-->>Boot: spring.profiles.active = DB_PROFILE or postgres
+    Boot->>Prof: load postgres or embedded datasource and flyway.locations
     Boot->>Fly: migrate from the configured locations
     Boot->>Web: serve assets and resolve Thymeleaf views
 ```

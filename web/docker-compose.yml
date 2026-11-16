@@ -1,9 +1,11 @@
-# Runs the MusicDashboard web edition in one container.
+# Runs the MusicDashboard web edition with its PostgreSQL database.
 #
-#   docker compose up --build        build the image and start the app
-#   docker compose down              stop it (the data volume is kept)
+#   docker compose up --build        build the image and start both containers
+#   docker compose down              stop them (the data volumes are kept)
 #
-# Optional settings, read from the shell or from a .env file next to this file:
+# Settings, read from the shell or from a .env file next to this file
+# (copy .env.example to .env to start):
+#   DB_PASSWORD           required: the PostgreSQL password
 #   MUSICDASHBOARD_PORT   host port to publish (default 8080)
 #   MUSIC_DIR             host folder with your music (default ~/Music)
 
@@ -12,14 +14,37 @@
 name: musicdashboard-web
 
 services:
+  db:
+    image: postgres:18
+    container_name: musicdashboard-db
+    environment:
+      POSTGRES_DB: MusicDashDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD, for example in a .env file next to docker-compose.yml}
+    volumes:
+      # From version 18 the official image keeps its data under /var/lib/postgresql.
+      - musicdashboard-db:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d MusicDashDB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
   musicdashboard-web:
     build: .
     image: musicdashboard-web:latest
     container_name: musicdashboard-web
+    depends_on:
+      db:
+        # Wait until PostgreSQL accepts connections, so the schema migration can run.
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD, for example in a .env file next to docker-compose.yml}
     ports:
       - "${MUSICDASHBOARD_PORT:-8080}:8080"
     volumes:
-      # Database and browser uploads. A named volume, so the data survives
+      # Files uploaded through the browser. A named volume, so they survive
       # rebuilding or removing the container.
       - musicdashboard-data:/data
       # Your music, visible inside the container as /music. On the Import page,
@@ -31,3 +56,4 @@ services:
 
 volumes:
   musicdashboard-data:
+  musicdashboard-db:

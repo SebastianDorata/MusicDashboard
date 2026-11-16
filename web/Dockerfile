@@ -18,11 +18,12 @@ RUN --mount=type=cache,target=/root/.m2 \
 # A JRE-only image: no Maven, no sources, no compiler.
 FROM eclipse-temurin:25-jre
 
-# Run as an unprivileged user. /data holds everything the app writes (database
-# and browser uploads); /music is where a host music folder is mounted.
+# Run as an unprivileged user. /data holds the files uploaded through the
+# browser; /music is where a host music folder is mounted. The database is a
+# separate PostgreSQL server.
 RUN groupadd --gid 10001 app \
  && useradd --uid 10001 --gid app --home-dir /home/app --create-home --shell /usr/sbin/nologin app \
- && mkdir -p /app /data/db /data/uploads /music \
+ && mkdir -p /app /data/uploads /music \
  && chown -R app:app /app /data
 
 WORKDIR /app
@@ -32,15 +33,16 @@ COPY --from=build --chown=app:app /workspace/target/MusicDashboardWeb-*.jar /app
 # whether or not the git-ignored application*.properties files were present
 # at build time. Environment variables take precedence over those files.
 #
-# The database is a single-process H2 file under /data, so AUTO_SERVER (used
-# when the desktop and web editions share one file) is not needed.
+# The database is PostgreSQL, reached at the host name "db" (the service name
+# in docker-compose.yml). The password is not baked into the image: pass
+# SPRING_DATASOURCE_PASSWORD when the container starts.
 ENV SERVER_PORT=8080 \
-    SPRING_DATASOURCE_URL=jdbc:h2:file:/data/db/musicdashboard \
-    SPRING_DATASOURCE_USERNAME=sa \
-    SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver \
+    SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/MusicDashDB \
+    SPRING_DATASOURCE_USERNAME=postgres \
+    SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.postgresql.Driver \
     SPRING_FLYWAY_ENABLED=true \
     SPRING_FLYWAY_BASELINE_ON_MIGRATE=true \
-    SPRING_FLYWAY_LOCATIONS=classpath:db/migration/common,classpath:db/migration/h2 \
+    SPRING_FLYWAY_LOCATIONS=classpath:db/migration/common,classpath:db/migration/postgresql \
     SPRING_JPA_HIBERNATE_DDL_AUTO=validate \
     SPRING_JPA_OPEN_IN_VIEW=true \
     SPRING_SERVLET_MULTIPART_MAX_FILE_SIZE=500MB \
