@@ -4,13 +4,13 @@
 
 ## Behavior
 
-Plain browser JavaScript with no framework and no build step. Two shared scripts load on every page, in this order: `app.js` defines `window.MD` (`api`, `toast`, `modal`, `menu`, `fmt`, `esc`, `artUrl`, `el`), and `player.js` defines `MD.player`, which drives one HTML5 audio element, calls `/api/player/*` and streams from `/media/song/{id}`. Each page then loads at most one script of its own:
+Plain browser JavaScript with no framework and no build step. Two shared scripts load on every page, in this order: `app.js` defines `window.MD` (`api`, `toast`, `modal`, `menu`, `fmt`, `esc`, `artUrl`, `el`, `touch`, `drawer`), and `player.js` defines `MD.player`, which drives one HTML5 audio element, calls `/api/player/*` and streams from `/media/song/{id}`. Each page then loads at most one script of its own:
 
-- `app.js` — shared helpers: JSON requests with the CSRF header and session-expiry redirect, toasts, dialogs, popup menus, time formatting and HTML escaping.
+- `app.js` — shared helpers: JSON requests with the CSRF header and session-expiry redirect, toasts, dialogs, popup menus, time formatting and HTML escaping. It also detects touch input (`MD.touch.coarse()` and `MD.touch.isTap(event)`) and opens the sidebar as a drawer below 1280px (`MD.drawer` with `open`, `close` and `toggle`). The drawer closes on Escape, on a backdrop tap, or when the window reaches desktop width.
 - `player.js` — the player: play, queue, next and previous, seek, play tracking, and restoring the player state after a page load.
-- `dashboard.js` — My Dashboard: draws the listening chart as SVG, fills the stat cards and refreshes them when the song changes.
-- `library.js` — My Library: genre and sort controls, alphabet bar, double-click to play, song menu and the edit and delete dialogs.
-- `playlist.js` — My Playlist: New, Rename and Delete dialogs, Play All, and removing a song from the playlist.
+- `dashboard.js` — My Dashboard: draws the listening chart as SVG, fills the stat cards and refreshes them when the song changes. The chart shows every second month label when it is narrow, and a single tap plays a Recently Played row on touch devices.
+- `library.js` — My Library: genre and sort controls, alphabet bar, double-click to play (a single tap on touch devices), a "⋯" button on album cards and rows that opens the same Edit Album and Delete Album menu as right-click, song menu and the edit and delete dialogs.
+- `playlist.js` — My Playlist: New, Rename and Delete dialogs, Play All, and removing a song from the playlist. A single tap plays a song row on touch devices, and song rows and cards have a "⋯" button that opens the same Play and Remove from Playlist menu as right-click.
 - `analytics.js` — My Reports: year selector, clickable rows, "View All" paged modals and the Yearly Wrapped slideshow.
 - `import.js` — Import Music: folder scan and drag-and-drop upload, then polls `/api/import/jobs/{jobId}` to show progress and results.
 - `login.js` — sign-in page: disables the button while signing in and rejects empty fields.
@@ -28,18 +28,18 @@ Plain browser JavaScript with no framework and no build step. Two shared scripts
 
 ## Code reused
 
-- Every page script reuses `window.MD` from `app.js` (for example `MD.api`, `MD.el`, `MD.fmt`, `MD.modal`, `MD.menu`).
+- Every page script reuses `window.MD` from `app.js` (for example `MD.api`, `MD.el`, `MD.fmt`, `MD.modal`, `MD.menu`). `library.js`, `playlist.js` and `dashboard.js` reuse `MD.touch.isTap` so that a single tap plays a row on touch devices.
 - `player.js` reuses `MD.api`, `MD.toast` and `MD.fmt` from `app.js`.
 - `dashboard.js`, `library.js`, `playlist.js` and `analytics.js` reuse `MD.player` to start playback and listen for `md:songchange`.
 - `import.js` reuses `MD.api.upload` for the multipart upload.
 
 ## Table of contents
 
-- [app.js](app.js) — shared `window.MD` helpers (loaded on every page)
+- [app.js](app.js) — shared `window.MD` helpers, touch detection and sidebar drawer (loaded on every page)
 - [player.js](player.js) — `MD.player` playback and audio control (loaded on every page)
-- [dashboard.js](dashboard.js) — My Dashboard chart, stat cards and refresh
-- [library.js](library.js) — My Library interactions and playback
-- [playlist.js](playlist.js) — My Playlist dialogs and playback
+- [dashboard.js](dashboard.js) — My Dashboard chart, stat cards, refresh and touch taps
+- [library.js](library.js) — My Library interactions, album menus, touch taps and playback
+- [playlist.js](playlist.js) — My Playlist dialogs, song menus, touch taps and playback
 - [analytics.js](analytics.js) — My Reports lists, modals and wrapped slideshow
 - [import.js](import.js) — Import Music scan, upload and progress
 - [login.js](login.js) — sign-in page feedback

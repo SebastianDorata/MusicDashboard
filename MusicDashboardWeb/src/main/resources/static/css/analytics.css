@@ -14,20 +14,29 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 15px;
-    padding: 15px 10px 15px 10px;
+    flex-wrap: wrap;
+    gap: 2px 12px;
+    padding: 10px 12px;
+    min-height: 44px;
     background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
     border: 1px solid #404040;
     border-radius: 8px;
 }
 /* Primary label grows, secondary keeps room for an artist name */
 .analytics-list-item .row-primary {
-    flex: 1;
-    min-width: 200px;
+    flex: 1 1 100%;
+    min-width: 0;
     overflow-wrap: anywhere;
 }
 .analytics-list-item .row-secondary {
-    min-width: 150px;
+    min-width: 0;
+}
+.analytics-list-item .analytics-row-secondary {
+    overflow-wrap: anywhere;
+    min-width: 0;
+}
+.analytics-list-item .analytics-row-meta {
+    margin-left: auto;
 }
 /* Rows that play a song or open an album (AnalyticsRowFactory.applyClickable) */
 .analytics-list-item.clickable {
@@ -39,12 +48,12 @@
 
 /* ─── Section container ─────────────────────────────────────── */
 .analytics-section-container {
-    padding: 20px;
+    padding: 0;
 }
 
 /* ─── Bottom player container ───────────────────────────────── */
 .analytics-player-container {
-    padding: 5px;
+    padding: 0;
 }
 .sidebarAnalytics {
     background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
@@ -57,8 +66,8 @@
 .analytics-center {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
+    gap: 14px;
+    padding: 12px;
 }
 .analytics-title {
     display: block;
@@ -96,8 +105,9 @@
 
 /* ─── "View all" modal (MD.modal) ───────────────────────────── */
 .md-modal-wide:has(.analytics-modal) {
-    width: min(1024px, 90vw);
-    height: min(720px, 90vh);
+    width: 100%;
+    height: 100%;
+    max-height: none;
     background: #1e1e1e;
 }
 .md-modal:has(.analytics-modal) .md-modal-body {
@@ -106,7 +116,7 @@
     flex: 1;
     min-height: 0;
     overflow: hidden;
-    padding: 20px;
+    padding: 12px;
 }
 .analytics-modal {
     display: flex;
@@ -131,23 +141,97 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 10px;
+    padding: 0;
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+}
+/* Rows keep their full height and the list scrolls (a row with a 44px min-height would otherwise be
+   squeezed to 44px by the fixed-height list and clip its second line) */
+.analytics-modal-list > .analytics-list-item {
+    flex-shrink: 0;
 }
 .analytics-modal-footer {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
     padding-top: 10px;
 }
 .analytics-modal-footer .btn-blue {
-    padding: 0 16px;
+    flex: 1 1 0;
+    padding: 0 6px;
+    min-width: 0;
+    white-space: nowrap;
 }
 .analytics-modal-footer .page-label {
-    min-width: 150px;
+    order: -1;
+    flex: 1 1 100%;
+    min-width: 0;
     text-align: center;
+}
+
+/* ─── Tablet: single-line rows, desktop modal size and footer ─ */
+@media (min-width: 768px) {
+    .analytics-list-item {
+        flex-wrap: nowrap;
+        gap: 15px;
+        padding: 15px 10px 15px 10px;
+    }
+    .analytics-list-item .row-primary {
+        flex: 1;
+        min-width: 200px;
+    }
+    .analytics-list-item .row-secondary {
+        min-width: 150px;
+    }
+    .analytics-list-item .analytics-row-meta {
+        margin-left: 0;
+    }
+    .md-modal-wide:has(.analytics-modal) {
+        width: min(1024px, 90vw);
+        height: min(720px, 90vh);
+    }
+    .analytics-modal-footer {
+        flex-wrap: nowrap;
+        gap: 10px;
+    }
+    .analytics-modal-footer .btn-blue {
+        flex: 0 1 auto;
+        padding: 0 16px;
+        white-space: normal;
+    }
+    .analytics-modal-footer .page-label {
+        order: 0;
+        flex: 0 1 auto;
+        min-width: 150px;
+    }
+}
+
+/* ─── Desktop: original values ──────────────────────────────── */
+@media (min-width: 1280px) {
+    .analytics-list-item {
+        min-height: auto;
+    }
+    .analytics-section-container {
+        padding: 20px;
+    }
+    .analytics-player-container {
+        padding: 5px;
+    }
+    .analytics-center {
+        gap: 20px;
+        padding: 20px;
+    }
+    .md-modal:has(.analytics-modal) .md-modal-body {
+        padding: 20px;
+    }
+    .analytics-modal-list {
+        padding: 10px;
+    }
+    .analytics-modal-list > .analytics-list-item {
+        flex-shrink: 1;
+    }
 }

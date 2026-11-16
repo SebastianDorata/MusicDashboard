@@ -12,45 +12,49 @@
 
 /* Page layout (desktop BorderPane centre: top 60 %, bottom fills the rest) ── */
 .dashboard-page {
-    display: grid;
-    grid-template-rows: minmax(560px, 60fr) minmax(320px, 40fr);
-    gap: 10px;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    height: auto;
     box-sizing: border-box;
 }
 .HomepageTopMenu,
 .HomepageBottomMenu {
     display: flex;
-    flex-direction: row;
-    gap: 0.5em;
+    flex-direction: column;
+    gap: 12px;
     min-height: 0;
     min-width: 0;
 }
 .HomepageTopHalf { /* Player and cards */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
     flex: 1;
     min-width: 0;
     min-height: 0;
 }
 .HomepageTopHalf > .player-large {
     flex: none;
-    max-height: 380px;
+    max-height: none; /* phones stack art above text, so no clipping */
     max-width: 100%;
 }
 .dashboard-stat-cards {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    flex: none;
     min-height: 0;
+}
+.dashboard-stat-card:first-child {
+    grid-column: 1 / -1;
 }
 /* Right-hand panels: clamp(240px, 20vw, 380px) like AppUtils.rightPanelPrefWidth() */
 .dashboard-right-panel {
-    width: clamp(240px, 20vw, 380px);
-    min-width: clamp(240px, 20vw, 380px);
-    max-width: clamp(240px, 20vw, 380px);
+    width: auto;
+    min-width: 0;
+    max-width: none;
     box-sizing: border-box;
 }
 
@@ -60,7 +64,7 @@
     flex-direction: column;
     gap: 6px;
     flex: 1 1 0;
-    min-width: 10em;
+    min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
     border-radius: 12px;
@@ -135,7 +139,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 1.1em 0.4em;
+    padding: 0.7em 0.4em;
+    min-height: 44px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .artist-name {
@@ -147,7 +152,7 @@
 }
 .artist-time {
     color: #7eb8f7;
-    font-size: 1.5em;
+    font-size: 1.2em;
     min-width: 65px;
     text-align: right;
 }
@@ -164,15 +169,15 @@
 .recent-list {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: none;
     min-height: 0;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 .play-history-row {
     display: flex;
     align-items: center;
-    flex: 0 0 10%;    /* each row is a tenth of the list height, like the bound prefHeight */
-    min-height: 30px;
+    flex: none;       /* desktop: a tenth of the list height, like the bound prefHeight */
+    min-height: 44px;
     padding: 0 6px;
     gap: 8px;
     border-radius: 8px;
@@ -189,7 +194,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 1.7em;
+    font-size: 16px;
     font-weight: normal;
     color: white;
 }
@@ -197,4 +202,81 @@
 /* Right panels sit beside the left column and stretch to the row height ── */
 .HomepageTopMenu > .recently-played-panel {
     align-self: stretch;
+}
+
+/* Recently Played time label: 14px on phones (desktop keeps the global 18px) */
+.play-history-row .wt-smmd-bld {
+    font-size: 14px;
+    flex: none;
+}
+
+/* Tablet (768px+): two-column grid, still one scrolling page ───────── */
+@media (min-width: 768px) {
+    .dashboard-page {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+    .HomepageTopMenu,
+    .HomepageBottomMenu {
+        display: contents;
+    }
+    .HomepageTopHalf { grid-column: 1 / -1; grid-row: 1; }
+    .dashboard-graph-wrap { grid-column: 1 / -1; grid-row: 2; }
+    .recently-played-panel { grid-column: 1; grid-row: 3; }
+    .top-artists-panel { grid-column: 2; grid-row: 3; }
+    .dashboard-stat-cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .dashboard-stat-card:first-child {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+    }
+}
+
+/* Desktop (1280px+): the original layout, unchanged ────────────────── */
+@media (min-width: 1280px) {
+    .dashboard-page {
+        display: grid;
+        grid-template-columns: none;
+        grid-template-rows: minmax(560px, 60fr) minmax(320px, 40fr);
+        gap: 10px;
+        height: 100%;
+        padding: 0;
+        flex-direction: row;
+    }
+    .HomepageTopMenu,
+    .HomepageBottomMenu {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5em;
+    }
+    .HomepageTopHalf { grid-column: auto; grid-row: auto; gap: 20px; }
+    .dashboard-graph-wrap { grid-column: auto; grid-row: auto; }
+    .recently-played-panel { grid-column: auto; grid-row: auto; }
+    .top-artists-panel { grid-column: auto; grid-row: auto; }
+    .HomepageTopHalf > .player-large { max-height: 380px; }
+    .dashboard-stat-cards {
+        display: flex;
+        flex-direction: row;
+        grid-template-columns: none;
+        gap: 12px;
+        flex: 1;
+    }
+    .dashboard-stat-card:first-child {
+        grid-column: auto;
+        grid-row: auto;
+    }
+    .dashboard-stat-card { min-width: 10em; }
+    .dashboard-right-panel {
+        width: clamp(240px, 20vw, 380px);
+        min-width: clamp(240px, 20vw, 380px);
+        max-width: clamp(240px, 20vw, 380px);
+    }
+    .artist-row { padding: 1.1em 0.4em; min-height: auto; }
+    .artist-time { font-size: 1.5em; }
+    .recent-list { flex: 1; overflow-y: auto; }
+    .play-history-row { flex: 0 0 10%; min-height: 30px; }
+    .play-history-song { font-size: 1.7em; }
+    .play-history-row .wt-smmd-bld { font-size: 18px; flex: 0 1 auto; }
 }

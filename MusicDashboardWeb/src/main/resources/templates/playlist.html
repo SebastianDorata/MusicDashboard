@@ -92,6 +92,7 @@
                             <div class="txt-white-sm playlist-card-name" th:text="${s.title}">Title</div>
                             <div class="txt-grey-sm playlist-card-name" th:text="${s.artist}">Artist</div>
                             <div class="txt-grey-sm" th:text="${s.duration}">0:00</div>
+                            <button type="button" class="song-row-menu-btn touch-only playlist-card-menu-btn" data-action="playlist-song-menu" aria-label="Song menu">⋯</button>
                         </div>
                     </div>
 
@@ -100,6 +101,7 @@
                             <span class="txt-grey-md playlist-col-index">#</span>
                             <span class="txt-grey-md grow">TITLE</span>
                             <span class="txt-grey-md playlist-col-duration">DURATION</span>
+                            <span class="playlist-col-menu touch-only" aria-hidden="true"></span>
                         </div>
                         <div class="playlist-song-row" th:each="s, st : ${songs}" th:attr="data-song-id=${s.id}">
                             <span class="playlist-song-main playlist-col-index" th:text="${st.count}">1</span>
@@ -108,6 +110,7 @@
                                 <span class="playlist-song-artist ellipsis" th:text="${s.artist}">Artist</span>
                             </span>
                             <span class="playlist-song-main playlist-col-duration" th:text="${s.duration}">0:00</span>
+                            <button type="button" class="song-row-menu-btn touch-only playlist-song-menu-btn" data-action="playlist-song-menu" aria-label="Song menu">⋯</button>
                         </div>
                     </div>
                 </th:block>

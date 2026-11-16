@@ -2,6 +2,10 @@
    BUTTONS & INTERACTIVE CONTROLS
    Single source of truth for all button and combo-box styles.
    (Web translation of the desktop buttons.css.)
+
+   Mobile-first (see globalStyle.css): below 1280px every button a
+   finger has to hit is at least 44px tall; the "Desktop sizes" block
+   at the end of this file restores the original desktop sizes.
    ═══════════════════════════════════════════════════════════════ */
 
 /* Shared: every styled button/link lays its content out centred */
@@ -21,6 +25,7 @@
     color: white;
     font-size: 14px;
     background: #1DB954;
+    min-height: 44px;
     padding: 8px 16px;
     border: none;
     border-radius: 20px;
@@ -37,6 +42,7 @@
 .btn-red {
     background: #d9534f;
     color: #ffffff;
+    min-height: 44px;
     padding: 8px 12px;
     border: none;
     border-radius: 5px;
@@ -53,7 +59,7 @@
     font-size: 13px;
     border: 1px solid #1DB954;
     border-radius: 8px;
-    height: 40px;
+    height: 44px;
     color: #ff4444;
     cursor: pointer;
 }
@@ -171,7 +177,7 @@
     border: 1px solid #1DB954;
     border-radius: 8px;
     padding: 9px 0 9px 0;
-    height: 40px;
+    height: 44px;
     cursor: pointer;
 }
 
@@ -265,12 +271,16 @@
 }
 
 /* ─── Song row menu button ──────────────────────────────────── */
+/* The "⋯" button. A 44px square below desktop width (and on any touch screen, see the end of the file). */
 .song-row-menu-btn {
     background: transparent;
     color: #888888;
-    font-size: 18px;
+    font-size: 22px;
     cursor: pointer;
-    padding: 0 8px 0 8px;
+    flex: none;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
     border: 1px solid transparent;
 }
 .song-row-menu-btn:hover {
@@ -283,11 +293,11 @@
 .combo-box,
 select.combo-box {
     background-color: transparent;
-    font-size: 13px;
+    font-size: 16px;   /* below desktop width: smaller text makes iOS zoom the page on focus */
     color: white;
     border: 1px solid #1DB954;
     border-radius: 8px;
-    height: 40px;
+    height: 44px;
     max-width: 100%;
     padding: 0 9px;
     cursor: pointer;
@@ -351,7 +361,7 @@ select.combo-box {
     border: 1px solid transparent;
     border-radius: 10px;
     cursor: pointer;
-    height: 42px;
+    height: 44px;
     justify-content: flex-start;
     text-align: left;
     white-space: pre;
@@ -399,6 +409,7 @@ select.combo-box {
     box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
     text-decoration: underline;
     border-radius: 15px;
+    min-height: 44px;
     padding: 10px 12px 10px 12px;
     cursor: pointer;
     width: 100%;
@@ -416,7 +427,7 @@ select.combo-box {
     border: 1px solid #1e90ff;
     border-radius: 8px;
     padding: 9px 0 9px 0;
-    height: 40px;
+    height: 44px;
     cursor: pointer;
 }
 .btn-blue:hover {
@@ -424,4 +435,45 @@ select.combo-box {
 }
 .btn-blue:active {
     background: rgba(30, 144, 255, 0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP SIZES (1280px and up)
+   The original sizes of the desktop port. Everything above this
+   block uses the 44px touch sizes.
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 1280px) {
+    .green-btn,
+    .btn-red,
+    .nav-btn-back {
+        min-height: auto;
+    }
+    .return-btn,
+    .view-All,
+    .btn-blue {
+        height: 40px;
+    }
+    .nav-btn {
+        height: 42px;
+    }
+    .song-row-menu-btn {
+        font-size: 18px;
+        flex: 0 1 auto;
+        min-width: auto;
+        min-height: auto;
+        padding: 0 8px 0 8px;
+    }
+    .combo-box,
+    select.combo-box {
+        font-size: 13px;
+        height: 40px;
+    }
+}
+
+/* Touch screens of any width: the "⋯" buttons keep a 44px target even at desktop width */
+@media (min-width: 1280px) and (pointer: coarse) {
+    .song-row-menu-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
 }

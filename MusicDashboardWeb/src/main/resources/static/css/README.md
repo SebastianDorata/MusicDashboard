@@ -4,11 +4,11 @@
 
 ## Behavior
 
-Web translations of the desktop JavaFX stylesheets. File names and class names match the desktop app, and the JavaFX `-fx-*` properties are rewritten as plain CSS. `templates/fragments/layout.html` loads three sheets on every page, in this order: `globalStyle.css` (reset, typography and shared utility classes), `buttons.css` (every button and combo-box style) and `musicPlayer.css` (the player panel). Each page then adds its own sheets through the `links` parameter of the `head` fragment. The files are:
+Web translations of the desktop JavaFX stylesheets. File names and class names match the desktop app, and the JavaFX `-fx-*` properties are rewritten as plain CSS. `templates/fragments/layout.html` loads three sheets on every page, in this order: `globalStyle.css` (reset, typography and shared utility classes), `buttons.css` (every button and combo-box style) and `musicPlayer.css` (the player panel). Each page then adds its own sheets through the `links` parameter of the `head` fragment. Every sheet is mobile-first: base rules suit a phone, `@media (min-width: 768px)` adds tablet changes, and `@media (min-width: 1280px)` restores the original desktop-port layout. Only these two breakpoints are used. The files are:
 
-- `globalStyle.css` — reset, text sizes and colours, panels, sidebar and shared utility classes (`txt-*`, `dark-table`, `dark-page-bg`, `dropZone`); loaded everywhere.
-- `buttons.css` — single source for button and combo-box styles (`green-btn`, `btn-red`, `view-All`, `month-btn`, `player-btn`); loaded everywhere.
-- `musicPlayer.css` — the player panel in its two sizes (`now-playing-bar`, `player-large`, `player-small`); loaded everywhere.
+- `globalStyle.css` — reset, text sizes and colours, panels and shared utility classes (`txt-*`, `dark-table`, `dark-page-bg`, `dropZone`, `touch-only`); loaded everywhere. It also owns the shell below 1280px: the document scrolls instead of a fixed 100vh shell, `--mobile-bar-h` sets the height of the top bar (`.mobile-bar`, `.mobile-menu-btn`), the sidebar (`.sidebar`) is an off-canvas drawer opened by the `sidebar-open` class on `<body>` over the `.sidebar-backdrop`, and dialogs, popup menus and toasts are sized for a phone.
+- `buttons.css` — single source for button and combo-box styles (`green-btn`, `btn-red`, `view-All`, `month-btn`, `player-btn`); loaded everywhere. Below 1280px every button a finger has to hit is at least 44px tall, and a "Desktop sizes" block at the end restores the original sizes.
+- `musicPlayer.css` — the player panel in its two sizes (`now-playing-bar`, `player-large`, `player-small`); loaded everywhere. On phones the large player stacks its art above the text, and the small player is a compact bar stuck to the bottom of the screen. From 768px the small bar is one row with time labels, and from 1280px both are the original desktop sizes.
 - `dashboard.css` — dashboard panels (`panels`) and their layout.
 - `graph.css` — the listening chart; the SVG elements drawn by `dashboard.js` carry the desktop class names.
 - `analytics.css` — row labels and rows of the My Reports lists.
@@ -18,6 +18,8 @@ Web translations of the desktop JavaFX stylesheets. File names and class names m
 - `playlist.css` — the My Playlist page layout (`playlist-page`, `playlist-content`).
 - `import.css` — the Import Music page (`import-page`).
 - `login.css` — the sign-in page (`main-background`, `login-page`, `login-card`).
+
+On phones, the page sheets stack their panels in one column and reflow their card grids. In `library.css` the alphabet bar becomes a horizontal strip stuck under the top bar. In `import.css` the results table becomes stacked rows below 768px. In `reports.css` and `analytics.css` report rows wrap onto two lines, and the weekly calendar and month buttons scale to the screen width. The original desktop layout is restored at 1280px.
 
 ## Responsibilities
 

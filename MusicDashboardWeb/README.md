@@ -19,6 +19,8 @@ MusicDashboard lets a user import audio files, browse them by song, album and ar
 
 Pages: `/login`, `/dashboard`, `/library`, `/playlist`, `/import`, `/analytics` and `/settings`. JSON endpoints live under `/api/**` and audio and cover art under `/media/**`. A small player bar sits at the bottom of every page except the dashboard, which has the large player.
 
+The front end is mobile-first: pages stack in one column on phones, with breakpoints at 768px (tablet) and 1280px. The desktop layout applies from 1280px upward, and below that the sidebar becomes a drawer opened from a top bar.
+
 The code follows an N-tier layout inside `com.sebastiandorata.musicdashboard`:
 
 - `controller`: Spring MVC controllers and the Spring Security configuration. They map routes and shape responses, nothing more.

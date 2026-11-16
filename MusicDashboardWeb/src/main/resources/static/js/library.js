@@ -5,12 +5,12 @@
  * The page itself is rendered by the server (view state = query string). This script adds:
  *   - genre / sort controls that submit their form on change (LibraryTopBarBuilder)
  *   - the alphabet bar that scrolls to a section divider (AlphabetBar)
- *   - playback: double-click a song row -> MD.player.playQueue(sortedIds, id) (queue rule of
- *     SongViewBuilder); click an album-detail row -> playQueue(albumSongs, id) (AlbumViewBuilder);
+ *   - playback: double-click (mouse) or single tap (touch) a song row -> MD.player.playQueue(sortedIds, id)
+ *     (queue rule of SongViewBuilder); click an album-detail row -> playQueue(albumSongs, id) (AlbumViewBuilder);
  *     click a favourites grid card -> MD.player.playSong(id) (CardFactory.createSongCard)
  *   - the "⋯" song menu and the Edit Song dialog (SongHandler, SongEditDialog)
- *   - the album right-click menu, Edit Album dialog and Delete Album confirmation
- *     (AlbumViewHelper, AlbumEditDialog)
+ *   - the album right-click menu and its touch replacement, the "⋯" button on album cards / rows,
+ *     plus the Edit Album dialog and Delete Album confirmation (AlbumViewHelper, AlbumEditDialog)
  *
  * Depends on window.MD (app.js) and MD.player (player.js).
  */
@@ -148,11 +148,13 @@
     }
 
     /**
-     * Wires playback: double-click on list rows, click on album-detail rows and favourites cards.
+     * Wires playback: double-click (mouse) or single tap (touch) on list rows, click on album-detail rows
+     * and favourites cards.
      * @returns {void}
      */
     function initPlayback() {
         document.addEventListener('dblclick', function (e) {
+            if (MD.touch.isTap(e)) return;
             const row = e.target.closest('.library-song-row');
             if (!row || e.target.closest('.song-row-menu-btn')) return;
             const id = idOf(row, 'songId');
@@ -160,6 +162,11 @@
         });
         document.addEventListener('click', function (e) {
             if (e.target.closest('.song-row-menu-btn')) return;
+            const songRow = e.target.closest('.library-song-row');
+            if (songRow && MD.touch.isTap(e)) {
+                MD.player.playQueue(queueFor(songRow), idOf(songRow, 'songId'));
+                return;
+            }
             const detailRow = e.target.closest('.album-song-row');
             if (detailRow) {
                 MD.player.playQueue(queueFor(detailRow), idOf(detailRow, 'songId'));
@@ -254,9 +261,8 @@
         ok.disabled = true;
         playlists.forEach(function (pl) {
             const item = MD.el('div', {
-                role: 'option', tabindex: '0',
-                text: pl.name + '  (' + pl.songCount + ' songs)',
-                style: {padding: '8px 12px', cursor: 'pointer', whiteSpace: 'pre'}
+                role: 'option', tabindex: '0', class: 'library-picker-item',
+                text: pl.name + '  (' + pl.songCount + ' songs)'
             });
             /** Marks this playlist as the picked one and enables OK. */
             const pick = function () {
@@ -441,21 +447,38 @@
     /* ─── Albums: context menu, edit, delete ────────────────── */
 
     /**
-     * Wires the right-click menu of album cards and rows (Edit Album, Delete Album).
-     * Inside the artist detail grid the menu is suppressed, like the desktop did.
+     * Builds the album menu items shared by the right-click menu and the "⋯" button.
+     * @param {HTMLElement} host the album card or row
+     * @returns {Array<{label:string, onClick:function(): void}>} the menu items
+     */
+    function albumMenuItems(host) {
+        return [
+            {label: '✏  Edit Album', onClick: function () { editAlbum(host); }},
+            {label: '🗑  Delete Album', onClick: function () { deleteAlbum(host); }}
+        ];
+    }
+
+    /**
+     * Wires the album menu: right-click on album cards and rows, and the "⋯" button (touch) next to them
+     * (Edit Album, Delete Album). Inside the artist detail grid the menu is suppressed, like the desktop did.
      * @returns {void}
      */
     function initAlbumMenu() {
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('[data-action="album-menu"]');
+            if (!btn) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const host = btn.parentElement.querySelector('[data-album-id]');
+            if (host) MD.menu.show(btn, albumMenuItems(host));
+        }, true);
         document.addEventListener('contextmenu', function (e) {
             const host = e.target.closest('[data-album-id]');
             if (!host) return;
             const scope = host.closest('[data-album-menu]');
             e.preventDefault();
             if (!scope || scope.dataset.albumMenu !== 'true') return;
-            MD.menu.show(e, [
-                {label: '✏  Edit Album', onClick: function () { editAlbum(host); }},
-                {label: '🗑  Delete Album', onClick: function () { deleteAlbum(host); }}
-            ]);
+            MD.menu.show(e, albumMenuItems(host));
         });
     }
 

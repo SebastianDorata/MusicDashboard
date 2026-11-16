@@ -4,10 +4,12 @@
  * DashboardGraphController, DashboardLineChartBuilder and SmoothLineChart).
  *
  *   - draws the listening chart as inline SVG (Catmull-Rom smoothing, tension 0.9, fixed 0-750 hour axis,
- *     month labels, per-series colours) and redraws it when the window is resized or the year changes;
+ *     month labels thinned to every other one on a narrow plot, per-series colours) and redraws it when
+ *     the window is resized or the year changes;
  *   - fills the colour-coded year title row and the "All Time Stats" figures beside the chart;
  *   - wires the click behaviour: stat-card song label (click = open album, double-click = play),
- *     album label (open album), recently-played row (double-click = play), artist row (open artist);
+ *     album label (open album), recently-played row (double-click = play, single tap on touch),
+ *     artist row (open artist);
  *   - refreshes stat cards, recently played and top artists from /api/dashboard/** when the playing
  *     song changes (md:songchange), once right away and once ~21 s later when the play has been recorded.
  *
@@ -149,7 +151,9 @@
 
         // Month labels
         const xAxis = svg('g', {'class': 'axis'});
+        const monthEvery = pw / 12 < 30 ? 2 : 1; // thin the labels when the plot is narrow
         MONTHS.forEach(function (name, i) {
+            if (i % monthEvery !== 0) return;
             const label = svg('text', {x: xOf(i), y: m.top + ph + 20, 'text-anchor': 'middle'});
             label.textContent = name;
             xAxis.appendChild(label);
@@ -342,7 +346,7 @@
         rows.forEach(function (r) {
             list.appendChild(MD.el('div', {
                 'class': 'play-history-row',
-                title: 'Double-click to play',
+                title: MD.touch.coarse() ? 'Tap to play' : 'Double-click to play',
                 dataset: r.songId != null ? {songId: r.songId} : {}
             }, [
                 MD.el('span', {'class': 'play-history-song', text: r.title}),
@@ -352,14 +356,29 @@
     }
 
     /**
-     * Wires double-click on Recently Played rows (delegated, so rebuilt rows keep working).
+     * Plays the song of the Recently Played row that contains the event target, if any.
+     * @param {Event} ev a click or dblclick event bubbling from inside #recentList
+     * @returns {void}
+     */
+    function playRecentRow(ev) {
+        const row = ev.target.closest('.play-history-row');
+        if (row && row.dataset.songId) MD.player.playFromLibrary(Number(row.dataset.songId));
+    }
+
+    /**
+     * Wires Recently Played rows (delegated, so rebuilt rows keep working): double-click plays with a
+     * mouse, a single tap plays on touch (the dblclick handler ignores taps so a song never starts twice).
+     * @returns {void}
      */
     function wireRecent() {
         const list = byId('recentList');
         if (!list) return;
+        list.addEventListener('click', function (ev) {
+            if (MD.touch.isTap(ev)) playRecentRow(ev);
+        });
         list.addEventListener('dblclick', function (ev) {
-            const row = ev.target.closest('.play-history-row');
-            if (row && row.dataset.songId) MD.player.playFromLibrary(Number(row.dataset.songId));
+            if (MD.touch.isTap(ev)) return;
+            playRecentRow(ev);
         });
     }
 

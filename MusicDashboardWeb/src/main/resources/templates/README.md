@@ -6,7 +6,7 @@
 
 One Thymeleaf template per page. A controller returns a view name, and Thymeleaf merges that page with the shared fragments and returns HTML. Each page names its `<head>` through `fragments/layout :: head(...)` (which also brings in the global and player stylesheets), its sidebar through `layout :: sidebar('<key>')`, and its player through `fragments/player :: bar` or `:: large`. The pages are `login`, `dashboard`, `library`, `playlist`, `import`, `analytics`, `settings` and `error`.
 
-Two pages are assembled from subfolders. `library.html` picks one pane by the model attribute `pane` (`library/topbar`, then `library/songs`, `albums`, `artists`, `favourites` and the detail panes). `analytics.html` picks one section by the `report` parameter with `th:case` (`analytics/history`, `songs`, `albums`, `artists`, `weekly`, `monthly` or `yearly`, history being the default). `settings.html` is a placeholder that shows only its title and the player bar. `error.html` shows the status, the error and the message, with a link back to the dashboard.
+Two pages are assembled from subfolders. `library.html` picks one pane by the model attribute `pane` (`library/topbar`, then `library/songs`, `albums`, `artists`, `favourites` and the detail panes). `analytics.html` picks one section by the `report` parameter with `th:case` (`analytics/history`, `songs`, `albums`, `artists`, `weekly`, `monthly` or `yearly`, history being the default). `analytics.html` has its own sidebar, so it includes `mobileBar` and `sidebarBackdrop` itself and gives its `<aside>` the id `app-sidebar`. `settings.html` is a placeholder that shows only its title and the player bar. `error.html` shows the status, the error and the message, with a link back to the dashboard.
 
 ## Responsibilities
 
@@ -31,7 +31,7 @@ Two pages are assembled from subfolders. `library.html` picks one pane by the mo
 - [login.html](login.html) — sign-in page (two cards side by side)
 - [dashboard.html](dashboard.html) — My Dashboard: large player, stat cards, recently played, chart and top artists
 - [library.html](library.html) — My Library shell that renders one pane chosen by `pane`
-- [playlist.html](playlist.html) — My Playlist page showing the selected playlist in grid or list mode
+- [playlist.html](playlist.html) — My Playlist page showing the selected playlist in grid or list mode, with a "⋯" menu button on each song row and card
 - [import.html](import.html) — Import Music page with scan and drop zone
 - [analytics.html](analytics.html) — My Reports page that renders one section chosen by `report`
 - [settings.html](settings.html) — placeholder Settings page

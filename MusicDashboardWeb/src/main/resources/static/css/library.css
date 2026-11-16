@@ -8,8 +8,9 @@
 
 /* ─── Album detail ──────────────────────────────────────────── */
 .album-detail-header {
-    padding: 20px;
+    padding: 12px;
     gap: 15px;
+    flex-wrap: wrap;            /* phone: the back button and name may wrap */
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -21,12 +22,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 12px;
     background: transparent;
 }
 .album-artwork {
-    width: 300px;
-    height: 300px;
+    width: min(300px, 70vw);
+    height: auto;
+    aspect-ratio: 1 / 1;
     position: relative;
     box-shadow: 0 4px 24px rgba(76, 175, 80, 0.35);
 }
@@ -42,6 +44,8 @@
     font-weight: bold;
     color: #1DB954;
     cursor: pointer;
+    text-align: center;
+    overflow-wrap: anywhere;
 }
 .album-artist-label:hover {
     color: #1ed760;
@@ -93,7 +97,7 @@
 /* ─── Section / view headers ────────────────────────────────── */
 .view-header {
     color: white;
-    font-size: 26px;
+    font-size: 20px;
     font-weight: bold;
     margin: 0;
     padding: 0 0 12px 4px;
@@ -103,7 +107,8 @@
 
 /* ─── Song list ─────────────────────────────────────────────── */
 .song-list-row {
-    padding: 12px 20px 12px 20px;
+    padding: 6px 4px 6px 12px;
+    min-height: 56px;
     background: transparent;
     border: 0 solid transparent;
     border-bottom: 1px solid rgba(76, 175, 80, 0.12);
@@ -194,10 +199,10 @@
     border: 1px solid transparent;
     border-radius: 10px;
     padding: 12px;
-    width: 170px;
-    min-width: 140px;
-    max-width: 220px;
-    min-height: 240px;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    min-height: 0;
     cursor: pointer;
     background: rgba(255, 255, 255, 0.03);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
@@ -210,8 +215,9 @@
     box-shadow: 0 0 16px rgba(29, 185, 84, 0.3);
 }
 .library-card-art {
-    width: 140px;
-    height: 140px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
     position: relative;
     flex: none;
 }
@@ -221,14 +227,14 @@
     font-weight: bold;
     white-space: normal;
     overflow-wrap: anywhere;
-    max-width: 146px;
+    max-width: 100%;
 }
 .library-card-subtitle {
     color: #b3b3b3;
     font-size: 12px;
     white-space: normal;
     overflow-wrap: anywhere;
-    max-width: 146px;
+    max-width: 100%;
 }
 
 /* Alias — do not add new styles here */
@@ -255,6 +261,7 @@
     gap: 10px;
     padding: 16px 0 4px 4px;
     background: transparent;
+    scroll-margin-top: calc(var(--mobile-bar-h) + 52px);   /* clear the mobile bar and the sticky alphabet strip */
 }
 .artist-alpha-letter {
     color: #1DB954;
@@ -269,7 +276,8 @@
     flex: 1;
 }
 .artist-list-row {
-    padding: 10px 16px 10px 16px;
+    padding: 10px 12px 10px 12px;
+    min-height: 44px;
     cursor: pointer;
     border-radius: 8px;
     background: transparent;
@@ -285,6 +293,7 @@
     color: white;
     font-size: 15px;
     font-weight: bold;
+    overflow-wrap: anywhere;
 }
 .artist-list-info {
     color: #7eb8f7;
@@ -292,7 +301,8 @@
 }
 .artist-detail-name {
     color: white;
-    font-size: 28px;
+    font-size: 22px;
+    overflow-wrap: anywhere;
     font-weight: bold;
     text-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
 }
@@ -302,6 +312,8 @@
     color: white;
     font-size: 22px;
     font-weight: bold;
+    text-align: center;
+    overflow-wrap: anywhere;
 }
 
 /* ─── Song header ───────────────────────────────────────────── */
@@ -324,6 +336,7 @@
     font-size: 16px;
     white-space: pre-line;
     text-align: center;
+    padding: 0 12px;
 }
 
 /* ─── Filter/sort dropdown row ──────────────────────────────── */
@@ -341,7 +354,7 @@
 }
 .alphabet-letter-active {
     color: #1DB954;
-    font-size: 11px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     padding: 1px 4px 1px 4px;
@@ -362,6 +375,7 @@
 
 /* ─── Alpha section divider ──────────────────────────────────── */
 .alpha-divider {
+    scroll-margin-top: calc(var(--mobile-bar-h) + 52px);   /* clear the mobile bar and the sticky alphabet strip */
     color: #1DB954;
     font-size: 13px;
     font-weight: bold;
@@ -411,13 +425,13 @@
     flex-direction: column;
 }
 .library-pane {
-    margin: 20px;
+    margin: 12px;
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 .library-pane > .view-header {
-    margin: 20px 20px 4px 20px;
+    margin: 12px 12px 4px 12px;
 }
 
 /* ─── Top bar (LibraryTopBarBuilder) ────────────────────────── */
@@ -426,7 +440,8 @@
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
-    padding: 20px;
+    padding: 12px;
+    border-radius: 0 0 16px 16px;   /* desktop radius comes back at 1280px */
 }
 .library-title-row {
     position: relative;
@@ -445,15 +460,20 @@
     transform: translateY(-50%);
     width: auto;
     padding: 8px 16px;
-    display: inline-flex;
+    display: inline-flex;       /* hidden on phones by the .library-page rule further down */
 }
 .library-controls-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     gap: 10px;
 }
-.library-tabs,
+.library-tabs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: center;
+    gap: 6px;
+}
 .library-toggles {
     display: flex;
     align-items: center;
@@ -461,6 +481,17 @@
 }
 .library-toggles {
     justify-content: center;
+}
+.library-page .library-topbar .library-tabs .nav-btn {
+    font-size: 14px;
+    padding: 0 4px;
+    min-height: 44px;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+}
+.library-page .library-topbar .library-toggles .nav-btn {
+    min-height: 44px;
 }
 .library-page .library-topbar .nav-btn {
     width: auto;
@@ -470,12 +501,18 @@
     text-decoration: none;
 }
 .library-filters {
-    justify-self: end;
+    display: grid;              /* phone: label above select, two columns */
+    grid-template-rows: auto auto;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 10px;
+    justify-self: stretch;
     padding: 0;     /* the desktop padding of 30 sat inside a StackPane; the grid row aligns it here */
     cursor: default;
 }
 .library-filters select {
-    min-width: 150px;
+    width: 100%;
+    min-width: 0;
     cursor: pointer;
 }
 .library-page .nav-btn-back,
@@ -491,19 +528,55 @@
     text-decoration: none;
     height: 40px;
 }
+/* "← Dashboard" is hidden on phones (the drawer has that link); shown again from 768px */
+.library-page .library-home-btn {
+    display: none;
+}
 
 /* ─── Grids ─────────────────────────────────────────────────── */
 .library-grid,
 .tile-pane {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 170px);
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     justify-content: center;
-    gap: 20px;
-    padding: 16px 20px 24px 20px;
+    gap: 12px;
+    padding: 12px;
 }
 .library-grid .library-card,
 .tile-pane .library-card {
-    width: 170px;
+    width: auto;
+}
+/* Wrapper that lets an album card carry a "⋯" button without nesting it inside the <a> */
+.library-card-wrap {
+    position: relative;
+    display: flex;
+    min-width: 0;
+}
+.library-card-wrap > .library-card {
+    flex: 1 1 auto;
+}
+.library-card-wrap > .library-card-menu-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    color: white;
+}
+/* Same idea for album list rows */
+.library-row-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.library-row-wrap > .library-row-menu-btn {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
+}
+.library-row-wrap > .library-album-row {
+    padding-right: 52px;        /* keep the text clear of the "⋯" button */
 }
 .library-art {
     position: absolute;
@@ -532,8 +605,9 @@
 /* ─── Lists with alphabet bar ───────────────────────────────── */
 .library-list-layout {
     display: flex;
-    align-items: flex-start;
-    gap: 4px;
+    flex-direction: column;     /* phone: alphabet strip above the list */
+    align-items: stretch;
+    gap: 0;
     padding-bottom: 12px;
 }
 .library-list {
@@ -543,20 +617,34 @@
     flex-direction: column;
 }
 .alphabet-bar {
+    order: -1;
     position: sticky;
-    top: 12px;
+    top: var(--mobile-bar-h);
+    z-index: 5;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    align-self: flex-start;
-    height: min(640px, calc(100vh - 200px));
-    padding: 8px 6px;
+    align-self: stretch;
+    height: auto;
+    width: 100%;
+    overflow-x: auto;
+    padding: 0 4px;
+    background: #141414;
+    border-bottom: 1px solid rgba(29, 185, 84, 0.25);
+    scrollbar-width: none;
+}
+.alphabet-bar::-webkit-scrollbar {
+    display: none;
 }
 .alphabet-bar > * {
-    flex: 1;
+    flex: 0 0 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.alphabet-bar > .alphabet-letter-inactive {
+    display: none;              /* phone strip lists only the letters that exist */
 }
 .library-song-row {
     display: flex;
@@ -568,12 +656,17 @@
     flex: 1;
     min-width: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;     /* phone: title above artist */
+    align-items: stretch;
     overflow: hidden;
     white-space: nowrap;
 }
+.song-list-separator {
+    display: none;              /* phone: the dot separator is not needed on two lines */
+}
 .song-list-title,
 .song-list-artist {
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -582,6 +675,10 @@
     align-items: center;
     gap: 15px;
     color: inherit;
+}
+.library-row-text .wt-smmd-bld,
+.library-album-plain .wt-smmd-bld {
+    overflow-wrap: anywhere;
 }
 .library-row-text,
 .artist-list-text {
@@ -613,16 +710,32 @@
     flex-direction: column;
 }
 .album-song-row {
-    display: grid;
-    grid-template-columns: 50px minmax(200px, 1fr) 100px 150px auto;
+    display: grid;              /* phone: two-line row, track | title + meta | menu */
+    grid-template-columns: 28px auto minmax(0, 1fr) 44px;
     align-items: center;
-    gap: 40px;
+    column-gap: 10px;
+    row-gap: 2px;
     cursor: pointer;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 8px 4px 8px 12px;
 }
-.album-song-title {
+.album-song-row .album-song-track {
+    grid-column: 1;
+    grid-row: 1 / span 2;
     min-width: 0;
+}
+.album-song-row .album-song-title {
+    grid-column: 2 / span 2;
+    grid-row: 1;
+    font-size: 16px;
+    min-width: 0;
+}
+.album-song-row .album-song-meta {
+    grid-row: 2;
+    font-size: 12px;
+}
+.album-song-row .song-row-menu-btn {
+    grid-column: 4;
+    grid-row: 1 / span 2;
 }
 .library-pane.album-detail,
 .library-pane.artist-detail {
@@ -632,12 +745,255 @@
     text-decoration: none;
 }
 
+/* ─── Add to Playlist picker rows (library.js addToPlaylist) ── */
+/* Phones and tablets: 44px rows; a long playlist name wraps instead of scrolling sideways */
+.library-picker-item {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 12px;
+    cursor: pointer;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
 /* ─── Empty state ───────────────────────────────────────────── */
 .library-empty {
+    padding: 0 12px;
     min-height: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 12px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLET (768px and up)
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 768px) {
+    .library-page .library-home-btn {
+        display: inline-flex;
+    }
+    .library-page .library-topbar .library-tabs .nav-btn {
+        font-size: 16px;
+    }
+    /* album detail rows: the desktop 5-column grid, tighter */
+    .album-song-row {
+        grid-template-columns: 50px minmax(200px, 1fr) 100px 150px auto;
+        gap: 20px;
+        padding: 14px 12px;
+    }
+    .album-song-row .album-song-track {
+        grid-column: auto;
+        grid-row: auto;
+        min-width: 50px;
+    }
+    .album-song-row .album-song-title {
+        grid-column: auto;
+        grid-row: auto;
+        font-size: 20px;
+    }
+    .album-song-row .album-song-meta {
+        grid-row: auto;
+        font-size: 18px;
+    }
+    .album-song-row .song-row-menu-btn {
+        grid-column: auto;
+        grid-row: auto;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP (1280px and up): the original values of every rule above
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 1280px) {
+    /* album detail */
+    .album-detail-header {
+        padding: 20px;
+        flex-wrap: nowrap;
+    }
+    .album-artwork-section {
+        padding: 20px;
+    }
+    .album-artwork {
+        width: 300px;
+        height: 300px;
+        aspect-ratio: auto;
+    }
+    .album-artist-label,
+    .section-title {
+        text-align: inherit;
+        overflow-wrap: normal;
+    }
+    .album-song-row {
+        gap: 40px;
+        padding: 20px 12px 30px 12px;
+    }
+    .album-song-row .album-song-meta {
+        font-size: 18px;
+    }
+
+    /* headers and panes */
+    .view-header {
+        font-size: 26px;
+    }
+    .library-pane {
+        margin: 20px;
+    }
+    .library-pane > .view-header {
+        margin: 20px 20px 4px 20px;
+    }
+    .artist-detail-name {
+        font-size: 28px;
+        overflow-wrap: normal;
+    }
+
+    /* top bar */
+    .library-topbar {
+        padding: 20px;
+        border-radius: 0 20px 20px 0;
+    }
+    .library-controls-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 10px;
+        flex-direction: row;
+    }
+    .library-tabs {
+        display: flex;
+        grid-template-columns: none;
+        gap: 10px;
+    }
+    .library-page .library-topbar .library-tabs .nav-btn {
+        font-size: 20px;
+        padding: 10px 18px;
+        min-height: auto;
+        text-align: left;
+    }
+    .library-page .library-topbar .library-toggles .nav-btn {
+        min-height: auto;
+    }
+    .library-filters {
+        display: flex;
+        grid-template-rows: none;
+        grid-auto-flow: row;
+        grid-template-columns: none;
+        gap: 20px;
+        justify-self: end;
+    }
+    .library-filters select {
+        width: auto;
+        min-width: 150px;
+    }
+
+    /* song list rows */
+    .song-list-row {
+        padding: 12px 20px 12px 20px;
+        min-height: auto;
+    }
+    .song-list-text {
+        flex-direction: row;
+        align-items: center;
+    }
+    .song-list-separator {
+        display: inline;
+    }
+
+    /* card grids */
+    .library-grid,
+    .tile-pane {
+        grid-template-columns: repeat(auto-fill, 170px);
+        gap: 20px;
+        padding: 16px 20px 24px 20px;
+    }
+    .library-card {
+        width: 170px;
+        min-width: 140px;
+        max-width: 220px;
+        min-height: 240px;
+    }
+    .library-grid .library-card,
+    .tile-pane .library-card {
+        width: 170px;
+    }
+    .library-card-wrap > .library-card {
+        flex: 0 0 auto;
+    }
+    .library-card-art {
+        width: 140px;
+        height: 140px;
+        aspect-ratio: auto;
+    }
+    .library-card-title,
+    .library-card-subtitle {
+        max-width: 146px;
+    }
+
+    /* list rows */
+    .artist-list-row {
+        padding: 10px 16px 10px 16px;
+        min-height: auto;
+    }
+    .library-row-wrap > .library-album-row {
+        padding-right: 16px;
+    }
+    .library-row-text .wt-smmd-bld,
+    .library-album-plain .wt-smmd-bld,
+    .artist-list-name {
+        overflow-wrap: normal;
+    }
+
+    /* alphabet bar */
+    .library-list-layout {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .alphabet-bar {
+        order: 0;
+        top: 12px;
+        z-index: auto;
+        flex-direction: column;
+        align-self: flex-start;
+        height: min(640px, calc(100vh - 200px));
+        width: auto;
+        overflow: visible;
+        padding: 8px 6px;
+        background: transparent;
+        border-bottom: 0;
+        scrollbar-width: thin;
+    }
+    .alphabet-bar > * {
+        flex: 1;
+        height: auto;
+    }
+    .alphabet-bar > .alphabet-letter-inactive {
+        display: flex;
+    }
+    .alphabet-letter-active {
+        font-size: 11px;
+    }
+    .alpha-divider,
+    .artist-alpha-divider {
+        scroll-margin-top: 0;
+    }
+
+    /* empty states */
+    .library-empty,
+    .favourites-empty-msg {
+        padding: 0;
+    }
+}
+
+/* Picker rows keep the desktop port's compact single-line look */
+@media (min-width: 1280px) {
+    .library-picker-item {
+        display: block;
+        min-height: auto;
+        white-space: pre;
+        overflow-wrap: normal;
+    }
 }

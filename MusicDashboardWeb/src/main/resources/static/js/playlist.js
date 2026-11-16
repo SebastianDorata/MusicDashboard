@@ -4,8 +4,9 @@
  * Ports the desktop PlaylistViewBuilder / PlaylistDialogHandler interactions:
  *   - "New Playlist" dialog (create, then the new playlist is selected)
  *   - Rename and Delete dialogs for the selected playlist (rename reloads it, delete returns to the browser)
- *   - Play All (plays the first song), card click / row double-click plays a song
- *   - right-click menu on a song: "Play" and "Remove from Playlist"
+ *   - Play All (plays the first song), card click / row double-click plays a song;
+ *     on touch a single tap on a row plays it too (MD.touch.isTap)
+ *   - song menu ("Play", "Remove from Playlist"): right-click, or the touch-only "⋯" button on cards and rows
  * The page state (selected playlist, display mode) is the URL, so every change reloads the page.
  * Depends on window.MD (app.js) and MD.player (player.js).
  */
@@ -142,6 +143,18 @@
     }
 
     /**
+     * Builds the song menu items shared by right-click and the "⋯" button.
+     * @param {string} songId the song id
+     * @returns {Array<{label: string, onClick: function(): void}>} the menu items
+     */
+    function songMenuItems(songId) {
+        return [
+            {label: '▶  Play', onClick: function () { play(songId); }},
+            {label: '✕  Remove from Playlist', onClick: function () { removeSong(songId); }}
+        ];
+    }
+
+    /**
      * Opens the song context menu ("Play", "Remove from Playlist").
      * @param {MouseEvent} e the contextmenu event
      * @param {string} songId the song id
@@ -149,13 +162,31 @@
      */
     function showSongMenu(e, songId) {
         e.preventDefault();
-        MD.menu.show(e, [
-            {label: '▶  Play', onClick: function () { play(songId); }},
-            {label: '✕  Remove from Playlist', onClick: function () { removeSong(songId); }}
-        ]);
+        MD.menu.show(e, songMenuItems(songId));
     }
 
-    /** Wires up header buttons, Play All, and the song cards / rows. */
+    /**
+     * Wires a "⋯" button to open the song menu anchored on the button. Stops propagation so a
+     * card's own click handler does not also play the song.
+     * @param {Element} owner the card or row containing the button
+     * @param {string} songId the song id
+     * @returns {void}
+     */
+    function wireMenuButton(owner, songId) {
+        const btn = owner.querySelector('.song-row-menu-btn');
+        if (!btn) return;
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            MD.menu.show(btn, songMenuItems(songId));
+        });
+    }
+
+    /**
+     * Wires up header buttons, Play All, and the song cards / rows (play on click / double-click / tap,
+     * the right-click menu and the "⋯" menu button).
+     * @returns {void}
+     */
     function init() {
         const newBtn = document.getElementById('new-playlist-btn');
         if (newBtn) newBtn.addEventListener('click', showCreateDialog);
@@ -175,9 +206,19 @@
         page.querySelectorAll('.playlist-song-card[data-song-id]').forEach(function (card) {
             card.addEventListener('click', function () { play(card.dataset.songId); });
             card.addEventListener('contextmenu', function (e) { showSongMenu(e, card.dataset.songId); });
+            wireMenuButton(card, card.dataset.songId);
         });
         page.querySelectorAll('.playlist-song-row[data-song-id]').forEach(function (row) {
-            row.addEventListener('dblclick', function () { play(row.dataset.songId); });
+            row.addEventListener('dblclick', function (e) {
+                if (MD.touch.isTap(e)) return;
+                play(row.dataset.songId);
+            });
+            // Touch: a single tap plays, unless it landed on the "⋯" button
+            row.addEventListener('click', function (e) {
+                if (e.target.closest('.song-row-menu-btn')) return;
+                if (MD.touch.isTap(e)) play(row.dataset.songId);
+            });
+            wireMenuButton(row, row.dataset.songId);
             row.addEventListener('contextmenu', function (e) { showSongMenu(e, row.dataset.songId); });
         });
     }

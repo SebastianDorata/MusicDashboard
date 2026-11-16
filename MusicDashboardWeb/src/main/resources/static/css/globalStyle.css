@@ -2,7 +2,21 @@
    GLOBAL STYLE (web translation of the desktop globalStyle.css)
    Loaded on every page. Every original class name is kept; the
    JavaFX -fx-* properties are translated to plain CSS.
+
+   MOBILE-FIRST. Every sheet follows the same scheme:
+     base rules                   phones: one column, the page scrolls,
+                                  the sidebar is an off-canvas drawer
+     @media (min-width: 768px)    tablets: use the extra width
+     @media (min-width: 1280px)   desktop: the original desktop-port
+                                  layout (fixed sidebar, 100vh shell)
+   A rule's desktop value lives in the 1280px block of its section.
    ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Shared sizes ──────────────────────────────────────────── */
+:root {
+    /* Height of the phone / tablet top bar (.mobile-bar). Sticky page parts use it as their top offset. */
+    --mobile-bar-h: 52px;
+}
 
 /* ─── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after {
@@ -20,38 +34,64 @@ body {
 .root {
     background: linear-gradient(to bottom right, #1e1e1e, #2a2a2a);
 }
+/* Phones and tablets: the document itself scrolls */
 body.root {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 13px;
     color: white;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+/* The page behind an open drawer does not scroll */
+body.sidebar-open {
     overflow: hidden;
 }
 
 /* ─── App layout (web shell) ────────────────────────────────── */
-/* Row: sidebar on the left, main column on the right */
+/* Phones and tablets: a column - top bar, then the main column. The sidebar is a drawer (see Sidebar). */
 .app-shell {
     display: flex;
-    flex-direction: row;
-    height: 100vh;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
-    overflow: hidden;
 }
-/* Main column: scrolling content on top, small player bar below */
+/* Main column: page content on top, small player bar stuck to the bottom of the screen */
 .app-main {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-width: 0;
-    height: 100%;
-    overflow: hidden;
 }
-/* Scrolling page content */
+/* Page content (grows so the player bar sits at the bottom of short pages) */
 .app-content {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    flex: 1 0 auto;
+    min-width: 0;
+}
+/* Desktop: fixed 100vh shell - sidebar on the left, main column on the right, only .app-content scrolls */
+@media (min-width: 1280px) {
+    body.root {
+        height: 100vh;
+        min-height: 0;
+        overflow: hidden;
+    }
+    .app-shell {
+        flex-direction: row;
+        height: 100vh;
+        min-height: 0;
+        overflow: hidden;
+    }
+    .app-main {
+        height: 100%;
+        overflow: hidden;
+    }
+    .app-content {
+        flex: 1;
+        min-width: auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }
 /* Broken album art is hidden so the placeholder shows through */
 .art-missing {
@@ -65,10 +105,10 @@ a {
 }
 
 /* ─── Form control defaults (dark) ──────────────────────────── */
-/* Text-field look from the desktop app */
+/* Text-field look from the desktop app. 16px below desktop width: smaller text makes iOS zoom the page on focus. */
 input, select, textarea {
     font-family: inherit;
-    font-size: 13px;
+    font-size: 16px;
     color: white;
     background: #1a1a1a;
     border: 1px solid #404040;
@@ -108,6 +148,11 @@ button {
 }
 button:disabled {
     cursor: not-allowed;
+}
+@media (min-width: 1280px) {
+    input, select, textarea {
+        font-size: 13px;
+    }
 }
 
 /* ─── Tables (default dark table, like the desktop table view) ─ */
@@ -397,7 +442,8 @@ tbody tr:hover {
 }
 
 /* ─── Sidebar ───────────────────────────────────────────── */
-/* Full-height column: 220 min / 250 pref / 300 max, 8px spacing */
+/* Phones and tablets: an off-canvas drawer that slides in from the left when <body> has .sidebar-open
+   (toggled by app.js from the .mobile-menu-btn). Hidden with visibility so it cannot be focused while closed. */
 .sidebar {
     background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
     border-radius: 0 20px 20px 0;
@@ -407,12 +453,121 @@ tbody tr:hover {
     flex-direction: column;
     gap: 8px;
     padding: 20px 12px 5px 12px;
-    min-width: 220px;
-    width: 250px;
-    max-width: 300px;
-    flex: 0 0 250px;
-    height: 100%;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 900;
+    width: min(300px, 86vw);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.22s ease, visibility 0s linear 0.22s;
+}
+body.sidebar-open .sidebar {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.22s ease, visibility 0s;
+}
+/* Dimmed layer behind the open drawer; a tap on it closes the drawer */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 890;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+}
+body.sidebar-open .sidebar-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    body.sidebar-open .sidebar,
+    .sidebar-backdrop {
+        transition: none;
+    }
+}
+/* Desktop: full-height column in the shell row: 220 min / 250 pref / 300 max, 8px spacing */
+@media (min-width: 1280px) {
+    .sidebar,
+    body.sidebar-open .sidebar {
+        position: static;
+        top: auto;
+        bottom: auto;
+        left: auto;
+        z-index: auto;
+        min-width: 220px;
+        width: 250px;
+        max-width: 300px;
+        flex: 0 0 250px;
+        height: 100%;
+        overscroll-behavior: auto;
+        transform: none;
+        visibility: visible;
+        transition: none;
+    }
+    .sidebar-backdrop {
+        display: none;
+    }
+}
+
+/* ─── Mobile top bar ────────────────────────────────────── */
+/* Phones and tablets only: stays at the top of the screen; holds the menu button and the app title */
+.mobile-bar {
+    position: sticky;
+    top: 0;
+    z-index: 850;
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: var(--mobile-bar-h);
+    padding: 0 8px 0 4px;
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border-bottom: 1px solid rgba(76, 175, 80, 0.45);
+    box-shadow: 0 2px 14px rgba(76, 175, 80, 0.25);
+}
+.mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: white;
+    font-size: 24px;
+    line-height: 1;
+}
+.mobile-menu-btn:hover,
+.mobile-menu-btn:focus-visible {
+    border-color: #1DB954;
+    outline: none;
+}
+.mobile-bar-title {
+    display: flex;
+    align-items: baseline;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 4px;
+}
+.mobile-bar-title-main {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+.mobile-bar-title .sidebar-title-accent {
+    font-size: 18px;
+}
+@media (min-width: 1280px) {
+    .mobile-bar {
+        display: none;
+    }
 }
 .sidebar-section-label {
     padding: 4px;
@@ -526,10 +681,15 @@ tbody tr:hover {
 /* ─── Page layout helpers ───────────────────────────────────── */
 /* Standard padded page body inside .app-content */
 .page {
-    padding: 24px 28px;
+    padding: 16px 12px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+}
+@media (min-width: 1280px) {
+    .page {
+        padding: 24px 28px;
+    }
 }
 .page-title {
     color: white;
@@ -555,6 +715,13 @@ tbody tr:hover {
 .hidden {
     display: none !important;
 }
+/* Controls that exist only so touch users can reach a right-click action (the "⋯" menu buttons).
+   Shown below 1280px and on any touch device; hidden only on a desktop-width screen with a mouse. */
+@media (min-width: 1280px) and (hover: hover) and (pointer: fine) {
+    .touch-only {
+        display: none !important;
+    }
+}
 .ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -564,9 +731,14 @@ tbody tr:hover {
 /* ─── Forms ─────────────────────────────────────────────────── */
 .form-grid {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr);   /* the field may shrink inside a narrow dialog */
     gap: 10px 12px;
     align-items: center;
+}
+@media (min-width: 1280px) {
+    .form-grid {
+        grid-template-columns: auto 1fr;
+    }
 }
 .form-grid label,
 .form-label {
@@ -575,6 +747,12 @@ tbody tr:hover {
 }
 .form-input {
     width: 100%;
+    min-height: 44px;   /* touch target; desktop keeps the natural field height */
+}
+@media (min-width: 1280px) {
+    .form-input {
+        min-height: auto;
+    }
 }
 .form-error {
     color: #ff6b6b;
@@ -598,7 +776,7 @@ tbody tr:hover {
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 20px;
+    padding: 12px;
 }
 .md-modal {
     background: #1e1e1e;
@@ -607,7 +785,7 @@ tbody tr:hover {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     width: 420px;
     max-width: 100%;
-    max-height: 90vh;
+    max-height: 100%;   /* fits inside the backdrop, whatever the phone's browser bars do */
     display: flex;
     flex-direction: column;
     color: white;
@@ -633,22 +811,43 @@ tbody tr:hover {
     padding: 12px 20px 16px 20px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 10px;
     border-top: 1px solid #2a2a2a;
 }
+@media (min-width: 1280px) {
+    .md-modal-backdrop {
+        padding: 20px;
+    }
+    .md-modal {
+        max-height: 90vh;
+    }
+    .md-modal-footer {
+        flex-wrap: nowrap;
+    }
+}
 
 /* ─── Toasts (MD.toast) ─────────────────────────────────────── */
+/* Phones and tablets: full width, above the player bar */
 .md-toast-container {
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    left: 12px;
+    right: 12px;
+    bottom: 88px;
     display: flex;
     flex-direction: column;
     gap: 8px;
     z-index: 2000;
     pointer-events: none;
-    max-width: 360px;
+}
+@media (min-width: 1280px) {
+    .md-toast-container {
+        left: auto;
+        right: 20px;
+        bottom: 20px;
+        max-width: 360px;
+    }
 }
 .md-toast {
     pointer-events: auto;
@@ -681,6 +880,7 @@ tbody tr:hover {
 .md-menu {
     position: fixed;
     min-width: 160px;
+    max-width: calc(100vw - 8px);
     background: #2a2a2a;
     border: 1px solid #404040;
     border-radius: 8px;
@@ -688,17 +888,29 @@ tbody tr:hover {
     padding: 4px 0;
     z-index: 1500;
 }
+/* 44px rows below desktop width so each item is an easy tap */
 .md-menu-item {
     display: block;
     width: 100%;
+    min-height: 44px;
     text-align: left;
     color: white;
-    font-size: 13px;
-    padding: 8px 14px;
+    font-size: 15px;
+    padding: 10px 16px;
     background: transparent;
     border: none;
     cursor: pointer;
     white-space: nowrap;
+}
+@media (min-width: 1280px) {
+    .md-menu {
+        max-width: none;
+    }
+    .md-menu-item {
+        min-height: auto;
+        font-size: 13px;
+        padding: 8px 14px;
+    }
 }
 .md-menu-item:hover:not(:disabled) {
     background: #1DB954;

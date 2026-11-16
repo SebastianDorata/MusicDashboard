@@ -10,6 +10,8 @@
  *   MD.esc    HTML escaping
  *   MD.artUrl album art URL builder
  *   MD.el     tiny DOM builder
+ *   MD.touch  touch detection (single tap plays where a mouse needs a double-click)
+ *   MD.drawer the sidebar as an off-canvas drawer below 1280px (opened by the top bar's menu button)
  *
  * MD.player is defined separately in player.js.
  */
@@ -245,6 +247,111 @@
         });
         return node;
     };
+
+    /* ─── MD.touch ──────────────────────────────────────────── */
+
+    /** Pointer type of the most recent press: 'mouse', 'touch', 'pen', or '' before any press. */
+    let lastPointerType = '';
+    document.addEventListener('pointerdown', function (e) { lastPointerType = e.pointerType || ''; }, true);
+
+    MD.touch = {
+        /**
+         * Tells whether the device's main pointer is a finger (the CSS media feature "pointer: coarse").
+         * @returns {boolean} true on phones and tablets, false with a mouse or trackpad
+         */
+        coarse: function () {
+            return !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+        },
+
+        /**
+         * Tells whether a click should count as a touch tap: the device's main pointer is a finger,
+         * or this particular click came from a finger or pen (touch-screen laptops). Pages use it to
+         * play a song on a single tap where a mouse needs a double-click.
+         * @param {Event} [e] the click or dblclick event
+         * @returns {boolean} true for a tap, false for a mouse click
+         */
+        isTap: function (e) {
+            const type = (e && e.pointerType) || lastPointerType;
+            return type === 'touch' || type === 'pen' || MD.touch.coarse();
+        }
+    };
+
+    /* ─── MD.drawer ─────────────────────────────────────────── */
+
+    /** Media query that is true when the desktop layout (fixed sidebar) is showing. */
+    const DESKTOP_QUERY = '(min-width: 1280px)';
+
+    /**
+     * Finds the sidebar element of the page.
+     * @returns {HTMLElement|null} the sidebar, or null on pages without one (sign-in, error)
+     */
+    function sidebarEl() {
+        return document.getElementById('app-sidebar') || document.querySelector('.sidebar');
+    }
+
+    /**
+     * Tells whether the drawer is open.
+     * @returns {boolean} true while <body> carries the sidebar-open class
+     */
+    function drawerOpen() {
+        return document.body.classList.contains('sidebar-open');
+    }
+
+    /**
+     * Opens or closes the sidebar drawer: toggles the sidebar-open class on <body> (the CSS does the
+     * sliding), keeps the menu button's ARIA state in step and moves focus into / out of the drawer.
+     * @param {boolean} open true to open, false to close
+     * @returns {void}
+     */
+    function setDrawer(open) {
+        const sidebar = sidebarEl();
+        if (!sidebar || open === drawerOpen()) return;
+        const btn = document.querySelector('[data-action="toggle-sidebar"]');
+        document.body.classList.toggle('sidebar-open', open);
+        if (btn) {
+            btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        }
+        if (open) {
+            const first = sidebar.querySelector('a[href], button:not(:disabled), select');
+            if (first) first.focus({preventScroll: true});
+        } else if (btn && sidebar.contains(document.activeElement)) {
+            btn.focus({preventScroll: true});
+        }
+    }
+
+    MD.drawer = {
+        /** Opens the sidebar drawer (no effect at desktop width, where the sidebar is always visible). */
+        open: function () { setDrawer(true); },
+        /** Closes the sidebar drawer. */
+        close: function () { setDrawer(false); },
+        /** Opens the drawer when it is closed and closes it when it is open. */
+        toggle: function () { setDrawer(!drawerOpen()); }
+    };
+
+    /**
+     * Wires the drawer: the menu button toggles it, a tap on the backdrop or Escape closes it, and it
+     * closes itself when the window grows to desktop width.
+     * @returns {void}
+     */
+    function initDrawer() {
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest) return;
+            if (e.target.closest('[data-action="toggle-sidebar"]')) MD.drawer.toggle();
+            else if (e.target.closest('[data-action="close-sidebar"]')) MD.drawer.close();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && drawerOpen()) MD.drawer.close();
+        });
+        if (window.matchMedia) {
+            const desktop = window.matchMedia(DESKTOP_QUERY);
+            /** Closes the drawer once the desktop layout takes over. */
+            const onChange = function () { if (desktop.matches) MD.drawer.close(); };
+            if (desktop.addEventListener) desktop.addEventListener('change', onChange);
+            else if (desktop.addListener) desktop.addListener(onChange);
+        }
+    }
+    initDrawer();
 
     /* ─── MD.toast ──────────────────────────────────────────── */
 

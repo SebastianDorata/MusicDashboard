@@ -3,13 +3,14 @@
    ═══════════════════════════════════════════════════════════════ */
 
 /* ─── Page layout (web) ─────────────────────────────────────── */
+/* Phones: the document scrolls, so the page itself does not */
 .playlist-page {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow-y: visible;
 }
 .playlist-content {
-    padding: 20px;
+    padding: 12px;
 }
 
 /* ─── Sidebar ───────────────────────────────────────────────── */
@@ -34,15 +35,24 @@
 /* ─── Center header bar ─────────────────────────────────────── */
 .playlist-header {
     background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
-    padding: 16px 20px;
+    padding: 12px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
 }
+.playlist-header > .txt-white-md-bld {
+    flex: 1 1 100%;
+    overflow-wrap: anywhere;
+}
+.playlist-header > .grow {
+    display: none;
+}
 .playlist-header .nav-btn {
-    font-size: 16px;
+    font-size: 14px;
+    padding: 8px 10px;
     box-shadow: none;
 }
 hr.playlist-header-separator {
@@ -59,6 +69,7 @@ hr.playlist-header-separator {
     flex-direction: row;
     align-items: center;
     gap: 12px;
+    min-height: 48px;
     padding: 10px 12px;
     background: transparent;
     border-radius: 8px;
@@ -93,8 +104,8 @@ hr.playlist-header-separator {
 /* ─── Playlist cards (grid view) ────────────────────────────── */
 .playlist-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 150px);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
     padding: 4px;
 }
 .playlist-song-card {
@@ -102,7 +113,9 @@ hr.playlist-header-separator {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
-    width: 150px;
+    position: relative;
+    width: auto;
+    min-width: 0;
     box-sizing: border-box;
     padding: 10px;
     background: #1e1e1e;
@@ -115,7 +128,7 @@ hr.playlist-header-separator {
     box-shadow: 0 2px 10px rgba(29, 185, 84, 0.3);
 }
 .playlist-card-name {
-    max-width: 130px;
+    max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -127,8 +140,9 @@ hr.playlist-header-separator {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 130px;
-    height: 130px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     background: linear-gradient(to bottom right, #1a2a4a, #0d1f3c);
     border-radius: 6px;
@@ -157,13 +171,18 @@ hr.playlist-header-separator {
     gap: 4px;
 }
 .playlist-col-count {
-    min-width: 80px;
+    min-width: 56px;
+    text-align: right;
 }
 .playlist-col-index {
     min-width: 32px;
 }
 .playlist-col-duration {
-    min-width: 80px;
+    min-width: 44px;
+    text-align: right;
+}
+.playlist-col-menu {
+    flex: 0 0 44px;
 }
 
 /* ─── Song rows (inside a selected playlist) ────────────────── */
@@ -172,7 +191,8 @@ hr.playlist-header-separator {
     flex-direction: row;
     align-items: center;
     gap: 12px;
-    padding: 8px 12px;
+    min-height: 52px;
+    padding: 4px 4px 4px 12px;
     background: transparent;
     border-radius: 6px;
     cursor: pointer;
@@ -207,16 +227,23 @@ hr.playlist-header-separator {
 .playlist-info-art {
     width: 72px;
     height: 72px;
+    flex: 0 0 72px;
+    aspect-ratio: auto;
 }
 .playlist-info-text {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
+}
+.playlist-info-text > * {
+    overflow-wrap: anywhere;
 }
 .playlist-actions {
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     padding: 4px 0;
     margin-bottom: 8px;
@@ -237,7 +264,8 @@ hr.playlist-header-separator {
     cursor: pointer;
     border: none;
     border-radius: 6px;
-    padding: 6px 14px;
+    min-height: 44px;
+    padding: 6px 16px;
     font-family: inherit;
 }
 .playlist-rename-btn:hover {
@@ -249,7 +277,8 @@ hr.playlist-header-separator {
     cursor: pointer;
     border: none;
     border-radius: 6px;
-    padding: 6px 14px;
+    min-height: 44px;
+    padding: 6px 16px;
     font-family: inherit;
 }
 .playlist-delete-btn:hover {
@@ -263,11 +292,11 @@ hr.playlist-header-separator {
     align-items: center;
     justify-content: center;
     gap: 12px;
-    padding: 80px;
+    padding: 40px 16px;
     text-align: center;
 }
 .playlist-empty-songs {
-    padding: 40px;
+    padding: 32px 16px;
     gap: 10px;
 }
 .playlist-empty-icon {
@@ -281,4 +310,44 @@ hr.playlist-header-separator {
 .playlist-detail-scroll {
     background: #121212;
     overflow: auto;
+}
+
+/* ─── "⋯" song menu buttons (touch only; shown by .touch-only) ── */
+.playlist-song-row .playlist-song-menu-btn {
+    flex: none;
+}
+.playlist-card-menu-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 50%;
+    color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DESKTOP (1280px and up): the original values
+   ═══════════════════════════════════════════════════════════════ */
+@media (min-width: 1280px) {
+    .playlist-page { overflow-y: auto; }
+    .playlist-content { padding: 20px; }
+    .playlist-header { flex-wrap: nowrap; padding: 16px 20px; gap: 12px; }
+    .playlist-header > .txt-white-md-bld { flex: 0 1 auto; overflow-wrap: normal; }
+    .playlist-header > .grow { display: block; }
+    .playlist-header .nav-btn { font-size: 16px; padding: 10px 12px; }
+    .playlist-row { min-height: auto; }
+    .playlist-grid { grid-template-columns: repeat(auto-fill, 150px); gap: 16px; }
+    .playlist-song-card { width: 150px; min-width: auto; }
+    .playlist-card-name { max-width: 130px; }
+    .playlist-card-art { width: 130px; height: 130px; aspect-ratio: auto; }
+    .playlist-info-art { width: 72px; height: 72px; flex: 0 0 auto; aspect-ratio: auto; }
+    .playlist-col-count { min-width: 80px; text-align: start; }
+    .playlist-col-duration { min-width: 80px; text-align: start; }
+    .playlist-song-row { min-height: auto; padding: 8px 12px; }
+    .playlist-info-text { min-width: auto; }
+    .playlist-info-text > * { overflow-wrap: normal; }
+    .playlist-actions { flex-wrap: nowrap; }
+    .playlist-rename-btn, .playlist-delete-btn { min-height: auto; padding: 6px 14px; }
+    .playlist-empty { padding: 80px; }
+    .playlist-empty-songs { padding: 40px; }
 }

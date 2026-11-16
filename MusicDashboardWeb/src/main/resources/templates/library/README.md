@@ -13,7 +13,7 @@ Fragments for the My Library page. `templates/library.html` includes `topbar.htm
 - `artists.html` — `artistsPane`: artists grouped A–Z with the alphabet bar.
 - `artist-detail.html` — `artistDetailPane`: back link, artist name and the artist's albums as a grid or list.
 - `favourites.html` — `favouritesPane`: header, an empty-state message when there are no favourites, otherwise a list or card grid.
-- `shared.html` — reusable pieces: `alphabetBar`, `albumArt`, `albumCard`, `albumRow`, `albumRowPlain` and `songRow`.
+- `shared.html` — reusable pieces: `alphabetBar`, `albumArt`, `albumCard`, `albumRow`, `albumRowPlain` and `songRow`. `albumCard(a, editable)` and `albumRow(a, editable)` wrap the card or row in a `div` (`library-card-wrap` or `library-row-wrap`) that also holds the "⋯" album menu button when `editable` is true. `albums.html` passes `true` and `artist-detail.html` passes `false`.
 
 The view state is the URL query string, so each pane is rendered from the server with the current tab, mode and filters. The row and card markup carries the data attributes that `static/js/library.js` uses for double-click playback and the context menus.
 
@@ -44,7 +44,7 @@ The view state is the URL query string, so each pane is rendered from the server
 - [artists.html](artists.html) — All Artists pane (A–Z list)
 - [artist-detail.html](artist-detail.html) — single artist: albums as grid or list
 - [favourites.html](favourites.html) — Favourites pane with empty state
-- [shared.html](shared.html) — reusable alphabet bar, album art, cards, rows
+- [shared.html](shared.html) — reusable alphabet bar, album art, cards and rows, with the album "⋯" menu wrappers
 - [← Back to templates](../README.md)
 - [← Back to root](../../../../../README.md)
 

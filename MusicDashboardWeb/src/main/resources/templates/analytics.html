@@ -15,7 +15,8 @@
 <div class="app-shell">
 
     <!-- The Analytics page's own sidebar (desktop SidebarBuilder) -->
-    <aside class="panels sidebar">
+    <header th:replace="~{fragments/layout :: mobileBar}"></header>
+    <aside class="panels sidebar" id="app-sidebar">
         <div th:replace="~{fragments/layout :: sidebarTitle}"></div>
         <hr class="sidebar-sep">
 
@@ -49,6 +50,7 @@
             </form>
         </div>
     </aside>
+    <div th:replace="~{fragments/layout :: sidebarBackdrop}"></div>
 
     <main class="app-main">
         <div class="app-content">

@@ -4,9 +4,16 @@
   Shared web shell fragments (replaces the desktop SidebarBuilder / AppSidebar).
 
   head(title, links)  - <head> content: meta, CSRF tags, global CSS, page CSS
-  sidebar(active)     - standard app sidebar; active = dashboard|library|playlist|import|analytics|settings
+  sidebar(active)     - standard app sidebar; active = dashboard|library|playlist|import|analytics|settings.
+                        Also emits mobileBar before it and sidebarBackdrop after it.
   sidebarTitle        - only the "Music Dashboard" title block (for pages with their own sidebar)
+  mobileBar           - top bar shown below 1280px, with the menu button that opens the sidebar as a drawer
+  sidebarBackdrop     - dimmed layer behind the open drawer; a tap on it closes the drawer
   scripts             - shared scripts (app.js, player.js); page scripts follow it
+
+  Below 1280px the sidebar is an off-canvas drawer (globalStyle.css); app.js toggles the
+  "sidebar-open" class on <body>. A page with its own sidebar (analytics.html) includes mobileBar and
+  sidebarBackdrop itself and gives its <aside> the id "app-sidebar".
 -->
 
 <head th:fragment="head(title, links)">
@@ -28,8 +35,22 @@
     <span class="txt-white-bld-thirty">Music</span><span class="sidebar-title-accent">Dashboard</span>
 </div>
 
-<!-- Standard application sidebar (desktop AppSidebar) -->
-<aside th:fragment="sidebar(active)" class="panels sidebar">
+<!-- Phone / tablet top bar: the menu button opens the sidebar drawer (hidden at 1280px and up) -->
+<header th:fragment="mobileBar" class="mobile-bar">
+    <button type="button" class="mobile-menu-btn" data-action="toggle-sidebar" aria-label="Open menu"
+            aria-expanded="false" aria-controls="app-sidebar">☰</button>
+    <a class="mobile-bar-title" th:href="@{/dashboard}">
+        <span class="mobile-bar-title-main">Music</span><span class="sidebar-title-accent">Dashboard</span>
+    </a>
+</header>
+
+<!-- Dimmed layer behind the open drawer; a tap closes the drawer (hidden at 1280px and up) -->
+<div th:fragment="sidebarBackdrop" class="sidebar-backdrop" data-action="close-sidebar"></div>
+
+<!-- Standard application sidebar (desktop AppSidebar), with the mobile bar before it and the backdrop after it -->
+<th:block th:fragment="sidebar(active)">
+<header th:replace="~{fragments/layout :: mobileBar}"></header>
+<aside class="panels sidebar" id="app-sidebar">
     <div th:replace="~{fragments/layout :: sidebarTitle}"></div>
     <hr class="sidebar-sep">
 
@@ -56,6 +77,8 @@
         </form>
     </div>
 </aside>
+<div th:replace="~{fragments/layout :: sidebarBackdrop}"></div>
+</th:block>
 
 <!-- Shared scripts: helpers first, then the player -->
 <th:block th:fragment="scripts">

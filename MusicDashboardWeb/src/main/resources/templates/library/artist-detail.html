@@ -11,7 +11,7 @@
     <div class="txt-grey-md" th:if="${#lists.isEmpty(artistAlbums)}">No albums found for this artist.</div>
 
     <div class="library-grid" th:if="${!#lists.isEmpty(artistAlbums) and state.mode == 'grid'}" data-album-menu="false">
-        <th:block th:each="a : ${artistAlbums}"><a th:replace="~{library/shared :: albumCard(${a})}"></a></th:block>
+        <th:block th:each="a : ${artistAlbums}"><div th:replace="~{library/shared :: albumCard(${a}, false)}"></div></th:block>
     </div>
 
     <div class="library-list" th:if="${!#lists.isEmpty(artistAlbums) and state.mode == 'list'}">

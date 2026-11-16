@@ -5,6 +5,12 @@
  * from buttons.css, and the size variants derived from PlayerConfig:
  *   LARGE: art 280px, title 30px, artist 14px, time 16px, icons 20/22px
  *   SMALL: art 60px, every font and icon x0.6, spacing x0.5
+ *
+ * Mobile-first (see globalStyle.css):
+ *   phones   LARGE stacks the art above the text; SMALL is a compact bar stuck to the bottom of the
+ *            screen: seek slider on top, then art, title/artist and three 44px buttons.
+ *   768px+   LARGE is the desktop row; SMALL is one row with the time labels, still stuck to the bottom.
+ *   1280px+  the original desktop sizes; SMALL sits in the shell column under the page content.
  */
 
 /* ─── Player panel ─────────────────────────────────────────────── */
@@ -139,7 +145,7 @@
     gap: 5px;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 5em 2em 5em;
+    padding: 0 16px 16px 16px;
 }
 .player-time {
     color: #999999;
@@ -209,10 +215,12 @@
     color: rgb(76, 175, 80);
     font-size: 16px;
     border-radius: 50%;
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    max-width: none;   /* buttons.css caps .player-btn at 38px */
+    max-height: none;
 }
 [data-player] .player-btn-primary {
     font-weight: bold;
@@ -238,22 +246,26 @@
 }
 
 /* ─── LARGE (dashboard) ─────────────────────────────────────────────── */
+/* Phones: the art is a banner above the title, artist, controls and slider */
 .player-large {
-    min-height: 200px;
+    flex-direction: column;
 }
 .player-large .album-art-container {
-    width: clamp(200px, 22vw, 280px);
-    min-height: 200px;
+    width: 100%;
+    height: 190px;
     align-self: stretch;
+    border-radius: 20px 20px 0 0;
 }
 .player-large .now-playing-info {
     padding-top: 12px;
 }
 .player-large .Song-Name {
-    font-size: 30px;
+    font-size: 22px;
+    padding: 0 16px;
 }
 .player-large .Artist-Name {
     font-size: 14px;
+    padding: 0 16px;
 }
 .player-large .player-time {
     font-size: 16px;
@@ -264,32 +276,43 @@
 }
 
 /* ─── SMALL (bottom bar of other pages) ─────────────────────────────────────────────── */
+/* Phones: stuck to the bottom of the screen. Row 1 is the seek slider, row 2 is art | title + artist | buttons. */
 .player-small {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
     align-items: center;
+    column-gap: 10px;
     flex: none;
-    height: 60px;
-    border-radius: 14px;
-    margin: 8px 16px 12px;
-    gap: 14px;
+    position: sticky;
+    bottom: 0;
+    z-index: 800;
+    padding: 0 6px 6px 8px;
+    border-radius: 14px 14px 0 0;
     background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
 }
+/* My Reports wraps the bar in this container, so the container is what sticks there */
+.analytics-player-container {
+    position: sticky;
+    bottom: 0;
+    z-index: 800;
+}
 .player-small .album-art-container {
-    width: 60px;
-    height: 60px;
-    border-radius: 14px 0 0 14px;
+    grid-row: 2;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
 }
 .player-small .album-art-placeholder {
     font-size: 22px;
 }
 .player-small .now-playing-info {
-    flex: 1 1 200px;
+    grid-row: 2;
     justify-content: center;
     gap: 3px;
     background: transparent;
-    height: 100%;
 }
 .player-small .Song-Name {
-    font-size: 18px;
+    font-size: 15px;
     padding: 0;
 }
 .player-small .Artist-Name {
@@ -297,19 +320,118 @@
     padding: 0;
 }
 .player-small .player-controls {
-    gap: 5px;
-}
-.player-small .player-btn {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    min-height: 28px;
+    grid-row: 2;
+    gap: 2px;
 }
 .player-small .time-Box {
-    flex: 2 1 240px;
-    padding: 0 18px 0 0;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: 0;
     gap: 2px;
+}
+.player-small .now-playing-slider {
+    height: 22px;   /* taller hit area for a finger; the drawn track stays 4px */
+}
+.player-small .time-row {
+    display: none;
 }
 .player-small .player-time {
     font-size: 11px;
+}
+
+/* ─── Tablets (768px and up) ─────────────────────────────────────────────── */
+@media (min-width: 768px) {
+    /* LARGE: the desktop row - art on the left, text and controls on the right */
+    .time-Box {
+        padding: 0 5em 2em 5em;
+    }
+    .player-large {
+        flex-direction: row;
+        min-height: 200px;
+    }
+    .player-large .album-art-container {
+        width: clamp(200px, 22vw, 280px);
+        height: auto;
+        min-height: 200px;
+        border-radius: 20px 0 0 20px;
+    }
+    .player-large .Song-Name {
+        font-size: 30px;
+        padding: 0 0 0 1em;
+    }
+    .player-large .Artist-Name {
+        padding: 0 0 0 2em;
+    }
+
+    /* SMALL: one row with the time labels, still stuck to the bottom of the screen */
+    .player-small {
+        display: flex;
+        height: 60px;
+        gap: 14px;
+        padding: 0;
+    }
+    .player-small .album-art-container {
+        grid-row: auto;
+        width: 60px;
+        height: 60px;
+        border-radius: 14px 0 0 0;
+    }
+    .player-small .now-playing-info {
+        grid-row: auto;
+        flex: 1 1 200px;
+        height: 100%;
+    }
+    .player-small .Song-Name {
+        font-size: 18px;
+    }
+    .player-small .player-controls {
+        grid-row: auto;
+        gap: 5px;
+    }
+    .player-small .time-Box {
+        grid-column: auto;
+        grid-row: auto;
+        flex: 2 1 240px;
+        padding: 0 18px 0 0;
+    }
+    .player-small .now-playing-slider {
+        height: 14px;
+    }
+    .player-small .time-row {
+        display: flex;
+    }
+}
+
+/* ─── Desktop (1280px and up) ─────────────────────────────────────────────── */
+@media (min-width: 1280px) {
+    [data-player] .player-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        min-height: 38px;
+        max-width: 38px;
+        max-height: 38px;
+    }
+    /* SMALL: a rounded bar in the shell column, below the scrolling content */
+    .player-small {
+        position: static;
+        bottom: auto;
+        z-index: auto;
+        border-radius: 14px;
+        margin: 8px 16px 12px;
+    }
+    .analytics-player-container {
+        position: static;
+        bottom: auto;
+        z-index: auto;
+    }
+    .player-small .album-art-container {
+        border-radius: 14px 0 0 14px;
+    }
+    .player-small .player-btn {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
+    }
 }

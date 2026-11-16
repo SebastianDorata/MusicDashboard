@@ -8,8 +8,8 @@
 .import-page {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 30px;
+    gap: 16px;
+    padding: 16px 12px;
     min-height: 100%;
     box-sizing: border-box;
 }
@@ -31,17 +31,18 @@
 .import-controls {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     gap: 10px;
 }
 .import-folder-input {
-    flex: 1;
+    flex: 1 1 200px;
     min-width: 0;
 }
 #scanBtn { /* desktop button hugs its text; give the label room beside the path field */
     padding: 11px 24px;
     white-space: nowrap;
-    flex: none;
+    flex: 1 1 auto;
 }
 #scanBtn:disabled {
     opacity: 0.5;
@@ -55,7 +56,10 @@
     align-items: center;
     justify-content: center;
     gap: 15px;
-    height: 220px;
+    height: auto;
+    min-height: 180px;
+    padding: 16px 12px;
+    text-align: center;
     box-sizing: border-box;
 }
 .import-dropzone.drag-over {
@@ -88,21 +92,20 @@
 
 /* ─── Results table ─────────────────────────────────────────── */
 .import-results {
-    flex: 1;
-    min-height: 220px;
-    overflow: auto;
+    flex: none;
+    min-height: 0;
+    overflow: visible;
     background: #1a1a1a;
     border-radius: 6px;
     padding: 0;
 }
 .import-results .dark-table th {
-    position: sticky;
+    position: static;
     top: 0;
     text-align: left;
     padding: 8px 10px;
 }
 .import-col-file { width: 40%; }
-.import-col-status { width: 180px; }
 .import-results .dark-table td {
     word-break: break-word;
 }
@@ -113,4 +116,88 @@
     text-align: center;
     padding: 40px 10px;
     color: #b3b3b3;
+}
+
+/* ─── Phones: result rows become stacked blocks (no sideways scroll) ── */
+.import-results thead {
+    display: none;
+}
+.import-results .dark-table,
+.import-results .dark-table tbody {
+    display: block;
+}
+.import-results .dark-table tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 10px;
+    padding: 8px 10px;
+}
+.import-results .dark-table td {
+    display: block;
+    padding: 0;
+    border: none;
+}
+.import-results .dark-table td:first-child {
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+.import-results .dark-table .import-status {
+    text-align: right;
+}
+.import-results .dark-table td:nth-child(3) {
+    grid-column: 1 / -1;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+.import-results .dark-table .import-placeholder td {
+    grid-column: 1 / -1;
+    font-weight: normal;
+    text-align: center;
+    padding: 40px 10px;
+    color: #b3b3b3;
+}
+
+/* ─── Tablet: the real table is back ────────────────────────── */
+@media (min-width: 768px) {
+    .import-col-status { width: 180px; }
+    .import-results thead { display: table-header-group; }
+    .import-results .dark-table { display: table; }
+    .import-results .dark-table tbody { display: table-row-group; }
+    .import-results .dark-table tr {
+        display: table-row;
+        grid-template-columns: none;
+        gap: normal;
+        padding: 0;
+    }
+    .import-results .dark-table td {
+        display: table-cell;
+        padding: 8px 10px;
+    }
+    .import-results .dark-table td:first-child {
+        font-weight: normal;
+        overflow-wrap: normal;
+    }
+    .import-results .dark-table .import-status { text-align: left; }
+    .import-results .dark-table td:nth-child(3) {
+        grid-column: auto;
+        color: white;
+        font-size: 13px;
+    }
+    .import-results .dark-table .import-placeholder td {
+        grid-column: auto;
+        padding: 40px 10px;
+        color: #b3b3b3;
+        text-align: center;
+    }
+}
+
+/* ─── Desktop (1280px and up): the original values ──────────── */
+@media (min-width: 1280px) {
+    .import-page { gap: 20px; padding: 30px; }
+    .import-controls { flex-wrap: nowrap; }
+    .import-folder-input { flex: 1; }
+    #scanBtn { flex: none; }
+    .import-dropzone { height: 220px; min-height: auto; padding: 0; text-align: start; }
+    .import-results { flex: 1; min-height: 220px; overflow: auto; }
+    .import-results .dark-table th { position: sticky; top: 0; }
 }

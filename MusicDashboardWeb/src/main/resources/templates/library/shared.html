@@ -4,8 +4,8 @@
   Reusable pieces of the library panes:
     alphabetBar           - A-Z/# bar (desktop AlphabetBar)
     albumArt(hasArt, id)  - cover art box with the placeholder note
-    albumCard(a)          - grid card (desktop CardFactory.createAlbumCard)
-    albumRow(a, editable) - list row with art (desktop AlbumCardListCell.buildRow)
+    albumCard(a, editable) - grid card in a wrapper div (desktop CardFactory.createAlbumCard); editable adds the "⋯" menu button
+    albumRow(a, editable) - list row with art in a wrapper div (desktop AlbumCardListCell.buildRow); editable adds the "⋯" button
     albumRowPlain(a)      - compact row without art (desktop AlbumListCell)
     songRow(s, editable)  - song list row (desktop SongCell)
     songCard(s)           - song grid card (desktop CardFactory.createSongCard)
@@ -26,23 +26,31 @@
          onerror="this.classList.add('art-missing')">
 </div>
 
-<a th:fragment="albumCard(a)" class="library-card" th:href="@{${state.albumUrl(a.id())}}"
-   th:data-album-id="${a.id()}" th:data-title="${a.title()}" th:data-year="${a.yearText()}"
-   th:data-genre="${a.genreText()}" th:data-songs="${a.songCount()}">
-    <div class="library-card-art" th:insert="~{library/shared :: albumArt(${a.hasArt()}, ${a.id()})}"></div>
-    <div class="library-card-title" th:text="${a.title()}">Album</div>
-    <div class="library-card-subtitle" th:text="${a.cardYear()}">2024</div>
-</a>
+<div th:fragment="albumCard(a, editable)" class="library-card-wrap">
+    <a class="library-card" th:href="@{${state.albumUrl(a.id())}}"
+       th:data-album-id="${a.id()}" th:data-title="${a.title()}" th:data-year="${a.yearText()}"
+       th:data-genre="${a.genreText()}" th:data-songs="${a.songCount()}">
+        <div class="library-card-art" th:insert="~{library/shared :: albumArt(${a.hasArt()}, ${a.id()})}"></div>
+        <div class="library-card-title" th:text="${a.title()}">Album</div>
+        <div class="library-card-subtitle" th:text="${a.cardYear()}">2024</div>
+    </a>
+    <button type="button" class="song-row-menu-btn touch-only library-card-menu-btn" data-action="album-menu"
+            aria-label="Album menu" th:if="${editable}">⋯</button>
+</div>
 
-<a th:fragment="albumRow(a, editable)" class="artist-list-row library-album-row" th:href="@{${state.albumUrl(a.id())}}"
-   th:data-album-id="${a.id()}" th:data-title="${a.title()}" th:data-year="${a.yearText()}"
-   th:data-genre="${a.genreText()}" th:data-songs="${a.songCount()}">
-    <div class="library-row-art" th:insert="~{library/shared :: albumArt(${a.hasArt()}, ${a.id()})}"></div>
-    <div class="library-row-text">
-        <div class="wt-smmd-bld" th:text="${a.title()}">Album</div>
-        <div class="txt-grey-md" th:text="${a.info()}">0 songs</div>
-    </div>
-</a>
+<div th:fragment="albumRow(a, editable)" class="library-row-wrap">
+    <a class="artist-list-row library-album-row" th:href="@{${state.albumUrl(a.id())}}"
+       th:data-album-id="${a.id()}" th:data-title="${a.title()}" th:data-year="${a.yearText()}"
+       th:data-genre="${a.genreText()}" th:data-songs="${a.songCount()}">
+        <div class="library-row-art" th:insert="~{library/shared :: albumArt(${a.hasArt()}, ${a.id()})}"></div>
+        <div class="library-row-text">
+            <div class="wt-smmd-bld" th:text="${a.title()}">Album</div>
+            <div class="txt-grey-md" th:text="${a.info()}">0 songs</div>
+        </div>
+    </a>
+    <button type="button" class="song-row-menu-btn touch-only library-row-menu-btn" data-action="album-menu"
+            aria-label="Album menu" th:if="${editable}">⋯</button>
+</div>
 
 <a th:fragment="albumRowPlain(a)" class="artist-list-row library-album-plain" th:href="@{${state.albumUrl(a.id())}}"
    th:data-album-id="${a.id()}">

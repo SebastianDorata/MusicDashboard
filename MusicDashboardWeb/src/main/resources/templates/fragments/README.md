@@ -4,7 +4,7 @@
 
 ## Behavior
 
-Thymeleaf fragments that several pages include with `th:replace`. `layout.html` provides the shared web shell: `head(title, links)` writes the meta tags, the CSRF tags, the global, button and player stylesheets, and then the page's own `links`; `sidebar(active)` writes the navigation with the item for the current page marked active (keys `dashboard`, `library`, `playlist`, `import`, `analytics`, `settings`); `sidebarTitle` writes only the title block for pages with their own sidebar; and `scripts` loads `app.js` and then `player.js`. `player.html` provides the music player in two variants, `large` (the 280 px art panel on the dashboard) and `bar` (the small bar at the bottom of the other pages). Both roots carry a `data-player` attribute and inner `data-role` hooks, and they render an empty state ("No song playing") that `static/js/player.js` fills in from `GET /api/player/state`.
+Thymeleaf fragments that several pages include with `th:replace`. `layout.html` provides the shared web shell: `head(title, links)` writes the meta tags, the CSRF tags, the global, button and player stylesheets, and then the page's own `links`; `sidebar(active)` writes the navigation with the item for the current page marked active (keys `dashboard`, `library`, `playlist`, `import`, `analytics`, `settings`); `sidebarTitle` writes only the title block for pages with their own sidebar; `mobileBar` writes the top bar with the menu button (shown below 1280px) and `sidebarBackdrop` writes the dimmed layer behind the open drawer. `sidebar(active)` emits `mobileBar` before the navigation and `sidebarBackdrop` after it, and the navigation has the id `app-sidebar`; and `scripts` loads `app.js` and then `player.js`. `player.html` provides the music player in two variants, `large` (the 280 px art panel on the dashboard) and `bar` (the small bar at the bottom of the other pages). Both roots carry a `data-player` attribute and inner `data-role` hooks, and they render an empty state ("No song playing") that `static/js/player.js` fills in from `GET /api/player/state`.
 
 ## Responsibilities
 
@@ -22,7 +22,7 @@ Every page in `templates/` includes `layout.html`. The player fragments are reus
 
 ## Table of contents
 
-- [layout.html](layout.html) — shared `head`, `sidebar`, `sidebarTitle` and `scripts` fragments
+- [layout.html](layout.html) — shared `head`, `sidebar`, `sidebarTitle`, `mobileBar`, `sidebarBackdrop` and `scripts` fragments
 - [player.html](player.html) — `large` and `bar` music player fragments
 - [← Back to templates](../README.md)
 - [← Back to root](../../../../../README.md)

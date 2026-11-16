@@ -4,7 +4,7 @@
 
 ## Behavior
 
-Holds the files the browser downloads directly, with no template or controller in between. The folder has no files of its own; it has three subfolders, and Spring Boot serves its contents from the site root, so `static/css/globalStyle.css` is requested as `/css/globalStyle.css`, `static/js/app.js` as `/js/app.js` and `static/icons/play.png` as `/icons/play.png`. The Thymeleaf pages in `templates/` reference these paths with `@{/css/...}`, `@{/js/...}` and `@{/icons/...}`. Nothing in this folder runs on the server.
+Holds the files the browser downloads directly, with no template or controller in between. The folder has no files of its own; it has three subfolders, and Spring Boot serves its contents from the site root, so `static/css/globalStyle.css` is requested as `/css/globalStyle.css`, `static/js/app.js` as `/js/app.js` and `static/icons/play.png` as `/icons/play.png`. The Thymeleaf pages in `templates/` reference these paths with `@{/css/...}`, `@{/js/...}` and `@{/icons/...}`. Nothing in this folder runs on the server. The front end is mobile-first: the base styles suit a phone, `@media (min-width: 768px)` adds the tablet layout, and the desktop layout applies from 1280px (`@media (min-width: 1280px)`).
 
 ## Responsibilities
 

@@ -10,29 +10,32 @@
     flex: 1;
     min-width: 0;
     min-height: 0;
-    padding: 5px;
+    padding: 0;
     box-sizing: border-box;
 }
 .dashboard-graph-panel {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex: 1;
     min-width: 0;
     min-height: 0;
     border-radius: 14px;
-    padding: 16px;
+    padding: 12px;
     box-sizing: border-box;
 }
 
 /*  Info section (left) ───────────────────────────────────── */
 .graph-info-section {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     flex: none;
-    width: clamp(200px, 20vw, 300px);
-    padding: 10px 16px 10px 10px;
-    gap: 14px;
+    width: auto;
+    padding: 0 0 8px 0;
+    gap: 10px 14px;
     box-sizing: border-box;
+}
+.graph-info-section > .txt-centre-underline {
+    grid-column: 1 / -1;
 }
 .graph-stack {
     display: flex;
@@ -63,9 +66,9 @@
     border-radius: 20px;
 }
 .graph-year-picker {
-    position: absolute;
-    top: 8px;
-    right: 8px;
+    position: static;
+    justify-content: flex-end;
+    padding: 4px 0;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -73,7 +76,8 @@
 
 /*  Line chart node ────────────────────────────────────────── */
 .dashboard-line-chart {
-    flex: 1;
+    flex: none;
+    height: 240px;
     min-height: 160px;
     position: relative;
     background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
@@ -108,6 +112,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    flex-wrap: wrap;
     min-height: 34px;
 }
 
@@ -146,17 +151,17 @@
     gap: 8px;
 }
 .year-header-current {
-    font-size: 26px;
+    font-size: 20px;
     font-weight: bold;
     color: #00d4ff;
 }
 .year-header-highest {
-    font-size: 26px;
+    font-size: 20px;
     font-weight: bold;
     color: #9d4edd;
 }
 .year-header-previous {
-    font-size: 26px;
+    font-size: 20px;
     font-weight: bold;
     color: #ff9500;
 }
@@ -221,4 +226,47 @@
     fill: #1e1e1e;
     stroke: #9d4edd;
     stroke-width: 2;
+}
+
+/* Tablet (768px+): info column beside the chart ────────────────────── */
+@media (min-width: 768px) {
+    .dashboard-graph-panel {
+        flex-direction: row;
+    }
+    .graph-info-section {
+        display: flex;
+        flex-direction: column;
+        width: 220px;
+        padding: 10px 16px 10px 10px;
+        gap: 14px;
+    }
+    .dashboard-line-chart {
+        height: 300px;
+    }
+}
+
+/* Desktop (1280px+): the original graph layout, unchanged ──────────── */
+@media (min-width: 1280px) {
+    .dashboard-graph-wrap { padding: 5px; }
+    .dashboard-graph-panel { flex-direction: row; padding: 16px; }
+    .graph-info-section {
+        display: flex;
+        flex-direction: column;
+        width: clamp(200px, 20vw, 300px);
+        padding: 10px 16px 10px 10px;
+        gap: 14px;
+    }
+    .graph-info-section > .txt-centre-underline { grid-column: auto; }
+    .graph-year-picker {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        justify-content: normal;
+        padding: 0;
+    }
+    .graph-chart-title-row { flex-wrap: nowrap; }
+    .year-header-current,
+    .year-header-highest,
+    .year-header-previous { font-size: 26px; }
+    .dashboard-line-chart { flex: 1; height: auto; }
 }
