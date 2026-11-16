@@ -1,0 +1,153 @@
+/* ─── Row labels ────────────────────────────────────────────── */
+/* Referenced by RowConfig, consumed by AnalyticsRowFactory (rows are rendered by analytics.html / analytics.js) */
+.analytics-row-secondary {
+    color: #cccccc;
+    font-size: 12px;
+}
+.analytics-row-meta {
+    color: #999999;
+    font-size: 11px;
+}
+
+/* ─── Row container ─────────────────────────────────────────── */
+.analytics-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 10px 15px 10px;
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border: 1px solid #404040;
+    border-radius: 8px;
+}
+/* Primary label grows, secondary keeps room for an artist name */
+.analytics-list-item .row-primary {
+    flex: 1;
+    min-width: 200px;
+    overflow-wrap: anywhere;
+}
+.analytics-list-item .row-secondary {
+    min-width: 150px;
+}
+/* Rows that play a song or open an album (AnalyticsRowFactory.applyClickable) */
+.analytics-list-item.clickable {
+    cursor: pointer;
+}
+.analytics-list-item.clickable:hover {
+    opacity: 0.75;
+}
+
+/* ─── Section container ─────────────────────────────────────── */
+.analytics-section-container {
+    padding: 20px;
+}
+
+/* ─── Bottom player container ───────────────────────────────── */
+.analytics-player-container {
+    padding: 5px;
+}
+.sidebarAnalytics {
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border: 1px solid rgba(76, 175, 80, 0.45);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.25);
+}
+
+/* ─── Page layout (web) ─────────────────────────────────────── */
+/* Scrolling centre area: VBox(20) with 20px padding */
+.analytics-center {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+.analytics-title {
+    display: block;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+.analytics-center > .view-All {
+    align-self: flex-start;
+    padding: 9px 20px;
+}
+/* Preview list (VBox(10)) */
+.analytics-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* Year selector block in the sidebar (VBox(4), padding 8 0 4 0) */
+.analytics-year-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0 4px 0;
+    margin: 0;
+}
+.analytics-year-box > span {
+    text-align: center;
+}
+.analytics-year-box select {
+    width: 100%;
+}
+.sidebar a.nav-btn-back {
+    box-sizing: border-box;
+}
+
+/* ─── "View all" modal (MD.modal) ───────────────────────────── */
+.md-modal-wide:has(.analytics-modal) {
+    width: min(1024px, 90vw);
+    height: min(720px, 90vh);
+    background: #1e1e1e;
+}
+.md-modal:has(.analytics-modal) .md-modal-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    padding: 20px;
+}
+.analytics-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex: 1;
+    min-height: 0;
+}
+.analytics-modal-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+.analytics-modal-header .wt-smmd-bld {
+    flex: 1;
+}
+.analytics-modal-header .return-btn {
+    padding: 0 18px;
+}
+.analytics-modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+.analytics-modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+}
+.analytics-modal-footer .btn-blue {
+    padding: 0 16px;
+}
+.analytics-modal-footer .page-label {
+    min-width: 150px;
+    text-align: center;
+}

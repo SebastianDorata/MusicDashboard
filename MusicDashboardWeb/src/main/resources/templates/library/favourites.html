@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Favourites pane (desktop FavouritesViewBuilder): header, empty state, list or card grid. -->
+<body>
+<section th:fragment="favouritesPane" class="library-pane">
+    <div class="song-header" th:text="${header}">Favourites (0)</div>
+
+    <div class="library-empty" th:if="${total == 0}">
+        <div class="favourites-empty-icon">♡</div>
+        <div class="favourites-empty-msg">No favourites yet.<br>Click ⋯ on any song and choose "Add to Favourites".</div>
+    </div>
+
+    <th:block th:if="${total > 0 and state.mode == 'list'}">
+        <th:block th:replace="~{library/songs :: songList(false)}"></th:block>
+    </th:block>
+
+    <div class="tile-pane library-grid" th:if="${total > 0 and state.mode == 'grid'}">
+        <th:block th:each="s : ${songs}"><div th:replace="~{library/shared :: songCard(${s})}"></div></th:block>
+    </div>
+</section>
+</body>
+</html>

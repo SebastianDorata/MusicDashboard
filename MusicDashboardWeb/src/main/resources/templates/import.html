@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Import Music', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/import.css}">
+</head>
+<body class="root">
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('import')}"></aside>
+    <main class="app-main">
+        <div class="app-content">
+            <div class="import-page dark-page-bg">
+
+                <div class="import-header">
+                    <h1 class="txt-white-bld-forty txt-centre-underline">Import Music</h1>
+                </div>
+
+                <!-- Hint + folder path + Start Scan (desktop: Browse + Start Scan row) -->
+                <div class="import-browse">
+                    <div class="txt-grey-sm">Enter the path of a folder on the machine running the app, or drag-and-drop
+                        files/folders below. Every file is read once and fully imported/updated in a single pass.</div>
+                    <div class="import-controls">
+                        <input id="folderPath" class="form-input import-folder-input" type="text"
+                               placeholder="No folder selected" autocomplete="off" spellcheck="false"
+                               aria-label="Music folder path on the server"
+                               th:value="${defaultFolder}">
+                        <button id="scanBtn" type="button" class="login-btn-primary" disabled>Start Scan</button>
+                    </div>
+                </div>
+
+                <!-- Drop zone -->
+                <div id="dropZone" class="dropZone import-dropzone">
+                    <div class="txt-white-md">Drag &amp; Drop Music Files or Folders Here</div>
+                    <div class="txt-grey-sm">Supports .mp3 and .m4a  ·  Folders are scanned recursively</div>
+                    <button id="browseBtn" type="button" class="nav-btn">Browse…</button>
+                    <input id="fileInput" type="file" class="hidden" multiple accept=".mp3,.m4a">
+                    <input id="folderInput" type="file" class="hidden" webkitdirectory multiple>
+                </div>
+
+                <!-- Progress -->
+                <div class="import-progress">
+                    <div id="progressTrack" class="import-progress-track hidden">
+                        <div id="progressFill" class="import-progress-fill"></div>
+                    </div>
+                    <div id="progressLabel" class="txt-white-sm"></div>
+                </div>
+
+                <div id="summaryLabel" class="txt-white-sm import-summary"></div>
+
+                <!-- Results table -->
+                <div class="import-results analytics-section-container">
+                    <table id="resultsTable" class="dark-table">
+                        <thead>
+                        <tr><th class="import-col-file">File</th><th class="import-col-status">Status</th><th>Details</th></tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                        <tr class="import-placeholder"><td colspan="3">Results will appear here after importing.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div th:replace="~{fragments/player :: bar}"></div>
+    </main>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/import.js}"></script>
+</body>
+</html>

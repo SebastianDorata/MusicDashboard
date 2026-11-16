@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  Songs pane (desktop SongViewBuilder.buildListView): A-Z grouped song list with the alphabet bar.
+  songList is shared with the Favourites pane. editable = right-click opens Edit Song (Songs tab only).
+-->
+<body>
+
+<section th:fragment="songsPane" class="library-pane main-bkColour">
+    <h2 class="view-header" th:text="${header}">All Songs (0)</h2>
+    <th:block th:replace="~{library/songs :: songList(true)}"></th:block>
+</section>
+
+<div th:fragment="songList(editable)" class="library-list-layout">
+    <div class="library-list" th:data-queue="${queueIds}">
+        <th:block th:each="g : ${groups}">
+            <div class="alpha-divider" th:data-letter="${g.letter()}" th:text="${g.letter()}">A</div>
+            <th:block th:each="s : ${g.items()}"><div th:replace="~{library/shared :: songRow(${s}, ${editable})}"></div></th:block>
+        </th:block>
+    </div>
+    <nav th:replace="~{library/shared :: alphabetBar}"></nav>
+</div>
+
+</body>
+</html>

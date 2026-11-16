@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  My Reports (desktop AnalyticsController). One section per request, chosen by ?report=...
+  Model: report, year, years, nav (NavEntry key/label) + the section's own attributes
+  (historyRows | songRows | albumRows | artistRows | calendar/card | monthButtons/card | wrapped...).
+-->
+<head th:replace="~{fragments/layout :: head('My Reports', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/wrapped.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/analytics.css}">
+    <link rel="stylesheet" th:href="@{/css/reports.css}">
+</head>
+<body class="root">
+<div class="app-shell">
+
+    <!-- The Analytics page's own sidebar (desktop SidebarBuilder) -->
+    <aside class="panels sidebar">
+        <div th:replace="~{fragments/layout :: sidebarTitle}"></div>
+        <hr class="sidebar-sep">
+
+        <a class="nav-btn" th:each="e : ${nav}"
+           th:href="@{/analytics(report=${e.key()}, year=${year})}"
+           th:classappend="${e.key() == report} ? 'nav-btn-active'"
+           th:text="'   ' + ${e.label()}">   Listening History</a>
+        <hr class="sidebar-sep">
+
+        <!-- Year selector -->
+        <form class="analytics-year-box" th:action="@{/analytics}" method="get" id="yearForm">
+            <input type="hidden" name="report" th:value="${report}">
+            <span class="txt-white-sm txt-centre-underline">Select a year to begin</span>
+            <select name="year" class="year-selector combo-box Cursor-Hand" id="yearSelect" aria-label="Year">
+                <option th:each="y : ${years}" th:value="${y}" th:text="${y}" th:selected="${y == year}">2026</option>
+            </select>
+            <noscript><button type="submit" class="btn-blue">Go</button></noscript>
+        </form>
+
+        <!-- Back section -->
+        <div class="sidebar-section-label">Return home</div>
+        <a class="nav-btn-back txt-white-sm-bld" th:href="@{/dashboard}">← Dashboard</a>
+
+        <div class="sidebar-spacer"></div>
+
+        <!-- Web-only: signed-in user and log out -->
+        <div class="sidebar-user">
+            <div class="sidebar-section-label ellipsis" th:text="${currentUsername}">user</div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="nav-btn-back txt-white-sm-bld">Log out</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="app-main">
+        <div class="app-content">
+            <div class="analytics-center" th:switch="${report}">
+                <th:block th:case="'weekly'"><th:block th:replace="~{analytics/weekly :: section}"></th:block></th:block>
+                <th:block th:case="'monthly'"><th:block th:replace="~{analytics/monthly :: section}"></th:block></th:block>
+                <th:block th:case="'yearly'"><th:block th:replace="~{analytics/yearly :: section}"></th:block></th:block>
+                <th:block th:case="'songs'"><th:block th:replace="~{analytics/songs :: section}"></th:block></th:block>
+                <th:block th:case="'albums'"><th:block th:replace="~{analytics/albums :: section}"></th:block></th:block>
+                <th:block th:case="'artists'"><th:block th:replace="~{analytics/artists :: section}"></th:block></th:block>
+                <th:block th:case="*"><th:block th:replace="~{analytics/history :: section}"></th:block></th:block>
+            </div>
+        </div>
+        <div class="analytics-player-container">
+            <div th:replace="~{fragments/player :: bar}"></div>
+        </div>
+    </main>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/analytics.js}"></script>
+</body>
+</html>

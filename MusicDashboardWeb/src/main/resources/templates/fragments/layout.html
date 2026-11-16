@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  Shared web shell fragments (replaces the desktop SidebarBuilder / AppSidebar).
+
+  head(title, links)  - <head> content: meta, CSRF tags, global CSS, page CSS
+  sidebar(active)     - standard app sidebar; active = dashboard|library|playlist|import|analytics|settings
+  sidebarTitle        - only the "Music Dashboard" title block (for pages with their own sidebar)
+  scripts             - shared scripts (app.js, player.js); page scripts follow it
+-->
+
+<head th:fragment="head(title, links)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · Music Dashboard'">Music Dashboard</title>
+    <meta name="_csrf" th:content="${_csrf?.token}">
+    <meta name="_csrf_header" th:content="${_csrf?.headerName}">
+    <link rel="stylesheet" th:href="@{/css/globalStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/buttons.css}">
+    <link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
+    <th:block th:replace="${links}"></th:block>
+</head>
+
+<body>
+
+<!-- Title block: "Music" + accent "Dashboard" -->
+<div th:fragment="sidebarTitle" class="sidebar-title">
+    <span class="txt-white-bld-thirty">Music</span><span class="sidebar-title-accent">Dashboard</span>
+</div>
+
+<!-- Standard application sidebar (desktop AppSidebar) -->
+<aside th:fragment="sidebar(active)" class="panels sidebar">
+    <div th:replace="~{fragments/layout :: sidebarTitle}"></div>
+    <hr class="sidebar-sep">
+
+    <!-- Primary entries -->
+    <a class="nav-btn" th:href="@{/dashboard}" th:classappend="${active == 'dashboard'} ? 'nav-btn-active'">⌂   My Dashboard</a>
+    <a class="nav-btn" th:href="@{/library}" th:classappend="${active == 'library'} ? 'nav-btn-active'">♫   My Library</a>
+    <a class="nav-btn" th:href="@{/playlist}" th:classappend="${active == 'playlist'} ? 'nav-btn-active'">≡   My Playlist</a>
+    <a class="nav-btn" th:href="@{/import}" th:classappend="${active == 'import'} ? 'nav-btn-active'">↓   Import Files</a>
+    <a class="nav-btn" th:href="@{/analytics}" th:classappend="${active == 'analytics'} ? 'nav-btn-active'">◫   My Reports</a>
+    <hr class="sidebar-sep">
+
+    <!-- Secondary entries (Export Data / Link Account lead nowhere on desktop either) -->
+    <a class="nav-btn" th:href="@{/settings}" th:classappend="${active == 'settings'} ? 'nav-btn-active'">⚙   Settings</a>
+    <button type="button" class="nav-btn" disabled title="Not available yet">↑   Export Data</button>
+    <button type="button" class="nav-btn" disabled title="Not available yet">⊕   Link Account</button>
+
+    <div class="sidebar-spacer"></div>
+
+    <!-- Web-only: signed-in user and log out -->
+    <div class="sidebar-user">
+        <div class="sidebar-section-label ellipsis" th:text="${currentUsername}">user</div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="nav-btn-back txt-white-sm-bld">Log out</button>
+        </form>
+    </div>
+</aside>
+
+<!-- Shared scripts: helpers first, then the player -->
+<th:block th:fragment="scripts">
+    <script th:src="@{/js/app.js}"></script>
+    <script th:src="@{/js/player.js}"></script>
+</th:block>
+
+</body>
+</html>

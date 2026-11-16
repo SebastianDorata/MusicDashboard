@@ -1,0 +1,717 @@
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL STYLE (web translation of the desktop globalStyle.css)
+   Loaded on every page. Every original class name is kept; the
+   JavaFX -fx-* properties are translated to plain CSS.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+html {
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+}
+
+/* ─── Root ──────────────────────────────────────────────────── */
+.root {
+    background: linear-gradient(to bottom right, #1e1e1e, #2a2a2a);
+}
+body.root {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ─── App layout (web shell) ────────────────────────────────── */
+/* Row: sidebar on the left, main column on the right */
+.app-shell {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+/* Main column: scrolling content on top, small player bar below */
+.app-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+}
+/* Scrolling page content */
+.app-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+/* Broken album art is hidden so the placeholder shows through */
+.art-missing {
+    display: none;
+}
+
+/* ─── Links ─────────────────────────────────────────────────── */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ─── Form control defaults (dark) ──────────────────────────── */
+/* Text-field look from the desktop app */
+input, select, textarea {
+    font-family: inherit;
+    font-size: 13px;
+    color: white;
+    background: #1a1a1a;
+    border: 1px solid #404040;
+    border-radius: 6px;
+    padding: 8px 10px;
+    outline: none;
+}
+input::placeholder, textarea::placeholder {
+    color: #b3b3b3;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #1DB954;
+}
+input:disabled, select:disabled, textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+input[type="checkbox"], input[type="radio"] {
+    accent-color: #1DB954;
+    padding: 0;
+}
+input[type="file"] {
+    padding: 6px;
+}
+select option {
+    background: #1a1a1a;
+    color: white;
+}
+button {
+    font-family: inherit;
+    font-size: 13px;
+    color: white;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+button:disabled {
+    cursor: not-allowed;
+}
+
+/* ─── Tables (default dark table, like the desktop table view) ─ */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    color: white;
+    font-size: 13px;
+}
+th {
+    background: #2a2a2a;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid #404040;
+}
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #2a2a2a;
+}
+tbody tr:nth-child(odd) {
+    background: #1e1e1e;
+}
+tbody tr:nth-child(even) {
+    background: #232323;
+}
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ─── Text — White ──────────────────────────────────────────── */
+.txt-white {
+    color: white;
+}
+.txt-white-sm {
+    color: white;
+    font-size: 13px;
+}
+.txt-white-sm-bld {
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+}
+.txt-white-ttl-bld {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    opacity: 0.95;
+    text-decoration: underline;
+}
+.wt-smmd-bld {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.txt-white-md {
+    color: white;
+    font-size: 20px;
+}
+.txt-white-md-bld {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+/*TODO fix class names*/
+.txt-white-bld-thirty {
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+}
+.txt-white-bld-forty {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}
+.txt-white-lg {
+    color: white;
+    font-size: 40px;
+}
+
+.txt-centre-underline {
+    text-decoration: underline;
+    text-align: center;
+}
+
+/* ─── Text — Grey ───────────────────────────────────────────── */
+.txt-grey-sm {
+    color: #b3b3b3;
+    font-size: 11px;
+}
+.txt-grey-sm-normal {
+    color: #b3b3b3;
+    font-size: 11px;
+    font-weight: normal;
+    min-width: 25px;
+}
+.txt-grey-sm-bld {
+    color: #b3b3b3;
+    font-size: 11px;
+    font-weight: bold;
+}
+.txt-grey-md {
+    color: #b3b3b3;
+    font-size: 13px;
+}
+.txt-grey-md-bld {
+    color: #b3b3b3;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* ─── Text — Black ──────────────────────────────────────────── */
+.txt-black-sm {
+    color: black;
+    font-size: 13px;
+}
+
+/* ─── Text — Accent colours ─────────────────────────────────── */
+.Green-Secondary-txt-bld {
+    font-size: 12px;
+    color: #1db954;
+    font-weight: bold;
+}
+.txt-Red-md-bld {
+    color: #c41e3a;
+    font-size: 14px;
+    font-weight: bold;
+}
+.txt-Orange-md-bld {
+    color: #D6790D;
+    font-size: 14px;
+    font-weight: bold;
+}
+.txt-bbBlue-md-bld {
+    color: #00d4ff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ─── Background colours ────────────────────────────────────── */
+.Dark-page-bg {
+    background: #121212;
+}
+.dark-page-bg {
+    background: #1a1a1a;
+}
+.main-bkColour {
+    background: #2a2a2a;
+    border: 1px solid #404040;
+}
+.blue-background {
+    background: #1f3a3f;
+    border: 1px solid #3a6f78;
+}
+.light-grey-background {
+    background: #2a2a2a;
+    border: 1px solid #404040;
+}
+.trans-background {
+    background: transparent;
+    border: 1px solid transparent;
+}
+.Red-background {
+    background: #c41e3a;
+}
+.Green-Primary {
+    background: #4CAF50;
+}
+.Green-Secondary {
+    background: #1DB954;
+}
+.Dark-blue-background {
+    background: #0d2342;
+}
+.Dark-blue-background-secondary {
+    background: #1A3A52;
+}
+.Purple-background {
+    background: #0a0e27;
+}
+.header-background {
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border-radius: 0 20px 20px 0;
+    border: 1px solid rgba(76, 175, 80, 0.45);
+    box-shadow: 4px 0 20px rgba(76, 175, 80, 0.25);
+}
+
+/* ─── Border colours ────────────────────────────────────────── */
+.Green-Primary-boarder {
+    border: 1px solid #4CAF50;
+}
+.Green-Secondary-boarder {
+    border: 1px solid #1DB954;
+}
+
+/* ─── Cursor ────────────────────────────────────────────────── */
+/* Used: PlaybackPanelController.createPlayerControls() */
+.Cursor {
+    cursor: pointer;
+}
+/* Used: TopArtistController.buildArtistRow(), CardFactory.setupLabel() */
+.Cursor-Hand {
+    cursor: pointer;
+}
+.Cursor-Hand:hover {
+    color: #1db954;
+    text-decoration: underline;
+}
+
+
+/* ─── Misc layout helpers ───────────────────────────────────── */
+.empty-msg {
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.radius-padding-twenty {
+    border-radius: 0 20px 20px 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.padding-btm {
+    padding: 0 0 20px 0;
+}
+.cntr-spc-sm { /* used on HBox rows on desktop (player controls, time row) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* ─── Drop zone (Import page) ───────────────────────────────── */
+.dropZone {
+    border: 3px solid #4CAF50;
+    border-radius: 15px;
+    background: #1e1e1e;
+}
+.dropZone:hover {
+    border: 3px solid #1DB954;
+    border-radius: 15px;
+    background: #1a2e1a;
+}
+
+/* ─── Scroll bars ───────────────────────────────────────────── */
+.scroll-pane {
+    background: #121212;
+    overflow: auto;
+}
+.scroll-pane .viewport {
+    background: #121212;
+}
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #404040 transparent;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background: transparent;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #606060;
+}
+.scroll-bar {
+    background: transparent;
+}
+
+/* ─── Tooltip ───────────────────────────────────────────────── */
+.tooltip {
+    background: #333;
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+}
+
+/* ─── Sidebar ───────────────────────────────────────────── */
+/* Full-height column: 220 min / 250 pref / 300 max, 8px spacing */
+.sidebar {
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border-radius: 0 20px 20px 0;
+    border: 1px solid rgba(76, 175, 80, 0.45);
+    box-shadow: 4px 0 20px rgba(76, 175, 80, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 12px 5px 12px;
+    min-width: 220px;
+    width: 250px;
+    max-width: 300px;
+    flex: 0 0 250px;
+    height: 100%;
+    overflow-y: auto;
+}
+.sidebar-section-label {
+    padding: 4px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+.sidebar-sep {
+    padding: 4px;
+    border: none;
+    margin: 0;
+    height: 0;
+    background: transparent;
+}
+.sidebar-sep::before {
+    content: "";
+    display: block;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+.sidebar-title-accent {
+    font-size: 23px;
+    color: #1db954;
+    font-weight: bold;
+}
+/* Title block ("Music" + accent "Dashboard") */
+.sidebar-title {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+/* Pushes the user block to the bottom of the sidebar (web only) */
+.sidebar-spacer {
+    flex: 1;
+}
+/* Signed-in user block at the bottom of the sidebar (web only) */
+.sidebar-user {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0 12px 0;
+}
+.sidebar-user form {
+    margin: 0;
+}
+
+/* ─── Table view (Import results) ───────────────────────────── */
+.dark-table {
+    background: #1a1a1a;
+    border-collapse: collapse;
+    width: 100%;
+}
+.dark-table th,
+.dark-table .column-header,
+.dark-table .filler {
+    background: #2a2a2a;
+    border: none;
+    border-bottom: 1px solid #404040;
+}
+.dark-table .column-header-background {
+    background: #2a2a2a;
+}
+.dark-table th,
+.dark-table .column-header .label {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+.dark-table tbody tr,
+.dark-table .table-row-cell {
+    background: #1e1e1e;
+    border-bottom: 1px solid #2a2a2a;
+}
+.dark-table tbody tr:nth-child(odd),
+.dark-table .table-row-cell:nth-child(odd) {
+    background: #1e1e1e;
+}
+.dark-table tbody tr:nth-child(even),
+.dark-table .table-row-cell:nth-child(even) {
+    background: #232323;
+}
+.dark-table tbody tr.selected,
+.dark-table .table-row-cell.selected {
+    background: rgba(29, 185, 84, 0.2);
+}
+.dark-table tbody tr:hover,
+.dark-table .table-row-cell:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+.dark-table td,
+.dark-table .table-cell {
+    color: white;
+    font-size: 13px;
+    text-align: left;
+    padding: 8px 10px;
+    border: none;
+}
+.dark-table .placeholder .label,
+.dark-table .placeholder {
+    color: #b3b3b3;
+}
+.dark-table .scroll-bar {
+    background: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WEB-ONLY GENERIC HELPERS
+   Reusable by every page.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Page layout helpers ───────────────────────────────────── */
+/* Standard padded page body inside .app-content */
+.page {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.page-title {
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+}
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.grow {
+    flex: 1;
+    min-width: 0;
+}
+.hidden {
+    display: none !important;
+}
+.ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ─── Forms ─────────────────────────────────────────────────── */
+.form-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 12px;
+    align-items: center;
+}
+.form-grid label,
+.form-label {
+    color: #b3b3b3;
+    font-size: 13px;
+}
+.form-input {
+    width: 100%;
+}
+.form-error {
+    color: #ff6b6b;
+    font-size: 12px;
+}
+
+/* ─── Empty-state text ──────────────────────────────────────── */
+.empty-state {
+    color: #b3b3b3;
+    font-size: 13px;
+    text-align: center;
+    padding: 24px;
+}
+
+/* ─── Modal (MD.modal) ──────────────────────────────────────── */
+.md-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+.md-modal {
+    background: #1e1e1e;
+    border: 1px solid #404040;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    width: 420px;
+    max-width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    outline: none;
+}
+.md-modal-wide {
+    width: 640px;
+}
+.md-modal-header {
+    padding: 16px 20px 8px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+.md-modal-body {
+    padding: 8px 20px 16px 20px;
+    overflow-y: auto;
+    color: #e0e0e0;
+    font-size: 13px;
+    line-height: 1.45;
+}
+.md-modal-footer {
+    padding: 12px 20px 16px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #2a2a2a;
+}
+
+/* ─── Toasts (MD.toast) ─────────────────────────────────────── */
+.md-toast-container {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 2000;
+    pointer-events: none;
+    max-width: 360px;
+}
+.md-toast {
+    pointer-events: auto;
+    background: #333;
+    color: white;
+    font-size: 13px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 4px solid #00d4ff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.md-toast-show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.md-toast-success {
+    border-left-color: #1DB954;
+}
+.md-toast-error {
+    border-left-color: #c41e3a;
+}
+.md-toast-info {
+    border-left-color: #00d4ff;
+}
+
+/* ─── Popup / context menu (MD.menu) ────────────────────────── */
+.md-menu {
+    position: fixed;
+    min-width: 160px;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+    padding: 4px 0;
+    z-index: 1500;
+}
+.md-menu-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: white;
+    font-size: 13px;
+    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.md-menu-item:hover:not(:disabled) {
+    background: #1DB954;
+    color: white;
+}
+.md-menu-item:disabled {
+    color: #777;
+    cursor: not-allowed;
+}
+.md-menu-item-danger {
+    color: #ff6b6b;
+}
+.md-menu-item-danger:hover:not(:disabled) {
+    background: #c41e3a;
+    color: white;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Album detail (desktop AlbumViewBuilder + AlbumSongCell): back row, artwork, title, artist, songs. -->
+<body>
+<section th:fragment="albumDetailPane" class="library-pane album-detail">
+    <div class="album-detail-header">
+        <a class="nav-btn-back txt-white-md-bld library-back-btn" th:href="@{${state.tabUrl('albums')}}">← Back to Albums</a>
+    </div>
+
+    <div class="album-artwork-section">
+        <div class="album-artwork" th:insert="~{library/shared :: albumArt(${albumDetail.hasArt()}, ${albumDetail.id()})}"></div>
+    </div>
+
+    <div class="album-artist-section">
+        <div class="section-title" th:text="${albumDetail.title()}">Album</div>
+        <a class="album-artist-label" th:if="${albumDetail.artistNames() != null}"
+           th:href="@{${state.artistUrl(albumDetail.firstArtistId())}}" th:text="${albumDetail.artistNames()}">Artist</a>
+        <div class="album-artist-label txt-grey-md" th:if="${albumDetail.artistNames() == null}">Unknown Artist</div>
+    </div>
+
+    <div class="album-songs-list">
+        <div class="txt-grey-md" th:if="${#lists.isEmpty(albumDetail.songs())}">No songs in this album</div>
+        <div class="album-songs-rows" th:unless="${#lists.isEmpty(albumDetail.songs())}">
+            <div class="album-song-row" th:each="s : ${albumDetail.songs()}" data-play="album-row"
+                 th:data-song-id="${s.id()}" th:data-title="${s.title()}">
+                <span class="album-song-track" th:text="${s.track()}">1</span>
+                <span class="album-song-title ellipsis" th:text="${s.title()}">Title</span>
+                <span class="album-song-meta" th:text="${s.plays()}">0 plays</span>
+                <span class="album-song-meta" th:text="${s.date()}">—</span>
+                <button type="button" class="song-row-menu-btn" data-action="song-menu" aria-label="Song menu">⋯</button>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

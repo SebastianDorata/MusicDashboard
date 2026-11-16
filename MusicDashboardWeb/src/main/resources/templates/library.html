@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  My Library page (desktop MyLibraryController).
+  The view state is the URL query string (see LibraryState); the pane to render is chosen by the
+  model attribute "pane". Each pane lives in its own fragment file under templates/library/.
+-->
+<head th:replace="~{fragments/layout :: head('My Library', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/library.css}">
+</head>
+<body class="root">
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('library')}"></aside>
+    <main class="app-main">
+        <div class="app-content">
+            <div class="library-page dark-page-bg" th:attr="data-pane=${pane}">
+                <header th:replace="~{library/topbar :: topbar}"></header>
+
+                <th:block th:switch="${pane}">
+                    <th:block th:case="'songs'"><div th:replace="~{library/songs :: songsPane}"></div></th:block>
+                    <th:block th:case="'albums'"><div th:replace="~{library/albums :: albumsPane}"></div></th:block>
+                    <th:block th:case="'artists'"><div th:replace="~{library/artists :: artistsPane}"></div></th:block>
+                    <th:block th:case="'favourites'"><div th:replace="~{library/favourites :: favouritesPane}"></div></th:block>
+                    <th:block th:case="'albumDetail'"><div th:replace="~{library/album-detail :: albumDetailPane}"></div></th:block>
+                    <th:block th:case="'artistDetail'"><div th:replace="~{library/artist-detail :: artistDetailPane}"></div></th:block>
+                </th:block>
+            </div>
+        </div>
+        <div th:replace="~{fragments/player :: bar}"></div>
+    </main>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/library.js}"></script>
+</body>
+</html>

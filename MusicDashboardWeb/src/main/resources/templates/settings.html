@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Settings', ~{})}">
+</head>
+<body class="root">
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('settings')}"></aside>
+    <main class="app-main">
+        <div class="app-content">
+            <div class="page">
+                <h1 class="page-title">Settings</h1>
+            </div>
+        </div>
+        <div th:replace="~{fragments/player :: bar}"></div>
+    </main>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+</body>
+</html>

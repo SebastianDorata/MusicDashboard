@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Monthly Summary: twelve month buttons (two rows of six) and the selected month's card -->
+<th:block th:fragment="section">
+    <h1 class="txt-white-bld-thirty txt-centre-underline analytics-title">Monthly Summary</h1>
+    <div class="month-buttons">
+        <a class="month-btn" th:each="b : ${monthButtons}"
+           th:href="@{/analytics(report='monthly', year=${year}, month=${b.month()})}"
+           th:text="${b.label()}">JAN</a>
+    </div>
+    <div class="analytics-section-container">
+        <th:block th:if="${card != null}"><div th:replace="~{analytics/reportCard :: card(${card})}"></div></th:block>
+    </div>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Weekly Summary: month calendar (Sunday-Saturday weeks); clicking a day opens that week's card -->
+<th:block th:fragment="section">
+    <h1 class="txt-white-bld-thirty txt-centre-underline analytics-title">Weekly Summary</h1>
+    <div class="analytics-section-container">
+        <div class="weekly-calendar">
+            <div class="calendar-header">
+                <a class="calendar-nav-btn" aria-label="Previous month"
+                   th:href="@{/analytics(report='weekly', year=${year}, month=${calendar.prevMonth()}, cyear=${calendar.prevYear()})}">◀</a>
+                <span class="calendar-month-label" th:text="${calendar.label()}">NOVEMBER 2026</span>
+                <a class="calendar-nav-btn" aria-label="Next month"
+                   th:href="@{/analytics(report='weekly', year=${year}, month=${calendar.nextMonth()}, cyear=${calendar.nextYear()})}">▶</a>
+            </div>
+            <div class="calendar-grid">
+                <span class="calendar-dayname" th:each="d : ${ {'Sun','Mon','Tue','Wed','Thu','Fri','Sat'} }" th:text="${d}">Sun</span>
+                <th:block th:each="c : ${calendar.cells()}">
+                    <span class="calendar-blank" th:if="${c.day() == 0}"></span>
+                    <a class="calendar-day" th:unless="${c.day() == 0}"
+                       th:attr="data-week=${c.week()}"
+                       th:classappend="${selectedWeek != null and selectedWeek == c.week()} ? 'selected'"
+                       th:href="@{/analytics(report='weekly', year=${year}, month=${month}, cyear=${calendarYear}, week=${c.week()})}"
+                       th:text="${c.day()}">1</a>
+                </th:block>
+            </div>
+        </div>
+        <th:block th:if="${card != null}"><div th:replace="~{analytics/reportCard :: card(${card})}"></div></th:block>
+    </div>
+</th:block>
+</body>
+</html>

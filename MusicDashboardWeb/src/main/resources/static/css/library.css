@@ -1,0 +1,643 @@
+/* ═══════════════════════════════════════════════════════════════
+   LIBRARY PAGE (web translation of the desktop library.css)
+   Styles specific to My Library and its views.
+   Text, buttons, scroll, combo-box → see globalStyle / buttons.css
+   Every original class name is kept; the "Web layout" sections at
+   the end add the rules for the HTML markup (top bar, grids, lists).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Album detail ──────────────────────────────────────────── */
+.album-detail-header {
+    padding: 20px;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: transparent;
+    border-width: 0 0 1px 0;
+}
+.album-artwork-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: transparent;
+}
+.album-artwork {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(76, 175, 80, 0.35);
+}
+.album-artist-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+}
+.album-artist-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1DB954;
+    cursor: pointer;
+}
+.album-artist-label:hover {
+    color: #1ed760;
+    text-decoration: underline;
+    text-shadow: 0 0 8px rgba(29, 185, 84, 0.5);
+}
+
+/* ─── Album detail — song list ──────────────────────────────── */
+.album-songs-list {
+    background: transparent;
+}
+.album-song-row {
+    border: 0 solid transparent;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.15);
+    padding: 20px 0 30px 0;
+    background: transparent;
+}
+.album-song-row:hover {
+    background: rgba(29, 185, 84, 0.08);
+    border-bottom-color: rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.1);
+}
+
+.album-song-track {
+    color: #7eb8f7;
+    font-size: 13px;
+    font-weight: normal;
+    min-width: 50px;
+    text-align: left;
+}
+.album-song-title {
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+    white-space: nowrap;
+    min-width: 300px;
+}
+.album-song-title:hover {
+    text-decoration: underline;
+    color: #1DB954;
+}
+.album-song-meta {
+    color: #b3b3b3;
+    font-size: 18px;
+    font-weight: normal;
+    text-align: left;
+}
+
+/* ─── Section / view headers ────────────────────────────────── */
+.view-header {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0 0 12px 4px;
+    border: 0 solid transparent;
+    border-bottom: 2px solid rgba(29, 185, 84, 0.4);
+}
+
+/* ─── Song list ─────────────────────────────────────────────── */
+.song-list-row {
+    padding: 12px 20px 12px 20px;
+    background: transparent;
+    border: 0 solid transparent;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.12);
+    cursor: pointer;
+}
+.song-list-row:hover {
+    background: rgba(29, 185, 84, 0.07);
+    border-bottom-color: rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.08);
+}
+.song-list-title {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+.song-list-artist {
+    color: #7eb8f7;
+    font-size: 13px;
+}
+.song-list-separator {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 13px;
+    white-space: pre;
+}
+.song-list-meta {
+    color: #b3b3b3;
+    font-size: 12px;
+}
+.song-list-duration {
+    color: rgba(29, 185, 84, 0.85);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* ─── Album list view container ─────────────────────────────── */
+.album-list-view {
+    background: transparent;
+    border: 1px solid transparent;
+}
+.album-list-view .list-cell {
+    background: transparent;
+    padding: 0;
+    border: 1px solid transparent;
+}
+
+
+/* ─── Album list row ────────────────────────────────────────── */
+.album-list-row {
+    padding: 14px 20px 14px 20px;
+    background: transparent;
+    border: 0 solid transparent;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.12);
+    cursor: pointer;
+}
+.album-list-row:hover {
+    background: linear-gradient(to right,
+    rgba(29, 185, 84, 0.08),
+    rgba(29, 185, 84, 0.03));
+    border-bottom-color: rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 12px rgba(29, 185, 84, 0.1);
+}
+.album-list-title {
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+.album-list-artist {
+    color: #1DB954;
+    font-size: 13px;
+}
+.album-list-meta {
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+
+/*
+ * Applied to album and song grid cards (desktop CardFactory.createAlbumCard()
+ * and createSongCard()). All grid views (Albums tab, Favourites, Artist detail)
+ * use this class so every card looks identical. Sizing lives here, not in markup.
+ * .album-grid-card is kept as an alias for any legacy call sites.
+ */
+.library-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 12px;
+    width: 170px;
+    min-width: 140px;
+    max-width: 220px;
+    min-height: 240px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    text-align: center;
+    color: inherit;
+}
+.library-card:hover {
+    border-color: #1DB954;
+    background: linear-gradient(to bottom, #243024, #1a211a);
+    box-shadow: 0 0 16px rgba(29, 185, 84, 0.3);
+}
+.library-card-art {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    flex: none;
+}
+.library-card-title {
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    max-width: 146px;
+}
+.library-card-subtitle {
+    color: #b3b3b3;
+    font-size: 12px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    max-width: 146px;
+}
+
+/* Alias — do not add new styles here */
+.album-grid-card {
+}
+
+/* ─── Tile pane (grid container) ────────────────────────────── */
+.tile-pane {
+    padding: 16px;
+    gap: 16px;
+    background: transparent;
+}
+
+/* ─── Scroll pane ───────────────────────────────────────────── */
+.scroll-pane,
+.scroll-pane .viewport {
+    background: #1a1a1a;
+}
+
+/* ─── Artist list ───────────────────────────────────────────── */
+.artist-alpha-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 0 4px 4px;
+    background: transparent;
+}
+.artist-alpha-letter {
+    color: #1DB954;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 6px rgba(29, 185, 84, 0.4);
+}
+.artist-alpha-line {
+    background: rgba(76, 175, 80, 0.25);
+    height: 1px;
+    max-height: 1px;
+    flex: 1;
+}
+.artist-list-row {
+    padding: 10px 16px 10px 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+}
+.artist-list-row:hover {
+    background: linear-gradient(to bottom right, rgba(10, 22, 40, 0.8), rgba(15, 36, 64, 0.8));
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.15);
+}
+.artist-list-name {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+.artist-list-info {
+    color: #7eb8f7;
+    font-size: 12px;
+}
+.artist-detail-name {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+}
+
+/* ─── Section title/Artist title in drilldown ─────────────────────────────────────────── */
+.section-title {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* ─── Song header ───────────────────────────────────────────── */
+.song-header {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0 0 8px 0;
+    border: 0 solid transparent;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+/* ─── Favourites empty state ────────────────────────────────── */
+.favourites-empty-icon {
+    font-size: 48px;
+    color: rgba(29, 185, 84, 0.4);
+}
+.favourites-empty-msg {
+    color: #7eb8f7;
+    font-size: 16px;
+    white-space: pre-line;
+    text-align: center;
+}
+
+/* ─── Filter/sort dropdown row ──────────────────────────────── */
+.dropDown-options {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
+    cursor: pointer;
+}
+/* ─── Alphabet bar ───────────────────────────────────────────── */
+.alphabet-bar {
+    background: transparent;
+    padding: 4px 4px 4px 4px;
+}
+.alphabet-letter-active {
+    color: #1DB954;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 1px 4px 1px 4px;
+    background: transparent;
+    border: 0;
+    font-family: inherit;
+}
+.alphabet-letter-active:hover {
+    color: #1ed760;
+    background: rgba(29, 185, 84, 0.15);
+    border-radius: 4px;
+}
+.alphabet-letter-inactive {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 11px;
+    padding: 1px 4px 1px 4px;
+}
+
+/* ─── Alpha section divider ──────────────────────────────────── */
+.alpha-divider {
+    color: #1DB954;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 14px 16px 4px 16px;
+    border: 0 solid transparent;
+    border-bottom: 1px solid rgba(29, 185, 84, 0.25);
+    text-shadow: 0 0 6px rgba(29, 185, 84, 0.3);
+}
+
+.song-list-view {
+    background: transparent;
+    padding: 0;
+}
+
+.song-list-view .list-cell {
+    background: transparent;
+    padding: 0;
+}
+
+.song-list-view .list-cell:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.scroll-pane .viewport {
+    background: transparent;
+}
+
+.tile-pane .viewport {
+    background: transparent;
+}
+
+.tile-pane .list-cell {
+    background: transparent;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WEB LAYOUT
+   Rules for the Thymeleaf markup (no desktop equivalent: JavaFX
+   built these layouts in Java).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Page shell ────────────────────────────────────────────── */
+.library-page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.library-pane {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.library-pane > .view-header {
+    margin: 20px 20px 4px 20px;
+}
+
+/* ─── Top bar (LibraryTopBarBuilder) ────────────────────────── */
+.library-topbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 20px;
+}
+.library-title-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+}
+.library-title {
+    margin: 0;
+}
+.library-home-btn {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    padding: 8px 16px;
+    display: inline-flex;
+}
+.library-controls-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 10px;
+}
+.library-tabs,
+.library-toggles {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.library-toggles {
+    justify-content: center;
+}
+.library-page .library-topbar .nav-btn {
+    width: auto;
+    padding: 10px 18px;
+    justify-content: center;
+    white-space: nowrap;
+    text-decoration: none;
+}
+.library-filters {
+    justify-self: end;
+    padding: 0;     /* the desktop padding of 30 sat inside a StackPane; the grid row aligns it here */
+    cursor: default;
+}
+.library-filters select {
+    min-width: 150px;
+    cursor: pointer;
+}
+.library-page .nav-btn-back,
+.library-page .btn-blue {
+    width: auto;
+    padding: 8px 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: underline;
+}
+.library-page .btn-blue {
+    text-decoration: none;
+    height: 40px;
+}
+
+/* ─── Grids ─────────────────────────────────────────────────── */
+.library-grid,
+.tile-pane {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 170px);
+    justify-content: center;
+    gap: 20px;
+    padding: 16px 20px 24px 20px;
+}
+.library-grid .library-card,
+.tile-pane .library-card {
+    width: 170px;
+}
+.library-art {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.library-art img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.library-row-art {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    flex: none;
+}
+.library-song-card:focus-visible {
+    outline: 2px solid #1DB954;
+}
+
+/* ─── Lists with alphabet bar ───────────────────────────────── */
+.library-list-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding-bottom: 12px;
+}
+.library-list {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+.alphabet-bar {
+    position: sticky;
+    top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: flex-start;
+    height: min(640px, calc(100vh - 200px));
+    padding: 8px 6px;
+}
+.alphabet-bar > * {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.library-song-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+}
+.song-list-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.song-list-title,
+.song-list-artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.library-album-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: inherit;
+}
+.library-row-text,
+.artist-list-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+}
+.artist-list-text {
+    gap: 2px;
+}
+.artist-list-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: inherit;
+}
+.library-album-plain {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: flex-start;
+}
+
+/* ─── Album detail rows ─────────────────────────────────────── */
+.album-songs-rows {
+    display: flex;
+    flex-direction: column;
+}
+.album-song-row {
+    display: grid;
+    grid-template-columns: 50px minmax(200px, 1fr) 100px 150px auto;
+    align-items: center;
+    gap: 40px;
+    cursor: pointer;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+.album-song-title {
+    min-width: 0;
+}
+.library-pane.album-detail,
+.library-pane.artist-detail {
+    gap: 15px;
+}
+.album-artist-label {
+    text-decoration: none;
+}
+
+/* ─── Empty state ───────────────────────────────────────────── */
+.library-empty {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}

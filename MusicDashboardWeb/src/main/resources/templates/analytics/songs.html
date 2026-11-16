@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Top Songs preview: 20 rows, "View All" opens the paginated modal (10 per page) -->
+<th:block th:fragment="section">
+    <h1 class="txt-white-bld-thirty txt-centre-underline analytics-title">Top Songs</h1>
+    <button type="button" class="view-All" data-modal="songs" data-title="Top Songs">View All</button>
+    <div class="analytics-preview">
+        <div class="analytics-list-item clickable" th:each="r : ${songRows}"
+             th:attr="data-song-id=${r.songId()}">
+            <span class="txt-white-sm row-primary" th:text="${r.songTitle() != null ? r.songTitle() : '—'}">Song</span>
+            <span class="analytics-row-secondary" th:text="${r.artistName() != null ? r.artistName() : '—'}">Artist</span>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

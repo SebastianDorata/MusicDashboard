@@ -1,0 +1,71 @@
+package com.sebastiandorata.musicdashboard.entity;
+
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+
+/**
+ * JPA entity representing a music album.
+ *
+ * <p>Holds the title, optional release year, and album art file path.
+ * Owns a one-to-many relationship to its {@link Song songs} and a
+ * many-to-many relationship to its {@link Artist artists} via the
+ * {@code album_artists} join table.</p>
+ */
+@Setter
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "albums")
+public class Album {
+
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "album_id")
+    private Long albumId;
+
+    @Column(name = "title", nullable = false, length = 255)
+    private String title;
+
+    @Column(name = "release_year")
+    private Integer releaseYear;
+
+        /** MusicBrainz artist ID, when known. Nullable — most tags/scrobbles won't have it. */
+        @Column(name = "mbid", length = 36, unique = true)
+        private String mbid;
+
+    @Column(name = "album_art_path", length = 500)
+    private String albumArtPath;
+
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    private Set<Song> songs = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "album_artists",
+            joinColumns = @JoinColumn(name = "album_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id"),
+            indexes = {
+                    @Index(name = "idx_album_artists_album_id", columnList = "album_id"),
+                    @Index(name = "idx_album_artists_artist_id", columnList = "artist_id")
+            }
+    )
+    private Set<Artist> artists = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Album{" +
+                "albumId=" + albumId +
+                ", title='" + title + '\'' +
+                ", releaseYear=" + releaseYear +
+                '}';
+    }
+}

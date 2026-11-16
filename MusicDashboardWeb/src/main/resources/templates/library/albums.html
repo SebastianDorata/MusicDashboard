@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Albums pane (desktop AlbumViewHelper): reflowing card grid or A-Z grouped list with alphabet bar. -->
+<body>
+<section th:fragment="albumsPane" class="library-pane main-bkColour">
+    <h2 class="view-header" th:text="${header}">All Albums (0)</h2>
+
+    <div class="library-grid" th:if="${state.mode == 'grid'}" data-album-menu="true">
+        <th:block th:each="a : ${albums}"><a th:replace="~{library/shared :: albumCard(${a})}"></a></th:block>
+    </div>
+
+    <div class="library-list-layout" th:if="${state.mode == 'list'}">
+        <div class="library-list" data-album-menu="true">
+            <th:block th:each="g : ${groups}">
+                <div class="alpha-divider" th:data-letter="${g.letter()}" th:text="${g.letter()}">A</div>
+                <th:block th:each="a : ${g.items()}"><a th:replace="~{library/shared :: albumRow(${a}, true)}"></a></th:block>
+            </th:block>
+        </div>
+        <nav th:replace="~{library/shared :: alphabetBar}"></nav>
+    </div>
+</section>
+</body>
+</html>

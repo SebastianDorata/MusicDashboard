@@ -1,0 +1,130 @@
+/* ═══════════════════════════════════════════════════════════════
+   REPORTS / ANALYTICS PAGE LAYOUT
+   Page-level layout classes used across Analytics and Reports.
+   Buttons → buttons.css  |  Text → globalStyle.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Year selector combo ───────────────────────────────────── */
+.year-selector {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    padding: 5px;
+}
+.year-selector option {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+/* ─── Report card (weekly / monthly) ────────────────────────── */
+.report-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 8px;
+}
+.report-period {
+    font-size: 16px;
+    color: #61dafb;
+    font-weight: bold;
+}
+.report-sep {
+    width: 100%;
+    height: 0;
+    margin: 0;
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+.report-stat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+.report-stat-label {
+    font-size: 12px;
+    color: #cccccc;
+    min-width: 80px;
+}
+
+/* ─── Month selector (two rows of six buttons) ──────────────── */
+.month-buttons {
+    display: grid;
+    grid-template-columns: repeat(6, 40px);
+    gap: 5px;
+}
+.month-buttons .month-btn {
+    width: 40px;
+    box-sizing: border-box;
+}
+
+/* ─── Weekly calendar ───────────────────────────────────────── */
+.weekly-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    width: 350px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #2a2a2a;
+    border: 1px solid #404040;
+    border-radius: 8px;
+}
+.calendar-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.calendar-month-label {
+    min-width: 150px;
+    text-align: center;
+    font-size: 16px;
+    color: #61dafb;
+    font-weight: bold;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 40px);
+    gap: 5px;
+    padding: 10px;
+}
+.calendar-dayname {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    min-height: 30px;
+    font-weight: bold;
+    color: #61dafb;
+}
+.calendar-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    background: transparent;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* Whole-week hover highlight (class toggled by analytics.js) and the selected week */
+.calendar-day:hover,
+.calendar-day.week-hover,
+.calendar-day.selected {
+    background: #3a8f9f;
+    border-color: #61dafb;
+}

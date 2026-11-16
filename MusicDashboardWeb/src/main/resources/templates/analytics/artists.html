@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Top Artists preview: 20 rows (padded with dashes), "View All" opens the modal (20 per page) -->
+<th:block th:fragment="section">
+    <h1 class="txt-white-bld-thirty txt-centre-underline analytics-title">Top Artists</h1>
+    <button type="button" class="view-All" data-modal="artists" data-title="Top Artists">View All</button>
+    <div class="analytics-preview">
+        <div class="analytics-list-item" th:each="r : ${artistRows}">
+            <span class="txt-white-sm row-primary" th:text="${r.artistName() != null ? r.artistName() : '—'}">Artist</span>
+            <span class="analytics-row-secondary" th:text="${r.listeningTime() != null ? r.listeningTime() : '—'}">2h 15m</span>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

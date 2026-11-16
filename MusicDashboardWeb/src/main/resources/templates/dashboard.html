@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  My Dashboard (desktop DashboardController).
+  Top row (60%): large player + stat cards on the left, Recently Played on the right.
+  Bottom row: listening graph on the left, Top 5 Artists on the right.
+  Initial data comes from the model (stats, recent, topArtists, years, selectedYear, allTime);
+  static/js/dashboard.js draws the chart and keeps the panels fresh.
+-->
+<head th:replace="~{fragments/layout :: head('My Dashboard', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/graph.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/analytics.css}">
+</head>
+<body class="root">
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('dashboard')}"></aside>
+    <main class="app-main">
+        <div class="app-content">
+            <div class="dashboard-page">
+
+                <!-- ─── Top row ─── -->
+                <div class="HomepageTopMenu">
+                    <div class="HomepageTopHalf">
+                        <div th:replace="~{fragments/player :: large}"></div>
+
+                        <div class="dashboard-stat-cards" id="statCards">
+                            <!-- Playback duration + average session -->
+                            <div class="dashboard-stat-card wt-smmd-bld panels">
+                                <div class="wt-smmd-bld dashboard-stat-title dashboard-stat-name">Playback Duration Today</div>
+                                <div class="dashboard-stat-separator"></div>
+                                <div class="dashboard-stat-day">
+                                    <span class="txt-white-bld-thirty" data-stat="playbackValue" th:text="${stats.playbackValue()}">0</span>
+                                    <span class="dashboard-stat-unit" data-stat="playbackUnit" th:text="${stats.playbackUnit()}">Minutes</span>
+                                </div>
+                                <div class="dashboard-stat-avg">
+                                    <div class="wt-smmd-bld dashboard-stat-title">Average Listening Period</div>
+                                    <div class="dashboard-stat-avg-row">
+                                        <span class="txt-white-sm">Avg</span>
+                                        <span class="txt-white-bld-thirty" data-stat="avgValue" th:text="${stats.avgValue()}">0</span>
+                                        <span class="dashboard-stat-unit" data-stat="avgUnit" th:text="${stats.avgUnit()}">min/session</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Top Song Today -->
+                            <div class="dashboard-stat-card panels">
+                                <div class="wt-smmd-bld dashboard-stat-title">Top Song Today</div>
+                                <div class="dashboard-stat-value">
+                                    <span class="dashboard-stat-name txt-white-md-bld" data-stat="todaySong"
+                                          th:text="${stats.todaySong().name()}"
+                                          th:classappend="${stats.todaySong().songId() != null} ? 'Cursor-Hand'"
+                                          th:attr="data-song-id=${stats.todaySong().songId()},data-album-id=${stats.todaySong().albumId()},title=${stats.todaySong().songId() != null} ? 'Click: view album  |  Double-click: play song'">—</span>
+                                </div>
+                            </div>
+
+                            <!-- Top Album Today -->
+                            <div class="dashboard-stat-card panels">
+                                <div class="wt-smmd-bld dashboard-stat-title">Top Album Today</div>
+                                <div class="dashboard-stat-value">
+                                    <span class="dashboard-stat-name txt-white-md-bld" data-stat="todayAlbum"
+                                          th:text="${stats.todayAlbum().name()}"
+                                          th:classappend="${stats.todayAlbum().albumId() != null} ? 'Cursor-Hand'"
+                                          th:attr="data-album-id=${stats.todayAlbum().albumId()},title=${stats.todayAlbum().albumId() != null} ? 'Click to view album'">—</span>
+                                </div>
+                            </div>
+
+                            <!-- Top Song This Week -->
+                            <div class="dashboard-stat-card panels">
+                                <div class="wt-smmd-bld dashboard-stat-title">Top Song This Week</div>
+                                <div class="dashboard-stat-value">
+                                    <span class="dashboard-stat-name txt-white-md-bld" data-stat="weeklySong"
+                                          th:text="${stats.weeklySong().name()}"
+                                          th:classappend="${stats.weeklySong().songId() != null} ? 'Cursor-Hand'"
+                                          th:attr="data-song-id=${stats.weeklySong().songId()},data-album-id=${stats.weeklySong().albumId()},title=${stats.weeklySong().songId() != null} ? 'Click: view album  |  Double-click: play song'">—</span>
+                                </div>
+                            </div>
+
+                            <!-- Top Album This Week -->
+                            <div class="dashboard-stat-card panels">
+                                <div class="wt-smmd-bld dashboard-stat-title">Top Album This Week</div>
+                                <div class="dashboard-stat-value">
+                                    <span class="dashboard-stat-name txt-white-md-bld" data-stat="weeklyAlbum"
+                                          th:text="${stats.weeklyAlbum().name()}"
+                                          th:classappend="${stats.weeklyAlbum().albumId() != null} ? 'Cursor-Hand'"
+                                          th:attr="data-album-id=${stats.weeklyAlbum().albumId()},title=${stats.weeklyAlbum().albumId() != null} ? 'Click to view album'">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recently Played -->
+                    <div class="recently-played-panel panels dashboard-right-panel">
+                        <div class="txt-white-bld-thirty txt-centre-underline">Recently Played</div>
+                        <div class="trans-background recent-list" id="recentList">
+                            <div class="play-history-row" th:each="r : ${recent}"
+                                 th:attr="data-song-id=${r.songId()}" title="Double-click to play">
+                                <span class="play-history-song" th:text="${r.title()}">Song</span>
+                                <span class="wt-smmd-bld" th:text="${r.relativeTime()}">now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ─── Bottom row ─── -->
+                <div class="HomepageBottomMenu">
+                    <div class="dashboard-graph-wrap">
+                        <div class="dashboard-graph-panel panels">
+                            <!-- All-time stats (left) -->
+                            <div class="graph-info-section">
+                                <div class="txt-white-bld-thirty txt-centre-underline">All Time Stats</div>
+
+                                <div class="graph-total-row">
+                                    <div class="graph-stack">
+                                        <div class="graph-symbol-value">
+                                            <span class="txt-white-bld-thirty" id="totalHours"
+                                                  th:text="${#numbers.formatInteger(allTime.totalAllTimeHours(), 1, 'COMMA')}">—</span>
+                                            <span class="txt-white-bld-thirty">Hours</span>
+                                        </div>
+                                        <div class="txt-white-md-bld">Total playback time</div>
+                                    </div>
+                                </div>
+
+                                <div class="graph-delta-row">
+                                    <div class="graph-stack">
+                                        <div class="graph-symbol-value">
+                                            <span id="deltaPrevSymbol" class="graph-delta-main"
+                                                  th:classappend="${!allTime.hasPreviousYear()} ? 'txt-grey-md' : (${allTime.deltaVsPrevious() >= 0} ? 'lt-Green' : 'graph-delta-negative')"
+                                                  th:text="${!allTime.hasPreviousYear()} ? '—' : (${allTime.deltaVsPrevious() >= 0} ? '▲' : '▼')">—</span>
+                                            <span id="deltaPrevValue" class="graph-delta-main"
+                                                  th:classappend="${!allTime.hasPreviousYear()} ? 'txt-grey-md' : (${allTime.deltaVsPrevious() >= 0} ? 'lt-Green' : 'graph-delta-negative')"
+                                                  th:text="${!allTime.hasPreviousYear()} ? '' : ${#numbers.formatInteger((allTime.deltaVsPrevious() >= 0 ? allTime.deltaVsPrevious() : -allTime.deltaVsPrevious()), 1, 'COMMA')}"></span>
+                                        </div>
+                                        <div class="txt-white-md-bld">hours v last year</div>
+                                    </div>
+                                </div>
+
+                                <div class="graph-delta-row">
+                                    <div class="graph-stack">
+                                        <div class="graph-symbol-value">
+                                            <span id="deltaAllSymbol" class="graph-delta-main"
+                                                  th:classappend="${allTime.deltaVsAllTimeHigh() >= 0} ? 'lt-Green' : 'graph-delta-negative'"
+                                                  th:text="${allTime.deltaVsAllTimeHigh() >= 0} ? '▲' : '▼'">▲</span>
+                                            <span id="deltaAllValue" class="graph-delta-main"
+                                                  th:classappend="${allTime.deltaVsAllTimeHigh() >= 0} ? 'lt-Green' : 'graph-delta-negative'"
+                                                  th:text="${#numbers.formatInteger((allTime.deltaVsAllTimeHigh() >= 0 ? allTime.deltaVsAllTimeHigh() : -allTime.deltaVsAllTimeHigh()), 1, 'COMMA')}">—</span>
+                                        </div>
+                                        <div class="graph-stack-text">
+                                            <span class="txt-white-md-bld">hours</span>
+                                            <span class="graph-delta-alltime"> all time</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chart (right) -->
+                            <div class="graph-chart-section">
+                                <div class="graph-chart-title-row" id="chartTitle"></div>
+                                <div class="graph-year-picker">
+                                    <label class="txt-grey-md" for="yearSelect">Year</label>
+                                    <select id="yearSelect" class="combo-box">
+                                        <option th:each="y : ${years}" th:value="${y}" th:text="${y}"
+                                                th:selected="${y == selectedYear}">2026</option>
+                                    </select>
+                                </div>
+                                <div class="dashboard-line-chart" id="lineChart"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top 5 Artists -->
+                    <div class="top-artists-panel panels dashboard-right-panel">
+                        <div class="txt-white-bld-thirty txt-centre-underline top-artists-title">Top 5 Artists All-Time</div>
+                        <div id="topArtistRows">
+                            <div class="artist-row" th:each="a : ${topArtists}">
+                                <span class="wt-smmd-bld artist-name" th:text="${a.name()}"
+                                      th:classappend="${a.artistId() != null} ? 'Cursor-Hand'"
+                                      th:attr="data-artist-id=${a.artistId()}">—</span>
+                                <span class="artist-time" th:text="${a.time()}">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/dashboard.js}"></script>
+</body>
+</html>

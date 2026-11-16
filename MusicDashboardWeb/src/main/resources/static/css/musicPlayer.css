@@ -1,0 +1,315 @@
+/*
+ * musicPlayer.css - styles of the player panel (fragments/player.html).
+ *
+ * Web translation of the desktop musicPlayer.css plus the player-btn rules the panel used
+ * from buttons.css, and the size variants derived from PlayerConfig:
+ *   LARGE: art 280px, title 30px, artist 14px, time 16px, icons 20/22px
+ *   SMALL: art 60px, every font and icon x0.6, spacing x0.5
+ */
+
+/* ─── Player panel ─────────────────────────────────────────────── */
+.now-playing-bar { /* Just the player, including the art */
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border: 1px solid rgba(76, 175, 80, 0.4);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+    overflow: hidden;
+    min-width: 0;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.now-playing-bar.is-playing {
+    box-shadow: 0 0 32px rgba(76, 175, 80, 0.75);
+    border-color: rgb(76, 175, 80);
+}
+.now-playing-info { /* Everything except the art */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    min-width: 0;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+/* ─── Text for Song title and Artist ─────────────────────────────────────────────── */
+.Song-Name {
+    color: white;
+    font-weight: bold;
+    font-size: 3em;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0 0 1em;
+}
+
+.Artist-Name {
+    color: white;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 1.5em;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 0 0 2em;
+}
+.Artist-Name:not([href]) { /* empty state: no artist to open */
+    text-decoration: none;
+    cursor: default;
+}
+.Artist-Name[href] {
+    cursor: pointer;
+}
+.Artist-Name[href]:hover {
+    color: #1db954;
+}
+
+/* ─── Album art ─────────────────────────────────────────────── */
+.album-art-container { /* The Album art box */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    background: linear-gradient(to bottom right, #1a2a4a, #0d1f3c);
+    border-radius: 20px 0 0 20px;
+    overflow: hidden;
+}
+.album-art-container img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.album-art-container img[hidden] {
+    display: none;
+}
+.album-art-placeholder { /* Icon inside the Album art box */
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.3);
+}
+.album-art-container.has-art .album-art-placeholder {
+    display: none;
+}
+
+/* ─── Controls, Slider and Time ─────────────────────────────────────────────── */
+.player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cntr-spc-sm { /* shared helper, repeated here so the player works on its own */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.player-spacer { /* grows so the controls and slider sit at the bottom */
+    flex: 1;
+}
+.now-playing-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    margin: 0;
+    height: 14px;
+    background: transparent;
+    cursor: pointer;
+    --fill: 0%;
+}
+.time-row { /* Just around the numbers */
+    justify-content: space-between;
+    width: 100%;
+    gap: 5px;
+}
+.time-spacer {
+    flex: 1;
+}
+.time-Box { /* Around the slider and numbers */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5em 2em 5em;
+}
+.player-time {
+    color: #999999;
+    font-size: 16px;
+}
+
+/* ─── Controls, Slider and Time Styling ─────────────────────────────────────────────── */
+.now-playing-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #4facfe, #00f2fe) 0 0 / var(--fill) 100% no-repeat,
+                rgba(255, 255, 255, 0.12);
+}
+.now-playing-slider::-moz-range-track {
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.12);
+}
+.now-playing-slider::-moz-range-progress {
+    height: 4px;
+    border-radius: 4px;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+}
+.now-playing-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    margin-top: -4px; /* centre the 12px thumb on the 4px track */
+    border: none;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0 0 8px rgba(79, 172, 254, 0.8);
+}
+.now-playing-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 6px;
+    background: white;
+    box-shadow: 0 0 8px rgba(79, 172, 254, 0.8);
+}
+.now-playing-slider::-webkit-slider-thumb:hover {
+    background: #4facfe;
+    width: 14px;
+    height: 14px;
+    margin-top: -5px;
+}
+.now-playing-slider::-moz-range-thumb:hover {
+    background: #4facfe;
+    width: 14px;
+    height: 14px;
+}
+.now-playing-slider:focus {
+    outline: none;
+}
+
+/* ─── Player buttons (from buttons.css, scoped so the panel works on its own) ─────────────────────────────────────────────── */
+[data-player] .player-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0;
+    background: transparent;
+    border: 2px solid rgb(76, 175, 80);
+    color: rgb(76, 175, 80);
+    font-size: 16px;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+}
+[data-player] .player-btn-primary {
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(76, 175, 80, 0.4);
+}
+[data-player] .player-btn-primary:hover {
+    box-shadow: 0 3px 16px rgba(76, 175, 80, 0.7);
+}
+[data-player] .player-btn:hover {
+    background: rgb(76, 175, 80);
+    color: white;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+[data-player] .player-btn:active {
+    transform: scale(0.95);
+}
+[data-player] .player-btn img {
+    display: block;
+    mix-blend-mode: screen;
+}
+.Cursor {
+    cursor: pointer;
+}
+
+/* ─── LARGE (dashboard) ─────────────────────────────────────────────── */
+.player-large {
+    min-height: 200px;
+}
+.player-large .album-art-container {
+    width: clamp(200px, 22vw, 280px);
+    min-height: 200px;
+    align-self: stretch;
+}
+.player-large .now-playing-info {
+    padding-top: 12px;
+}
+.player-large .Song-Name {
+    font-size: 30px;
+}
+.player-large .Artist-Name {
+    font-size: 14px;
+}
+.player-large .player-time {
+    font-size: 16px;
+}
+.player-large .player-controls {
+    align-self: center;
+    margin-bottom: 8px;
+}
+
+/* ─── SMALL (bottom bar of other pages) ─────────────────────────────────────────────── */
+.player-small {
+    align-items: center;
+    flex: none;
+    height: 60px;
+    border-radius: 14px;
+    margin: 8px 16px 12px;
+    gap: 14px;
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+}
+.player-small .album-art-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px 0 0 14px;
+}
+.player-small .album-art-placeholder {
+    font-size: 22px;
+}
+.player-small .now-playing-info {
+    flex: 1 1 200px;
+    justify-content: center;
+    gap: 3px;
+    background: transparent;
+    height: 100%;
+}
+.player-small .Song-Name {
+    font-size: 18px;
+    padding: 0;
+}
+.player-small .Artist-Name {
+    font-size: 12px;
+    padding: 0;
+}
+.player-small .player-controls {
+    gap: 5px;
+}
+.player-small .player-btn {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+}
+.player-small .time-Box {
+    flex: 2 1 240px;
+    padding: 0 18px 0 0;
+    gap: 2px;
+}
+.player-small .player-time {
+    font-size: 11px;
+}

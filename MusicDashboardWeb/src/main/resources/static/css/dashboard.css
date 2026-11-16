@@ -1,0 +1,200 @@
+/* ═══════════════════════════════════════════════════════════════
+   My Dashboard - web translation of the desktop dashboard.css.
+   Sizes that were scaled from the screen on desktop are px / clamp() here.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Shared panel base ─────────────────────────────────────── */
+.panels {
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+}
+
+/* Page layout (desktop BorderPane centre: top 60 %, bottom fills the rest) ── */
+.dashboard-page {
+    display: grid;
+    grid-template-rows: minmax(560px, 60fr) minmax(320px, 40fr);
+    gap: 10px;
+    height: 100%;
+    box-sizing: border-box;
+}
+.HomepageTopMenu,
+.HomepageBottomMenu {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    min-height: 0;
+    min-width: 0;
+}
+.HomepageTopHalf { /* Player and cards */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+}
+.HomepageTopHalf > .player-large {
+    flex: none;
+    max-height: 380px;
+    max-width: 100%;
+}
+.dashboard-stat-cards {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    flex: 1;
+    min-height: 0;
+}
+/* Right-hand panels: clamp(240px, 20vw, 380px) like AppUtils.rightPanelPrefWidth() */
+.dashboard-right-panel {
+    width: clamp(240px, 20vw, 380px);
+    min-width: clamp(240px, 20vw, 380px);
+    max-width: clamp(240px, 20vw, 380px);
+    box-sizing: border-box;
+}
+
+/* Stat cards ────────────────────────────────────────────── */
+.dashboard-stat-card {/*Individual */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 0;
+    min-width: 10em;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-radius: 12px;
+    border: 2px solid rgba(76, 175, 80, 0.5);
+    padding: 0.5em;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+.dashboard-stat-card:hover {
+    background: #1f4d66;
+    border-color: rgba(31, 119, 180, 0.6);
+    box-shadow: 0 4px 12px rgba(79, 172, 254, 0.2);
+}
+.dashboard-stat-title {
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+.dashboard-stat-unit {
+    color: #7eb8f7;
+    font-size: 1.3em;
+    font-weight: normal;
+}
+.dashboard-stat-name {
+    overflow-wrap: anywhere;
+}
+.dashboard-stat-day{
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+}
+.dashboard-stat-separator {
+    height: 3px;
+    flex: none;
+}
+.dashboard-stat-avg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex: 1;
+}
+.dashboard-stat-avg-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.dashboard-stat-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    text-align: center;
+}
+
+/* Top Artists panel ─────────────────────────────────────── */
+.top-artists-panel {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    gap: 8px;
+    padding: 16px;
+    align-self: stretch;
+}
+.top-artists-title {
+    padding-bottom: 10px;
+}
+.artist-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1.1em 0.4em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.artist-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.artist-time {
+    color: #7eb8f7;
+    font-size: 1.5em;
+    min-width: 65px;
+    text-align: right;
+}
+
+/* Recently Played panel ─────────────────────────────────── */
+.recently-played-panel {
+    display: flex;
+    flex-direction: column;
+    border-radius: 14px;
+    border-width: 1px;
+    padding: 0.8em;
+    min-height: 0;
+}
+.recent-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+.play-history-row {
+    display: flex;
+    align-items: center;
+    flex: 0 0 10%;    /* each row is a tenth of the list height, like the bound prefHeight */
+    min-height: 30px;
+    padding: 0 6px;
+    gap: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+.play-history-row:hover {
+    background: rgba(79, 172, 254, 0.08);
+    border-radius: 8px;
+}
+.play-history-song {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.7em;
+    font-weight: normal;
+    color: white;
+}
+
+/* Right panels sit beside the left column and stretch to the row height ── */
+.HomepageTopMenu > .recently-played-panel {
+    align-self: stretch;
+}

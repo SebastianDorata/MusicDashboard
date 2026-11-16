@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Weekly / monthly report card (desktop ReportDisplayController.createReportCard); param: card (ReportCard) -->
+<div th:fragment="card(card)" class="report-card">
+    <div class="report-period" th:text="${card.periodLabel()}">Week 1</div>
+    <div class="txt-white-sm" th:text="${card.totalMinutes()} + ' minutes | ' + ${card.totalSongs()} + ' songs'">0 minutes | 0 songs</div>
+    <hr class="report-sep">
+    <div class="report-stat"><span class="report-stat-label">Top Song:</span><span class="wt-smmd-bld" th:text="${card.topSong()}">—</span></div>
+    <div class="report-stat"><span class="report-stat-label">Top Artist:</span><span class="wt-smmd-bld" th:text="${card.topArtist()}">—</span></div>
+    <div class="report-stat"><span class="report-stat-label">Top Album:</span><span class="wt-smmd-bld" th:text="${card.topAlbum()}">—</span></div>
+    <div class="report-stat"><span class="report-stat-label">Top Genre:</span><span class="wt-smmd-bld" th:text="${card.topGenre()}">—</span></div>
+</div>
+</body>
+</html>

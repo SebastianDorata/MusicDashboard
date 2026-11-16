@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Artist detail (desktop ArtistViewBuilder.buildArtistDetail): back row plus the albums as grid or list. -->
+<body>
+<section th:fragment="artistDetailPane" class="library-pane artist-detail">
+    <div class="album-detail-header">
+        <a class="btn-blue library-back-btn" th:href="@{${state.tabUrl('artists')}}">← Back to Artists</a>
+        <span class="artist-detail-name" th:text="${artistName}">Artist</span>
+    </div>
+
+    <div class="txt-grey-md" th:if="${#lists.isEmpty(artistAlbums)}">No albums found for this artist.</div>
+
+    <div class="library-grid" th:if="${!#lists.isEmpty(artistAlbums) and state.mode == 'grid'}" data-album-menu="false">
+        <th:block th:each="a : ${artistAlbums}"><a th:replace="~{library/shared :: albumCard(${a})}"></a></th:block>
+    </div>
+
+    <div class="library-list" th:if="${!#lists.isEmpty(artistAlbums) and state.mode == 'list'}">
+        <th:block th:each="a : ${artistAlbums}"><a th:replace="~{library/shared :: albumRowPlain(${a})}"></a></th:block>
+    </div>
+</section>
+</body>
+</html>

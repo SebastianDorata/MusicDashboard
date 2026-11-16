@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Error', ~{})}">
+</head>
+<body class="root">
+<div class="cntr-spc-sm" style="height:100vh; flex-direction:column; justify-content:center;">
+    <div class="txt-white-lg" th:text="${status}">500</div>
+    <div class="wt-smmd-bld" th:text="${error}">Internal Server Error</div>
+    <div class="txt-grey-md" th:if="${message != null and !#strings.isEmpty(message)}" th:text="${message}">Something went wrong.</div>
+    <a class="green-btn" th:href="@{/dashboard}">Back to Dashboard</a>
+</div>
+</body>
+</html>

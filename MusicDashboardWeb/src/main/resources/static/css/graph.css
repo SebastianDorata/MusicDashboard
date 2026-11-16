@@ -1,0 +1,224 @@
+/* ═══════════════════════════════════════════════════════════════
+   Dashboard graph - web translation of the desktop graph.css.
+   The chart is inline SVG drawn by dashboard.js; the SVG elements carry the
+   JavaFX class names (chart-series-line, chart-line-symbol, default-colorN, axis ...).
+   ═══════════════════════════════════════════════════════════════ */
+
+/*  Outer panel ────────────────────────────────────────────── */
+.dashboard-graph-wrap {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.dashboard-graph-panel {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    border-radius: 14px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+/*  Info section (left) ───────────────────────────────────── */
+.graph-info-section {
+    display: flex;
+    flex-direction: column;
+    flex: none;
+    width: clamp(200px, 20vw, 300px);
+    padding: 10px 16px 10px 10px;
+    gap: 14px;
+    box-sizing: border-box;
+}
+.graph-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+.graph-symbol-value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+.graph-stack-text {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+/*  Chart section (right) ─────────────────────────────────── */
+.graph-chart-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    padding: 8px 0 0 0;
+    border-radius: 20px;
+}
+.graph-year-picker {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/*  Line chart node ────────────────────────────────────────── */
+.dashboard-line-chart {
+    flex: 1;
+    min-height: 160px;
+    position: relative;
+    background: linear-gradient(to bottom right, #0a1628, #0f2440, #0a1e38);
+    border-radius: 20px;
+}
+.dashboard-line-chart svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.chart-series-line {
+    fill: none;
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+.chart-line-symbol {
+    cursor: default;
+}
+.chart-empty {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b3b3b3;
+    font-size: 16px;
+}
+/*  Chart title row ────────────────────────────────────────── */
+.graph-chart-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 34px;
+}
+
+/* Delta / stat labels ────────────────────────────────────── */
+.lt-Green {
+    color: #4caf50;
+}
+.graph-delta-alltime {
+    font-size: 18px;
+    font-weight: bold;
+    color: #9d4edd;
+}
+.graph-delta-negative {
+    color: #ff4444;
+}
+.graph-delta-row {
+    display: flex;
+    align-items: center;
+    padding: 2px 0 0 0;
+    gap: 4px;
+}
+.graph-delta-main {
+    font-size: 20px;
+    font-weight: bold;
+}
+.graph-total-row {
+    display: flex;
+    align-items: center;
+    padding: 4px 0 4px 0;
+}
+
+/* Year comparison header ─────────────────────────────────── */
+.year-comparison-header {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+.year-header-current {
+    font-size: 26px;
+    font-weight: bold;
+    color: #00d4ff;
+}
+.year-header-highest {
+    font-size: 26px;
+    font-weight: bold;
+    color: #9d4edd;
+}
+.year-header-previous {
+    font-size: 26px;
+    font-weight: bold;
+    color: #ff9500;
+}
+
+/* Axis & grid ────────────────────────────────────────────── */
+.dashboard-line-chart .axis {
+    fill: #b3b3b3;
+    font-size: 12px;
+}
+.dashboard-line-chart .axis-label {
+    font-size: 13px;
+    fill: #b3b3b3;
+}
+.dashboard-line-chart .chart-horizontal-grid-lines {
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1;
+}
+.dashboard-line-chart .chart-vertical-grid-lines {
+    stroke: transparent;
+    opacity: 0;
+}
+.dashboard-line-chart .chart-legend {
+    display: none;
+}
+.dashboard-line-chart .chart-line-symbol:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.dashboard-line-chart .chart-plot-background {
+    fill: rgba(0, 0, 0, 0.15);
+}
+
+/* Series colours ─────────────────────────────────────────── */
+.dashboard-line-chart .default-color0.chart-series-line {
+    stroke: #00d4ff;
+    stroke-width: 3;
+}
+.dashboard-line-chart .default-color0 .chart-line-symbol,
+.dashboard-line-chart .chart-line-symbol.default-color0 {
+    fill: #1e1e1e;
+    stroke: #00d4ff;
+    stroke-width: 2;
+}
+.dashboard-line-chart .default-color1.chart-series-line {
+    stroke: #ff9500;
+    stroke-width: 3;
+}
+.dashboard-line-chart .default-color1 .chart-line-symbol,
+.dashboard-line-chart .chart-line-symbol.default-color1 {
+    fill: #1e1e1e;
+    stroke: #ff9500;
+    stroke-width: 2;
+}
+.dashboard-line-chart .default-color2.chart-series-line {
+    stroke: #9d4edd;
+    stroke-width: 3;
+}
+.dashboard-line-chart .default-color2 .chart-line-symbol,
+.dashboard-line-chart .chart-line-symbol.default-color2 {
+    fill: #1e1e1e;
+    stroke: #9d4edd;
+    stroke-width: 2;
+}

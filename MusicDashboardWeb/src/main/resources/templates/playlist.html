@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('My Playlist', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/playlist.css}">
+</head>
+<body class="root">
+<div class="app-shell">
+    <aside th:replace="~{fragments/layout :: sidebar('playlist')}"></aside>
+    <main class="app-main">
+        <div class="app-content playlist-page dark-page-bg" id="playlist-page"
+             th:attr="data-playlist-id=${selected != null} ? ${selected.id} : null,
+                      data-playlist-name=${selected != null} ? ${selected.name} : null,
+                      data-playlist-desc=${selected != null} ? ${selected.description} : null,
+                      data-mode=${mode}">
+
+            <!-- Header bar: title, new-playlist button, display-mode toggle -->
+            <div class="playlist-header">
+                <span class="txt-white-md-bld" th:text="${selected != null} ? ${selected.name} : 'View All Playlists'">View All Playlists</span>
+                <span class="grow"></span>
+                <a class="nav-btn" th:if="${selected != null}" th:href="@{/playlist(mode=${mode})}">←  All Playlists</a>
+                <button type="button" class="nav-btn" id="new-playlist-btn">＋  New Playlist</button>
+                <a class="nav-btn" th:classappend="${mode == 'list'} ? 'nav-btn-active'"
+                   th:href="${selected != null} ? @{/playlist(id=${selected.id},mode='list')} : @{/playlist(mode='list')}">☰  List</a>
+                <a class="nav-btn" th:classappend="${mode == 'grid'} ? 'nav-btn-active'"
+                   th:href="${selected != null} ? @{/playlist(id=${selected.id},mode='grid')} : @{/playlist(mode='grid')}">⊞  Grid</a>
+            </div>
+            <hr class="playlist-header-separator">
+
+            <div class="playlist-content">
+
+                <!-- No selection: the playlist browser -->
+                <th:block th:if="${selected == null}">
+                    <div class="playlist-empty" th:if="${#lists.isEmpty(playlists)}">
+                        <div class="playlist-empty-icon">🎵</div>
+                        <div class="txt-grey-md playlist-empty-msg">No playlists yet.<br>Click "＋ New Playlist" to get started.</div>
+                    </div>
+
+                    <div class="playlist-grid" th:if="${!#lists.isEmpty(playlists) and mode == 'grid'}">
+                        <a class="playlist-song-card playlist-card" th:each="p : ${playlists}"
+                           th:href="@{/playlist(id=${p.id},mode=${mode})}">
+                            <div class="playlist-card-art"><span class="album-art-placeholder">♪</span></div>
+                            <div class="txt-white-sm-bld playlist-card-name" th:text="${p.name}">Name</div>
+                            <div class="txt-grey-sm" th:text="${p.countLabel()}">0 songs</div>
+                        </a>
+                    </div>
+
+                    <div class="playlist-list" th:if="${!#lists.isEmpty(playlists) and mode == 'list'}">
+                        <div class="playlist-column-header">
+                            <span class="txt-grey-md grow">NAME</span>
+                            <span class="txt-grey-md playlist-col-count">SONGS</span>
+                        </div>
+                        <a class="playlist-row" th:each="p : ${playlists}" th:href="@{/playlist(id=${p.id},mode=${mode})}">
+                            <span class="playlist-row-icon"></span>
+                            <span class="txt-white-sm-bld grow ellipsis" th:text="${p.name}">Name</span>
+                            <span class="playlist-row-count playlist-col-count" th:text="${p.songCount}">0</span>
+                        </a>
+                    </div>
+                </th:block>
+
+                <!-- Selected playlist: info, actions, songs -->
+                <th:block th:if="${selected != null}">
+                    <div class="playlist-info">
+                        <div class="playlist-card-art playlist-info-art"><span class="album-art-placeholder">♪</span></div>
+                        <div class="playlist-info-text">
+                            <span class="txt-grey-sm-bld">PLAYLIST</span>
+                            <span class="txt-white-bld-thirty" th:text="${selected.name}">Name</span>
+                            <span class="txt-grey-md" th:if="${selected.description != null and !#strings.isEmpty(#strings.trim(selected.description))}"
+                                  th:text="${selected.description}">Description</span>
+                            <span class="txt-grey-md" th:text="${selected.countLabel()}">0 songs</span>
+                        </div>
+                    </div>
+
+                    <div class="playlist-actions">
+                        <button type="button" class="green-btn" id="play-all-btn" th:disabled="${#lists.isEmpty(songs)}">▶  Play All</button>
+                        <button type="button" class="playlist-rename-btn" id="rename-btn">Rename</button>
+                        <button type="button" class="playlist-delete-btn" id="delete-btn">Delete</button>
+                    </div>
+                    <hr class="playlist-header-separator">
+
+                    <div class="playlist-empty playlist-empty-songs" th:if="${#lists.isEmpty(songs)}">
+                        <div class="playlist-empty-songs-icon">🎶</div>
+                        <div class="txt-grey-md playlist-empty-msg">This playlist is empty.<br>Add songs from My Library.</div>
+                    </div>
+
+                    <div class="playlist-grid" th:if="${!#lists.isEmpty(songs) and mode == 'grid'}">
+                        <div class="playlist-song-card playlist-card" th:each="s : ${songs}" th:attr="data-song-id=${s.id}">
+                            <div class="playlist-card-art">
+                                <span class="album-art-placeholder">♪</span>
+                                <img th:if="${s.albumId != null}" th:src="@{/media/art/album/{aid}(aid=${s.albumId})}"
+                                     loading="lazy" alt="" onerror="this.classList.add('art-missing')">
+                            </div>
+                            <div class="txt-white-sm playlist-card-name" th:text="${s.title}">Title</div>
+                            <div class="txt-grey-sm playlist-card-name" th:text="${s.artist}">Artist</div>
+                            <div class="txt-grey-sm" th:text="${s.duration}">0:00</div>
+                        </div>
+                    </div>
+
+                    <div class="playlist-list" th:if="${!#lists.isEmpty(songs) and mode == 'list'}">
+                        <div class="playlist-column-header">
+                            <span class="txt-grey-md playlist-col-index">#</span>
+                            <span class="txt-grey-md grow">TITLE</span>
+                            <span class="txt-grey-md playlist-col-duration">DURATION</span>
+                        </div>
+                        <div class="playlist-song-row" th:each="s, st : ${songs}" th:attr="data-song-id=${s.id}">
+                            <span class="playlist-song-main playlist-col-index" th:text="${st.count}">1</span>
+                            <span class="playlist-song-info grow">
+                                <span class="txt-white-sm ellipsis" th:text="${s.title}">Title</span>
+                                <span class="playlist-song-artist ellipsis" th:text="${s.artist}">Artist</span>
+                            </span>
+                            <span class="playlist-song-main playlist-col-duration" th:text="${s.duration}">0:00</span>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+        <div th:replace="~{fragments/player :: bar}"></div>
+    </main>
+</div>
+<th:block th:replace="~{fragments/layout :: scripts}"></th:block>
+<script th:src="@{/js/playlist.js}"></script>
+</body>
+</html>

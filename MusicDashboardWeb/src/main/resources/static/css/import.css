@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════════════════════════
+   IMPORT PAGE
+   Web translation of the Import Music screen. Shared classes
+   (dropZone, dark-table, dark-page-bg, txt-*) come from globalStyle.css.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Page container ────────────────────────────────────────── */
+.import-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+.import-header {
+    display: flex;
+    justify-content: center;
+}
+.import-header h1 {
+    margin: 0;
+    text-align: center;
+}
+
+/* ─── Folder path row ───────────────────────────────────────── */
+.import-browse {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.import-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+.import-folder-input {
+    flex: 1;
+    min-width: 0;
+}
+#scanBtn { /* desktop button hugs its text; give the label room beside the path field */
+    padding: 11px 24px;
+    white-space: nowrap;
+    flex: none;
+}
+#scanBtn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ─── Drop zone ─────────────────────────────────────────────── */
+.import-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    height: 220px;
+    box-sizing: border-box;
+}
+.import-dropzone.drag-over {
+    border-color: #1DB954;
+    background: #1a2e1a;
+}
+
+/* ─── Progress bar ──────────────────────────────────────────── */
+.import-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.import-progress-track {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #404040;
+    overflow: hidden;
+}
+.import-progress-fill {
+    width: 0;
+    height: 100%;
+    background: #1DB954;
+    transition: width 0.2s ease;
+}
+.import-summary {
+    min-height: 1em;
+}
+
+/* ─── Results table ─────────────────────────────────────────── */
+.import-results {
+    flex: 1;
+    min-height: 220px;
+    overflow: auto;
+    background: #1a1a1a;
+    border-radius: 6px;
+    padding: 0;
+}
+.import-results .dark-table th {
+    position: sticky;
+    top: 0;
+    text-align: left;
+    padding: 8px 10px;
+}
+.import-col-file { width: 40%; }
+.import-col-status { width: 180px; }
+.import-results .dark-table td {
+    word-break: break-word;
+}
+.import-status {
+    white-space: pre;
+}
+.import-placeholder td {
+    text-align: center;
+    padding: 40px 10px;
+    color: #b3b3b3;
+}

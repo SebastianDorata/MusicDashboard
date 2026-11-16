@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Listening History preview: 20 rows, "View Full History" opens the paginated modal (25 per page) -->
+<th:block th:fragment="section">
+    <h1 class="txt-white-bld-thirty txt-centre-underline analytics-title">Listening History</h1>
+    <button type="button" class="view-All" data-modal="history" data-title="Listening History">View Full History</button>
+    <div class="analytics-preview">
+        <div class="analytics-list-item clickable" th:each="r : ${historyRows}"
+             th:attr="data-song-id=${r.songId()}">
+            <span class="txt-white-sm row-primary" th:text="${r.songTitle() != null ? r.songTitle() : '—'}">Song</span>
+            <span class="analytics-row-secondary row-secondary" th:text="${r.artistName() != null ? r.artistName() : '—'}">Artist</span>
+            <span class="analytics-row-meta" th:text="${r.playedAt() != null ? r.playedAt() : '—'}">3m ago</span>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

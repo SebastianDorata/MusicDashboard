@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sign In', ~{::link})}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body class="root">
+<div class="main-background login-page">
+    <div class="header">Music Dashboard</div>
+    <div class="login-subtitle">Your personal listening stats &amp; library</div>
+
+    <div class="login-cards">
+        <form class="login-card" id="login-form" method="post" th:action="@{/login}">
+            <div class="login-card-title">Sign in</div>
+
+            <div class="field-group">
+                <label class="txt-grey-sm-bld" for="login-username">Username or Email</label>
+                <input class="username-Field" id="login-username" type="text" name="username"
+                       placeholder="Username or Email" autocomplete="username" required>
+            </div>
+            <div class="field-group">
+                <label class="txt-grey-sm-bld" for="login-password">Password</label>
+                <input class="password-Field" id="login-password" type="password" name="password"
+                       placeholder="Password" autocomplete="current-password" required>
+            </div>
+
+            <div id="login-feedback" th:if="${loginMessage != null}"
+                 th:class="${loginSuccess} ? 'login-success-label' : 'login-error-label'"
+                 th:text="${loginMessage}"></div>
+
+            <button class="login-btn-primary" id="login-btn" type="submit">Sign in</button>
+        </form>
+
+        <form class="login-card" id="signup-form" method="post" th:action="@{/register}">
+            <div class="login-card-title">Create account</div>
+
+            <div class="field-group">
+                <label class="txt-grey-sm-bld" for="signup-username">Username</label>
+                <input class="username-Field" id="signup-username" type="text" name="username"
+                       placeholder="Username" autocomplete="username" th:value="${signupUsername}">
+            </div>
+            <div class="field-group">
+                <label class="txt-grey-sm-bld" for="signup-email">Email</label>
+                <input class="email-Field" id="signup-email" type="text" name="email"
+                       placeholder="Email" autocomplete="email" th:value="${signupEmail}">
+            </div>
+            <div class="field-group">
+                <label class="txt-grey-sm-bld" for="signup-password">Password</label>
+                <input class="password-Field" id="signup-password" type="password" name="password"
+                       placeholder="Password" autocomplete="new-password">
+            </div>
+
+            <div id="signup-feedback" th:if="${signupMessage != null}"
+                 th:class="${signupSuccess} ? 'login-success-label' : 'login-error-label'"
+                 th:text="${signupMessage}"></div>
+
+            <button class="login-btn-primary" id="signup-btn" type="submit">Create account</button>
+        </form>
+    </div>
+</div>
+<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

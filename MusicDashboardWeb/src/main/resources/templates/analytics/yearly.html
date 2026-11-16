@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Yearly Wrapped slideshow (desktop YearWrappedViewController): ten gradient slides, arrows + dots (analytics.js) -->
+<th:block th:fragment="section">
+    <div class="wrapped-view" id="wrapped">
+        <div class="wrapped-slides">
+            <!-- 0 cover -->
+            <div class="slide-card slide-0 active" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-big-emoji">🎧</div>
+                <div class="slide-hero" th:text="${wrapped.year}">2026</div>
+                <div class="slide-sub" th:text="'Your ' + ${wrapped.year} + ' Wrapped'">Your 2026 Wrapped</div>
+                <div class="slide-spacer"></div>
+                <div class="slide-hint">→ Use the arrows to explore</div>
+            </div>
+            <!-- 1 hours -->
+            <div class="slide-card slide-1" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-intro">This year you listened for</div>
+                <div class="slide-hero" th:text="${wrapped.totalHoursFormatted()}">0.0</div>
+                <div class="slide-accent">hours</div>
+                <div class="slide-sub" th:text="${wrapped.totalMinutes} + ' total minutes'">0 total minutes</div>
+                <div class="slide-spacer"></div>
+                <div class="slide-body" th:text="'Your busiest month was ' + ${wrapped.busiestMonthName()}">Your busiest month was —</div>
+            </div>
+            <!-- 2 songs count -->
+            <div class="slide-card slide-2" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-intro">You played</div>
+                <div class="slide-hero" th:text="${wrapped.totalSongs}">0</div>
+                <div class="slide-accent">songs</div>
+                <div class="slide-spacer"></div>
+                <div class="slide-sub" th:text="'That\'s ' + ${songsPerMonth} + ' songs per month on average'">That's 0 songs per month on average</div>
+                <div class="slide-spacer"></div>
+            </div>
+            <!-- 3 top song -->
+            <div class="slide-card slide-3" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-intro" th:text="'Your #1 song of ' + ${wrapped.year}">Your #1 song of 2026</div>
+                <div class="slide-big-emoji">🎵</div>
+                <div class="slide-hero" th:text="${wrapped.topSongTitle}">—</div>
+                <div class="slide-accent" th:text="${wrapped.topSongArtist}">—</div>
+                <div class="slide-spacer"></div>
+                <div class="slide-body">You couldn't stop listening.</div>
+            </div>
+            <!-- 4 top 5 songs -->
+            <div class="slide-card slide-4" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-section-header">Top 5 Songs</div>
+                <div class="rank-list">
+                    <div class="rank-row" th:each="r : ${topSongRanks}">
+                        <span class="rank-medal" th:text="${r.medal()}">🥇</span>
+                        <div class="rank-text">
+                            <div class="rank-title" th:text="${r.title()}">Title</div>
+                            <div class="rank-subtitle" th:text="${r.subtitle()}">Artist</div>
+                        </div>
+                        <span class="rank-plays-green" th:text="${r.plays()} + '×'">1×</span>
+                    </div>
+                </div>
+                <div class="slide-spacer"></div>
+            </div>
+            <!-- 5 top artist -->
+            <div class="slide-card slide-5" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-intro">Your most-played artist</div>
+                <div class="slide-big-emoji">🎤</div>
+                <div class="slide-hero" th:text="${wrapped.topArtistName}">—</div>
+                <div class="slide-spacer"></div>
+                <div class="slide-body">You were a true fan.</div>
+            </div>
+            <!-- 6 top 5 artists -->
+            <div class="slide-card slide-6" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-section-header">Top 5 Artists</div>
+                <div class="rank-list">
+                    <div class="rank-row" th:each="r : ${topArtistRanks}">
+                        <span class="rank-medal" th:text="${r.medal()}">🥇</span>
+                        <div class="rank-text">
+                            <div class="rank-title" th:text="${r.title()}">Artist</div>
+                        </div>
+                        <span class="rank-plays-purple" th:text="${r.plays()} + '×'">1×</span>
+                    </div>
+                </div>
+                <div class="slide-spacer"></div>
+            </div>
+            <!-- 7 top album + genre -->
+            <div class="slide-card slide-7" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-intro">Your favourites at a glance</div>
+                <div class="slide-big-emoji">💿</div>
+                <div class="slide-accent">Top Album</div>
+                <div class="slide-hero" th:text="${wrapped.topAlbumTitle}">—</div>
+                <div class="slide-gap"></div>
+                <div class="slide-big-emoji">🎼</div>
+                <div class="slide-accent">Top Genre</div>
+                <div class="slide-sub" th:text="${wrapped.topGenreName}">—</div>
+                <div class="slide-spacer"></div>
+            </div>
+            <!-- 8 monthly bar chart -->
+            <div class="slide-card slide-8" data-slide>
+                <div class="slide-section-header">Listening by Month</div>
+                <div class="chart-container">
+                    <div class="chart-bars">
+                        <div class="chart-col" th:each="b : ${bars}">
+                            <span class="bar-value-label" th:text="${b.value()}"></span>
+                            <div class="chart-bar" th:classappend="${b.peak()} ? 'peak'" th:style="'height:' + ${b.heightPx()} + 'px'"></div>
+                            <span class="bar-month-label" th:text="${b.month()}">Jan</span>
+                        </div>
+                    </div>
+                    <div class="chart-axis-line"></div>
+                </div>
+            </div>
+            <!-- 9 closing -->
+            <div class="slide-card slide-9" data-slide>
+                <div class="slide-spacer"></div>
+                <div class="slide-big-emoji">🎶</div>
+                <div class="slide-hero">That's a wrap!</div>
+                <div class="slide-sub" th:text="'See you in ' + (${wrapped.year} + 1)">See you in 2027</div>
+                <div class="slide-spacer"></div>
+                <div class="slide-body">Thanks for the music.</div>
+                <div class="slide-spacer"></div>
+            </div>
+        </div>
+        <div class="wrapped-nav">
+            <button type="button" class="wrapped-nav-btn" data-wrapped="prev" aria-label="Previous slide">←</button>
+            <div class="wrapped-dots">
+                <span th:each="i : ${#numbers.sequence(0, 9)}" class="nav-dot" th:classappend="${i == 0} ? 'nav-dot-active'"
+                      th:attr="data-dot=${i}">●</span>
+            </div>
+            <button type="button" class="wrapped-nav-btn" data-wrapped="next" aria-label="Next slide">→</button>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

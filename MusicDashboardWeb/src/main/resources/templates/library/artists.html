@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Artists pane (desktop ArtistViewBuilder.buildArtistList): A-Z grouped artist rows with alphabet bar. -->
+<body>
+<section th:fragment="artistsPane" class="library-pane main-bkColour">
+    <h2 class="view-header" th:text="${header}">Artists (0)</h2>
+    <div class="library-list-layout">
+        <div class="library-list">
+            <th:block th:each="g : ${groups}">
+                <div class="artist-alpha-divider" th:data-letter="${g.letter()}">
+                    <span class="artist-alpha-letter" th:text="${g.letter()}">A</span>
+                    <span class="artist-alpha-line"></span>
+                </div>
+                <a class="artist-list-row" th:each="a : ${g.items()}" th:href="@{${state.artistUrl(a.id())}}">
+                    <div class="artist-list-text">
+                        <div class="artist-list-name" th:text="${a.name()}">Artist</div>
+                        <div class="artist-list-info" th:text="${a.info()}">0 songs • 0 albums</div>
+                    </div>
+                </a>
+            </th:block>
+        </div>
+        <nav th:replace="~{library/shared :: alphabetBar}"></nav>
+    </div>
+</section>
+</body>
+</html>

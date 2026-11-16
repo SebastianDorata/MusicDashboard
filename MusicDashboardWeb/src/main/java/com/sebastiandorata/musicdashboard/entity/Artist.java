@@ -1,0 +1,55 @@
+package com.sebastiandorata.musicdashboard.entity;
+
+import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * JPA entity representing a music artist.
+ *
+ * <p>Stores the artist name and an optional biography. Participates in
+ * bidirectional many-to-many relationships with both {@link Song} (via
+ * {@code song_artists}) and {@link Album} (via {@code album_artists}).</p>
+ */
+@Setter
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "artists")
+public class Artist {
+
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "artist_id")
+    private Long artistId;
+
+    @Column(name = "name", nullable = false, unique = true, length = 255)
+    private String name;
+
+    /** MusicBrainz artist ID, when known. Nullable — most tags/scrobbles won't have it. */
+    @Column(name = "mbid", length = 36, unique = true)
+    private String mbid;
+
+    @Column(name = "bio", columnDefinition = "TEXT")
+    private String bio;
+
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
+    private Set<Song> songs = new HashSet<>();
+
+    @ManyToMany(mappedBy = "artists", fetch = FetchType.LAZY)
+    private Set<Album> albums = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "artistId=" + artistId +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}

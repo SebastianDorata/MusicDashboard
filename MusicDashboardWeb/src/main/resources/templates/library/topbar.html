@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Top bar (desktop LibraryTopBarBuilder): title row, tab buttons, List/Grid toggles, genre and sort. -->
+<body>
+<header th:fragment="topbar" class="header-background library-topbar">
+    <div class="library-title-row">
+        <a class="nav-btn-back txt-white-md-bld library-home-btn" th:href="@{/dashboard}">← Dashboard</a>
+        <h1 class="txt-white-bld-forty txt-centre-underline library-title">My Library</h1>
+    </div>
+
+    <div class="library-controls-row">
+        <!-- Tabs on the left -->
+        <nav class="library-tabs" aria-label="Library views">
+            <a class="nav-btn txt-white-md-bld" th:href="@{${state.tabUrl('songs')}}"
+               th:classappend="${state.view == 'songs'} ? 'nav-btn-active'">Songs</a>
+            <a class="nav-btn txt-white-md-bld" th:href="@{${state.tabUrl('albums')}}"
+               th:classappend="${state.view == 'albums'} ? 'nav-btn-active'">Albums</a>
+            <a class="nav-btn txt-white-md-bld" th:href="@{${state.tabUrl('artists')}}"
+               th:classappend="${state.view == 'artists'} ? 'nav-btn-active'">Artists</a>
+            <a class="nav-btn txt-white-md-bld" th:href="@{${state.tabUrl('favourites')}}"
+               th:classappend="${state.view == 'favourites'} ? 'nav-btn-active'">Favourites</a>
+        </nav>
+
+        <!-- List / Grid toggles in the centre -->
+        <div class="library-toggles">
+            <a class="nav-btn txt-white-md-bld" th:if="${state.listToggleVisible}"
+               th:href="@{${state.modeUrl('list')}}"
+               th:classappend="${state.mode == 'list'} ? 'nav-btn-active'">List</a>
+            <a class="nav-btn txt-white-md-bld" th:if="${state.gridToggleVisible}"
+               th:href="@{${state.modeUrl('grid')}}"
+               th:classappend="${state.mode == 'grid'} ? 'nav-btn-active'">Grid</a>
+        </div>
+
+        <!-- Genre / sort on the right (change submits the form: URL state stays in sync) -->
+        <form class="library-filters dropDown-options" th:if="${state.filterVisible}" method="get"
+              th:action="@{/library}" data-role="filters">
+            <input type="hidden" name="view" th:value="${state.view}">
+            <input type="hidden" name="mode" th:value="${state.mode}">
+            <label class="txt-white-ttl-bld" for="genreSelect">Genre:</label>
+            <select id="genreSelect" name="genre" class="combo-box txt-white-sm">
+                <option value="">All Genres</option>
+                <option th:each="g : ${genres}" th:value="${g.genreId}" th:text="${g.name}"
+                        th:selected="${state.genreId != null and state.genreId == g.genreId}"></option>
+            </select>
+            <label class="txt-white-ttl-bld" for="sortSelect">Sort by:</label>
+            <select id="sortSelect" name="sort" class="combo-box txt-white-sm">
+                <option th:each="s : ${sorts}" th:value="${s.name()}" th:text="${s.displayName}"
+                        th:selected="${s == state.sort}"></option>
+            </select>
+            <noscript><button type="submit" class="btn-blue">Apply</button></noscript>
+        </form>
+    </div>
+</header>
+</body>
+</html>

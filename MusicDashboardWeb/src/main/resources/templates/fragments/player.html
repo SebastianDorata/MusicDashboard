@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--
+  Player fragments, ported from the desktop PlaybackPanelController.
+
+    large : the big dashboard panel (art 280px, title, artist, controls, progress slider)
+    bar   : the small player shown at the bottom of every other page (art 60px, 0.6x sizes)
+
+  Both roots carry data-player="large|bar"; the inner elements carry data-role hooks that
+  static/js/player.js binds to. The markup is the empty state ("No song playing" / "—");
+  the script fills it from GET /api/player/state.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- ─── Large player (dashboard) ─── -->
+<div th:fragment="large" class="now-playing-bar player-large" data-player="large">
+    <div class="album-art-container" data-role="art">
+        <span class="album-art-placeholder">♪</span>
+        <img data-role="art-img" alt="" hidden>
+    </div>
+    <div class="now-playing-info">
+        <div class="Song-Name txt-Scale30 empty-msg" data-role="title">No song playing</div>
+        <a class="Artist-Name txt-Scale14" data-role="artist">—</a>
+        <div class="player-spacer"></div>
+        <div class="cntr-spc-sm player-controls">
+            <button type="button" class="player-btn player-btn-secondary Cursor" data-role="prev" aria-label="Previous">
+                <img th:src="@{/icons/prev.png}" alt="" width="20" height="20">
+            </button>
+            <button type="button" class="player-btn player-btn-primary Cursor" data-role="play" aria-label="Play">
+                <img th:src="@{/icons/play.png}" alt="" width="22" height="22" data-role="play-icon">
+            </button>
+            <button type="button" class="player-btn player-btn-secondary Cursor" data-role="next" aria-label="Next">
+                <img th:src="@{/icons/next.png}" alt="" width="20" height="20">
+            </button>
+        </div>
+        <div class="time-Box">
+            <input type="range" class="now-playing-slider" data-role="slider" min="0" max="100" step="any" value="0"
+                   aria-label="Seek">
+            <div class="cntr-spc-sm time-row">
+                <span class="player-time" data-role="current">0:00</span>
+                <span class="time-spacer"></span>
+                <span class="player-time" data-role="remaining">-0:00</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── Small player (bottom bar of other pages) ─── -->
+<div th:fragment="bar" class="now-playing-bar player-small" data-player="bar">
+    <div class="album-art-container" data-role="art">
+        <span class="album-art-placeholder">♪</span>
+        <img data-role="art-img" alt="" hidden>
+    </div>
+    <div class="now-playing-info">
+        <div class="Song-Name txt-Scale18 empty-msg" data-role="title">No song playing</div>
+        <a class="Artist-Name txt-Scale8" data-role="artist">—</a>
+    </div>
+    <div class="cntr-spc-sm player-controls">
+        <button type="button" class="player-btn player-btn-secondary Cursor" data-role="prev" aria-label="Previous">
+            <img th:src="@{/icons/prev.png}" alt="" width="12" height="12">
+        </button>
+        <button type="button" class="player-btn player-btn-primary Cursor" data-role="play" aria-label="Play">
+            <img th:src="@{/icons/play.png}" alt="" width="13" height="13" data-role="play-icon">
+        </button>
+        <button type="button" class="player-btn player-btn-secondary Cursor" data-role="next" aria-label="Next">
+            <img th:src="@{/icons/next.png}" alt="" width="12" height="12">
+        </button>
+    </div>
+    <div class="time-Box">
+        <input type="range" class="now-playing-slider" data-role="slider" min="0" max="100" step="any" value="0"
+               aria-label="Seek">
+        <div class="cntr-spc-sm time-row">
+            <span class="player-time" data-role="current">0:00</span>
+            <span class="time-spacer"></span>
+            <span class="player-time" data-role="remaining">-0:00</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

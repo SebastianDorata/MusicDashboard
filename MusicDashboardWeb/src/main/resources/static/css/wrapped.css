@@ -1,0 +1,287 @@
+/* ─── Wrapper and slideshow layout (web) ────────────────────── */
+.wrapped-view {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 30px 0 30px 0;
+}
+.wrapped-slides {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.wrapped-wrapper {
+    align-items: center;
+}
+
+.slide-counter {
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+}
+
+/* Slide card  */
+.slide-card {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 14px;
+    box-sizing: border-box;
+    min-height: clamp(480px, 68vh, 760px);
+    padding: 40px 36px 40px 36px;
+    border-radius: 20px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+}
+.slide-card.active {
+    display: flex;
+    animation: slide-in 300ms ease-out;
+}
+@keyframes slide-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+}
+/* Spacer regions (Region with Vgrow ALWAYS) and the 12px gap before Top Genre */
+.slide-spacer {
+    flex: 1;
+}
+.slide-gap {
+    height: 12px;
+}
+
+/* Slide palettes (YearWrappedViewController.GRADIENTS) */
+.slide-0 { background: linear-gradient(to bottom right, #1a1a2e, #16213e, #0f3460); }
+.slide-1 { background: linear-gradient(to bottom right, #0d7377, #14a085, #0d7377); }
+.slide-2 { background: linear-gradient(to bottom right, #1db954, #1ed760, #0d7377); }
+.slide-3 { background: linear-gradient(to bottom right, #e94560, #c41e3a, #7a0026); }
+.slide-4 { background: linear-gradient(to bottom right, #533483, #6a0572, #533483); }
+.slide-5 { background: linear-gradient(to bottom right, #ff6b35, #f7931e, #c41e3a); }
+.slide-6 { background: linear-gradient(to bottom right, #005f73, #0a9396, #94d2bd); }
+.slide-7 { background: linear-gradient(to bottom right, #7209b7, #3a0ca3, #480ca8); }
+.slide-8 { background: linear-gradient(to bottom right, #1a1a2e, #e94560, #1a1a2e); }
+.slide-9 { background: linear-gradient(to bottom right, #1db954, #0d7377, #1a1a2e); }
+
+/*Typography */
+.slide-hero {
+    color: #ffffff;
+    font-size: 64px;
+    font-weight: bold;
+    text-align: center;
+    overflow-wrap: anywhere;
+    max-width: 100%;
+}
+
+.slide-accent {
+    color: rgba(255,255,255,0.85);
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.slide-intro {
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.slide-sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 16px;
+    text-align: center;
+}
+
+.slide-body {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    text-align: center;
+}
+
+.slide-hint {
+    color: rgba(255,255,255,0.35);
+    font-size: 11px;
+    text-align: center;
+}
+
+.slide-section-header {
+    align-self: stretch;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 0 0 4px 20px;
+    text-align: left;
+}
+
+.slide-big-emoji {
+    font-size: 56px;
+    text-align: center;
+}
+
+/* Navigation row */
+.wrapped-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+/*Navigation arrows */
+.wrapped-nav-btn {
+    background: rgba(255,255,255,0.12);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    min-width: 44px;
+    min-height: 44px;
+    max-width: 44px;
+    max-height: 44px;
+    cursor: pointer;
+}
+
+.wrapped-nav-btn:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* ── Dot indicators ────────────────────────────────────────── */
+.wrapped-dots {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.nav-dot {
+    font-size: 8px;
+    color: rgba(255,255,255,0.3);
+    cursor: pointer;
+}
+
+.nav-dot-active {
+    font-size: 8px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* ── Rank list rows ────────────────────────────────────────── */
+.rank-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px 10px 20px;
+    align-self: stretch;
+}
+
+.rank-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 8px 16px 8px 16px;
+    text-align: left;
+}
+
+.rank-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.rank-medal {
+    font-size: 18px;
+    min-width: 34px;
+    white-space: pre;
+}
+
+.rank-title {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.rank-subtitle {
+    color: rgba(255,255,255,0.55);
+    font-size: 11px;
+}
+
+
+.rank-plays-green {
+    color: #1db954;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.rank-plays-purple {
+    color: #c084fc;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* ── Bar chart ─────────────────────────────────────────────── */
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.chart-bars {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    width: 80%;
+    height: 250px;
+}
+
+.chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    min-width: 0;
+}
+
+.chart-bar {
+    width: 65%;
+    background: rgba(255,255,255,0.25);
+    border-radius: 4px 4px 0 0;
+}
+.chart-bar.peak {
+    background: #1db954;
+}
+
+.chart-axis-line {
+    background: rgba(255,255,255,0.2);
+    height: 1px;
+    width: 80%;
+}
+
+.bar-value-label {
+    color: rgba(255,255,255,0.7);
+    font-size: 9px;
+    text-align: center;
+    min-height: 11px;
+}
+
+.bar-month-label {
+    color: rgba(255,255,255,0.6);
+    font-size: 9px;
+    text-align: center;
+}

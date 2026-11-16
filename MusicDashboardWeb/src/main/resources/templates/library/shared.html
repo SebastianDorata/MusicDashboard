@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--
+  Reusable pieces of the library panes:
+    alphabetBar           - A-Z/# bar (desktop AlphabetBar)
+    albumArt(hasArt, id)  - cover art box with the placeholder note
+    albumCard(a)          - grid card (desktop CardFactory.createAlbumCard)
+    albumRow(a, editable) - list row with art (desktop AlbumCardListCell.buildRow)
+    albumRowPlain(a)      - compact row without art (desktop AlbumListCell)
+    songRow(s, editable)  - song list row (desktop SongCell)
+    songCard(s)           - song grid card (desktop CardFactory.createSongCard)
+-->
+<body>
+
+<nav th:fragment="alphabetBar" class="alphabet-bar" aria-label="Jump to letter">
+    <th:block th:each="l : ${letters}">
+        <button type="button" class="alphabet-letter-active" th:if="${activeLetters.contains(l)}"
+                th:text="${l}" th:data-letter="${l}"></button>
+        <span class="alphabet-letter-inactive" th:unless="${activeLetters.contains(l)}" th:text="${l}"></span>
+    </th:block>
+</nav>
+
+<div th:fragment="albumArt(hasArt, id)" class="library-art">
+    <span class="album-art-placeholder">♪</span>
+    <img th:if="${hasArt}" th:src="@{/media/art/album/{id}(id=${id})}" alt="" loading="lazy"
+         onerror="this.classList.add('art-missing')">
+</div>
+
+<a th:fragment="albumCard(a)" class="library-card" th:href="@{${state.albumUrl(a.id())}}"
+   th:data-album-id="${a.id()}" th:data-title="${a.title()}" th:data-year="${a.yearText()}"
+   th:data-genre="${a.genreText()}" th:data-songs="${a.songCount()}">
+    <div class="library-card-art" th:insert="~{library/shared :: albumArt(${a.hasArt()}, ${a.id()})}"></div>
+    <div class="library-card-title" th:text="${a.title()}">Album</div>
+    <div class="library-card-subtitle" th:text="${a.cardYear()}">2024</div>
+</a>
+
+<a th:fragment="albumRow(a, editable)" class="artist-list-row library-album-row" th:href="@{${state.albumUrl(a.id())}}"
+   th:data-album-id="${a.id()}" th:data-title="${a.title()}" th:data-year="${a.yearText()}"
+   th:data-genre="${a.genreText()}" th:data-songs="${a.songCount()}">
+    <div class="library-row-art" th:insert="~{library/shared :: albumArt(${a.hasArt()}, ${a.id()})}"></div>
+    <div class="library-row-text">
+        <div class="wt-smmd-bld" th:text="${a.title()}">Album</div>
+        <div class="txt-grey-md" th:text="${a.info()}">0 songs</div>
+    </div>
+</a>
+
+<a th:fragment="albumRowPlain(a)" class="artist-list-row library-album-plain" th:href="@{${state.albumUrl(a.id())}}"
+   th:data-album-id="${a.id()}">
+    <div class="wt-smmd-bld" th:text="${a.title()}">Album</div>
+    <div class="txt-grey-md" th:text="${a.info()}">0 songs</div>
+</a>
+
+<div th:fragment="songRow(s, editable)" class="song-list-row library-song-row"
+     th:data-song-id="${s.id()}" th:data-title="${s.title()}"
+     th:attr="data-editable=${editable ? 'true' : null}">
+    <div class="song-list-text">
+        <span class="song-list-title" th:text="${s.title()}">Title</span><span class="song-list-separator"> · </span><span
+            class="song-list-artist" th:text="${s.artist()}">Artist</span>
+    </div>
+    <button type="button" class="song-row-menu-btn" data-action="song-menu" aria-label="Song menu">⋯</button>
+</div>
+
+<div th:fragment="songCard(s)" class="library-card library-song-card" th:data-song-id="${s.id()}"
+     th:data-title="${s.title()}" data-play="single" tabindex="0">
+    <div class="library-card-art" th:insert="~{library/shared :: albumArt(${s.hasArt()}, ${s.albumId()})}"></div>
+    <div class="library-card-title" th:text="${s.title()}">Song</div>
+    <div class="library-card-subtitle" th:text="${s.artist()}">Artist</div>
+</div>
+
+</body>
+</html>
